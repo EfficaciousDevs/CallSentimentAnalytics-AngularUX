@@ -32,8 +32,8 @@ import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { AlertDialogWindowComponent } from './alert-dialog-window/alert-dialog-window.component';
 import { LoginComponent } from './login/login.component';
-import { ReviewComponent } from './review/review.component';
-import { RulesBasedActionComponent } from './rules-based-action/rules-based-action.component';
+import {AudioDialog, ReviewComponent, ReviewDialog} from './review/review.component';
+import {RulesBasedActionComponent, TrainingDialog} from './rules-based-action/rules-based-action.component';
 import {AuthGuard} from "./AuthGaurd/auth.gaurd";
 import {AuthInterceptor} from "./AuthGaurd/auth.interceptor";
 import {RoleBasedService} from "./HttpServices/role-based.service";
@@ -44,7 +44,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import { MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
-
+import {MatMenuModule} from '@angular/material/menu';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,44 +63,47 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     ReviewComponent,
     RulesBasedActionComponent,
     ReportingDashboardComponent,
-    CreateRolesComponent
+    CreateRolesComponent,
+    ForbiddenComponent,
+    EditUserDialogComponent,
+    ReviewDialog,TrainingDialog,AudioDialog
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    NgxSpinnerModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    BrowserModule,
-    AppRoutingModule,
-    CommonModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatBadgeModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatChipsModule,
-    MatRippleModule,
-    MatDialogModule,
-    MatStepperModule,
-    MatDatepickerModule,MatCardModule,MatTableModule,
-    MatNativeDateModule,MatSlideToggleModule,MatExpansionModule,
-    MatPaginatorModule,MatSortModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        NgxSpinnerModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        BrowserModule,
+        AppRoutingModule,
+        CommonModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatProgressSpinnerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatChipsModule,
+        MatRippleModule,
+        MatDialogModule,
+        MatStepperModule,
+        MatDatepickerModule, MatCardModule, MatTableModule,NgxChartsModule,
+        MatNativeDateModule, MatSlideToggleModule, MatExpansionModule,
+        MatPaginatorModule, MatSortModule, MatMenuModule, MatSidenavModule, MatCheckboxModule
+    ],
   providers: [
       AuthGuard,
     {

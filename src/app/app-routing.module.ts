@@ -11,10 +11,13 @@ import {RulesBasedActionComponent} from "./rules-based-action/rules-based-action
 import {AuthGuard} from "./AuthGaurd/auth.gaurd";
 import {ReportingDashboardComponent} from "./reporting-dashboard/reporting-dashboard.component";
 import {CreateRolesComponent} from "./create-roles/create-roles.component";
+import {ForbiddenComponent} from "./forbidden/forbidden.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-
+  {
+    path: 'login', component: LoginComponent
+  },
   {
     path: 'dashboard', component: DashboardComponent,
     children: [
@@ -45,7 +48,10 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'login', component: LoginComponent
+    path: 'forbidden',component: ForbiddenComponent
+  },
+  {
+    path: '**', redirectTo: '/forbidden'
   }
 
 ];

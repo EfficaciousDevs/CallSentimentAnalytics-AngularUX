@@ -1,0 +1,31 @@
+<div class="container" #container>
+  <div class="forms-container">
+
+    <div class="signin-signup">
+      <form class="sign-in-form">
+        <img src="https://acxtech.co.in/assets/images/logo-2.png" alt="AcxiomLogo"
+             style="width: 50%;margin-bottom: 10%">
+        <h2 class="title">Sign in</h2>
+        <div class="input-field">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Username" [(ngModel)]="username"
+                 [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Password"
+                 [(ngModel)]="password" [ngModelOptions]="{standalone: true}"/>
+        </div>
+        <button type="submit" class="btn solid" (click)="loginHelper()">Login</button>
+        <h4 *ngIf="invalidCredentials.length>0" style="color: crimson">{{invalidCredentials}}</h4>
+      </form>
+    </div>
+  </div>
+
+  <div class="panels-container">
+    <div class="panel left-panel">
+      <img src="https://i.ibb.co/6HXL6q1/Privacy-policy-rafiki.png" class="image" alt="" />
+    </div>
+  </div>
+</div>
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>

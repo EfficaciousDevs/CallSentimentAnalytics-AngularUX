@@ -1,0 +1,11 @@
+
+<div class="remarkDialog">
+  <h2>Add Remarks</h2><br>
+<mat-form-field appearance="outline" style="width: 100%" >
+  <mat-label>Remarks</mat-label>
+  <input matInput [(ngModel)]="editedRemark" [ngModelOptions]="{standalone: true}" >
+</mat-form-field>&nbsp;<br>
+
+<button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>&nbsp;&nbsp;
+  <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+</div>

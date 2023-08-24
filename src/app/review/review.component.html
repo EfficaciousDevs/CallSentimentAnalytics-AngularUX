@@ -1,9 +1,44 @@
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
-      <h3 >Review Page</h3>
-      <i class='bx bx-search'></i>
-      <i class='bx bx-filter'></i>
+      <h2>REVIEW PAGE</h2>
+      <button style="float: right" mat-fab color="accent" matTooltip="Agents History Table" matTooltipPosition="right" (click)="getReviewDetails()"><mat-icon>accessibility_new</mat-icon></button>
     </div>
+
+    <table *ngIf="reviewData" class="content-table">
+      <thead>
+      <tr>
+
+        <th></th>
+        <th style="text-align: center">AGENT_ID</th>
+        <th>CALL CATEGORY</th>
+        <th>CUSTOMER QUERY</th>
+        <th>SUMMARY</th>
+        <th>CUSTOMER_SUPPORT_SENTIMENT</th>
+        <th>CALL_HOLD_PERMISSION</th>
+        <th>TRANSFER_PERMISSION</th>
+        <th >DATE & TIMESTAMP</th>
+        <th>AUDIO_PLAYBACK</th>
+
+        <th style="text-align: center">REMARKS</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of reviewData;let idx = index">
+        <td></td>
+        <td >{{ user.agentId }}</td>
+        <td>{{ user.callCategory }}</td>
+        <td>{{ user.customerProblem }}</td>
+        <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td>{{ user.custSuppSentiment }}</td>
+        <td>{{ user.callHoldPermission }}</td>
+        <td>{{ user.transferPermission }}</td>
+        <td>{{ user.dateTime | date:'medium' }}</td>
+        <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
+        <td><button mat-mini-fab color="warn" matTooltip="{{ user.remark ? user.remark +' Click to add remarks': 'N/A. Click to add remarks'}}" matTooltipPosition="above" (click)="editRemark(idx)"><mat-icon>assignment</mat-icon></button></td>
+      </tr>
+      </tbody>
+    </table>
   </div></div>
 <br>
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>

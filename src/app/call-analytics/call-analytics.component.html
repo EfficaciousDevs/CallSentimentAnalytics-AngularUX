@@ -1,0 +1,59 @@
+<div [ngClass]="file? 'audioContainer': 'container'">
+
+  <input #fileUploader class="form-control" type="file" (change)="onChange($event)">
+
+  <button
+    matTooltip="Please click the upload button once your audio file is selected to get things into action."
+    matTooltipPosition="above" matTooltipClass="uploadTooltip"
+    aria-label="Button that displays a tooltip when focused or hovered over" type="button" class="uploadButton"
+    (click)="onUpload()"><mat-icon>file_upload</mat-icon> Upload</button>
+
+
+  <button  matTooltip="Click to Remove your file selection" matTooltipPosition="right"
+           aria-label="Button that displays a tooltip when focused or hovered over" type="button" class="resetButton"
+           (click)="resetFileUploader()"><mat-icon>delete_forever</mat-icon> Reset</button>
+
+
+  <div *ngIf="url">
+    <audio controls>
+      <source [src]="url" type="audio/mpeg">
+    </audio>
+  </div>
+</div><br><br>
+
+<div class="bottom-data">
+  <div class="orders" *ngFor="let head of chatKeys">
+    <div class="header">
+      <h3>{{head}}</h3>
+      <i class='bx bx-search'></i>
+      <i class='bx bx-filter'></i>
+    </div>
+
+
+    <p>
+      {{documentData?.Chat_json[head]}}
+    </p>
+
+  </div>
+
+
+
+  <div class="orders">
+    <div class="header">
+      <h3 >RawText</h3>
+      <i class='bx bx-search'></i>
+      <i class='bx bx-filter'></i>
+    </div>
+
+    <mat-progress-bar *ngIf="loader" mode="indeterminate"></mat-progress-bar>
+    <ul>
+      <li *ngFor="let data of rawText; index as idx">
+        <div *ngIf="idx+1 !== rawText.length">
+          {{data}}
+        </div><br>
+      </li>
+    </ul>
+  </div>
+</div>
+<br>
+<ngx-spinner size="medium" type="ball-fussion"></ngx-spinner>

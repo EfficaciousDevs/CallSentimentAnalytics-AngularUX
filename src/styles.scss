@@ -336,7 +336,7 @@ body{
 
 .content main{
   width: 100%;
-  padding: 36px 24px;
+  padding: 5px 24px;
   max-height: calc(100vh - 56px);
 }
 
@@ -442,7 +442,9 @@ body{
   font-weight: 600;
   color: var(--dark);
 }
-
+.my-custom-tooltip .mdc-tooltip__surface {
+  max-width: 400px !important;
+}
 .content main .insights li .info p{
   color: var(--dark);
 }
@@ -545,6 +547,7 @@ body{
 .content main .bottom-data .orders table tr td .status.pending{
   background: var(--warning);
 }
+
 
 .content main .bottom-data .reminders{
   flex-grow: 1;

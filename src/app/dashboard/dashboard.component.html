@@ -1,0 +1,154 @@
+<section id="sidebar">
+<!-- Sidebar -->
+<div class="sidebar">
+  <a href="#" class="logo">
+    <i class='bx bxs-network-chart'></i>
+    <div class="logo-name" ><span>QC</span> Portal</div>
+  </a>
+
+  <ul class="side-menu">
+<!--    <li [ngClass]="{'active': homeActive}" matTooltip="Home Page" matTooltipPosition="right"><a routerLink="/dashboard"><i class='bx bxs-dashboard'></i>Dashboard</a></li>-->
+    <li *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': adminActive}" matTooltip="Admin Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/adminAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['Manager'])" [class.active]="managerActive" matTooltip="Manager Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/managerAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['User'])" [ngClass]="{'active': userActive}" matTooltip="User Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/userAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+    <li  *ngIf="authService.isLoggedIn()" [ngClass]="{'active': sentimentsActive}" matTooltip="Call Sentiments Analyzer" matTooltipPosition="right"><a routerLink="/dashboard/callSentimentsAnalytics"><i class='bx bxs-user-voice'></i>
+      <span class="text">Call Based Analyzer</span></a></li>
+    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': reviewActive}" matTooltip="Review" matTooltipPosition="right"><a routerLink="/dashboard/review"><i class='bx bx-map-alt'></i>Review</a></li>
+    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': actionActive}" matTooltip="Rule Based Action" matTooltipPosition="right"><a routerLink="/dashboard/rulesBasedAction"><i class='bx bxs-calendar-event'></i>Action</a></li>
+
+    <li  *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': createRoleActive}" matTooltip="User Management" matTooltipPosition="right"><a routerLink="/dashboard/addNewRole"><i class='bx bxs-user-plus' ></i>User Management</a></li>
+    <li  *ngIf="authService.isLoggedIn()" matTooltip="PowerBI Report" matTooltipPosition="right"><a routerLink="/dashboard/reportingDashboard"><i class='bx bx-cog'></i>Reports</a></li>
+  </ul>
+      <ul class="side-menu" (click)="openList()">
+        <li style="font-size: 0.75rem" *ngIf="isOpenList">Create Roles</li>
+        <li *ngIf="isOpenList">Check Existing Users</li>
+        <li *ngIf="isOpenList">Modify Existing Users</li>
+
+      </ul>
+<!--  <ul class="side-menu" >-->
+<!--    <li matTooltip="Logout" matTooltipPosition="right">-->
+<!--      <a (click)="isLoggedOut()" class="logout" style="cursor: pointer">-->
+<!--        <i class='bx bx-walk'></i>-->
+<!--        Logout-->
+<!--      </a>-->
+<!--    </li>-->
+<!--  </ul>-->
+
+  <ul class="side-menu">
+  </ul>
+</div>
+
+<div class="content">
+  <nav>
+    <i class='bx bx-menu'></i>
+    <form action="#">
+      <div class="form-input">
+        <input type="search" placeholder="Search...">
+        <button type="button" class="search-btn"><i class='bx bx-search-alt-2' ></i></button>
+<!--        <img src="https://acxtech.co.in/assets/images/logo-2.png" width="25%">-->
+      </div>
+    </form>
+
+
+      <mat-icon class="activate-dark">brightness_4</mat-icon>
+    <input  type="checkbox" id="theme-toggle" hidden>
+    <label matTooltip="Toggle for Dark Mode" matTooltipPosition="below" for="theme-toggle" class="theme-toggle"></label>
+    <a href="#" class="notif" matTooltip="Go to review tab to check these alerts." matTooltipPosition="above">
+      <i class='bx bx-bell'></i>
+      <span class="count">{{negativeResults.length}}</span>
+<!--      <span class="count" >0</span>-->
+    </a>
+<!--    <a href="#" class="profile">-->
+<!--      <img src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000">-->
+<!--    </a>-->
+<!--    <button mat-button >Menu</button>-->
+    <button mat-mini-fab color="warn" [matMenuTriggerFor]="menu">
+      <a class="profile">
+              <img src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000">
+            </a>
+    </button>
+<!--    <mat-menu #menu="matMenu">-->
+<!--      <button mat-menu-item><i class='bx bxs-user-pin' ></i>{{getUserRole()}}</button>-->
+<!--      <button mat-menu-item>Logout</button>-->
+<!--    </mat-menu>-->
+    <mat-menu class="customMenu" #menu="matMenu">
+      <button mat-menu-item  [matMenuTriggerFor]="account">
+        <mat-icon style="color: lightseagreen">tips_and_updates</mat-icon>
+        <span style="color: lightseagreen">Account</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon style="color: var(--primary)">event_note</mat-icon>
+        <span style="color: var(--primary)">Events</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon style="color: crimson">notifications_off</mat-icon>
+        <span style="color: crimson">Disable alerts</span>
+      </button>
+      <button mat-menu-item (click)="isLoggedOut()">
+        <mat-icon style="color: darkorange">auto_graph</mat-icon>
+        <span style="color: darkorange">Logout</span>
+      </button>
+    </mat-menu>
+    <mat-menu #account="matMenu">
+      <button mat-menu-item>
+        <mat-icon class="loggedUser">settings_accessibility</mat-icon>
+        <span class="loggedUser">{{authService.authFirstName }}, {{authService.authLastName}}</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon class="loggedRole">next_week</mat-icon>
+        <span class="loggedRole">{{getUserRole()}}</span>
+      </button>
+
+    </mat-menu>
+  </nav>
+
+  <!-- End of Navbar -->
+
+  <main>
+    <div class="header">
+<!--      <div class="left">-->
+<!--&lt;!&ndash;        <h1>Dashboard</h1>&ndash;&gt;-->
+<!--        <ul class="breadcrumb">-->
+<!--          <li><a href="#">-->
+<!--            Service-->
+<!--          </a></li>-->
+<!--          <span class="activate-dark"> > </span>-->
+<!--          <li><a href="#" class="active">{{routeIsActive()}}</a></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+
+    </div>
+
+<!--    &lt;!&ndash; Insights &ndash;&gt;-->
+<!--    <ul class="insights">-->
+<!--      <li>-->
+<!--        <i class='bx bx-calendar-check'></i>-->
+<!--        <span class="info">-->
+<!--                        <h3 id="legacyCalls"></h3>-->
+<!--                        <p>Legacy Calls</p>-->
+<!--                    </span>-->
+<!--      </li>-->
+<!--      <li><i class='bx bxs-user-detail'></i>-->
+<!--        <span class="info">-->
+<!--                        <h3 id="queriesSolved"></h3>-->
+<!--                        <p>Queries Resolved</p>-->
+<!--                    </span>-->
+<!--      </li>-->
+<!--      <li><i class='bx bx-line-chart'></i>-->
+<!--        <span class="info">-->
+<!--                        <h3 id="reportingProgress"></h3>-->
+<!--                        <p>Reporting Files</p>-->
+<!--                    </span>-->
+<!--      </li>-->
+<!--      <li><i class='bx bxs-user-voice'></i>-->
+<!--        <span class="info">-->
+<!--                        <h3 id="totalQueries"></h3>-->
+<!--                        <p>Total Queries</p>-->
+<!--                    </span>-->
+<!--      </li>-->
+<!--    </ul>-->
+    <router-outlet></router-outlet>
+  </main>
+
+</div>
+</section>

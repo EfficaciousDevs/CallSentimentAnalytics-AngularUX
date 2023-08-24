@@ -1,0 +1,7 @@
+
+<div class="audioContainer">
+<audio controls autoplay>
+  <source [src]="base64Data" type="audio/mpeg">
+</audio><br>
+  <button mat-raised-button matTooltip="Click to close this playback window" matTooltipPosition="below" matTooltipClass="my-custom-tooltip" color="accent" (click)="dialogClose()"><mat-icon>event_busy</mat-icon>Close</button>
+</div>

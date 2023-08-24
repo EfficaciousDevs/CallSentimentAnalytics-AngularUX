@@ -1,0 +1,34 @@
+<div class="remarkDialog">
+  <h2>Provide Training Details</h2><br>
+  <mat-form-field appearance="outline" style="width: 100%" >
+    <mat-label>Training Course Name</mat-label>
+    <input matInput [(ngModel)]="trainingProgram" [ngModelOptions]="{standalone: true}" >
+  </mat-form-field>&nbsp;<br>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Choose a start date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="trainingStartDate" [ngModelOptions]="{standalone: true}">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>&nbsp;&nbsp;
+
+  <mat-form-field appearance="outline">
+    <mat-label>Choose an end date</mat-label>
+    <input matInput [matDatepicker]="endDate" [(ngModel)]="trainingEndDate" [ngModelOptions]="{standalone: true}">
+    <mat-datepicker-toggle matIconSuffix [for]="endDate"></mat-datepicker-toggle>
+    <mat-datepicker #endDate></mat-datepicker>
+  </mat-form-field><br>
+
+  <mat-form-field appearance="outline" style="width: 45%" >
+    <mat-label>Training Days</mat-label>
+    <input matInput [(ngModel)]="trainingDays" [ngModelOptions]="{standalone: true}" >
+  </mat-form-field>&nbsp;&nbsp;
+  <mat-form-field appearance="outline" style="width: 45%" >
+    <mat-label>Training Flag</mat-label>
+    <input matInput [(ngModel)]="trainingFlag" [ngModelOptions]="{standalone: true}" >
+  </mat-form-field>&nbsp;<br>
+
+  <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>&nbsp;&nbsp;
+  <button mat-raised-button color="warn" >Reset</button>
+
+</div>

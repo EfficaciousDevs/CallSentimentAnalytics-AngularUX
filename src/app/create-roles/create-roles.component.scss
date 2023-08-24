@@ -1,0 +1,111 @@
+.roleCard{
+  background: lavender;
+  border: 2px solid black;
+}
+
+h2{
+  //font-size: 72px;
+  //background: -webkit-linear-gradient(#20BF55,#01BAEF);
+  //-webkit-background-clip: text;
+  //-webkit-text-fill-color: transparent;
+  //margin: auto;
+}
+
+mat-header-cell,mat-cell{
+  background: lavender;
+  //color: var(--dark);
+}
+
+mat-paginator,mat-table{
+  background: lavender;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+}
+
+.avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  //box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: lightseagreen;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+//.content-table tbody tr:nth-of-type(even) {
+//  background-color: #f3f3f3;
+//}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid lightseagreen;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: lightseagreen;
+}
+
+
+
+.content-table-Delete {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  //box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table-Delete thead tr {
+  background-color: lightcoral;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table-Delete th,
+.content-table-Delete td {
+  padding: 12px 15px;
+}
+
+.content-table-Delete tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+//.content-table tbody tr:nth-of-type(even) {
+//  background-color: #f3f3f3;
+//}
+
+.content-table-Delete tbody tr:last-of-type {
+  border-bottom: 2px solid lightcoral;
+}
+
+.content-table-Delete tbody tr.active-row {
+  font-weight: bold;
+  color: lightcoral;
+}
+
+

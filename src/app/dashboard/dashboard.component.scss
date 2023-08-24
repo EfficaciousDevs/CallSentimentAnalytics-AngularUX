@@ -1,0 +1,18 @@
+customMenu{
+  background-color: var(--dark);
+}
+
+
+.loggedUser{
+  background: -webkit-linear-gradient(#30CFD0,#330867);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bolder;
+}
+
+.loggedRole{
+  background: -webkit-linear-gradient(#20BF55,#01BAEF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  //font-weight: bold;
+}

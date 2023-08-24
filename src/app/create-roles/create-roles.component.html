@@ -1,0 +1,291 @@
+
+<div class="bottom-data">
+  <div class="orders" >
+
+<mat-chip-listbox aria-label="UMI selection" style="padding-left: 20%">
+  <mat-chip-option matTooltip="Click to select {{chip.label}} window" matTooltipPosition="above" *ngFor="let chip of chipList;let idx = index" (click)="chipSelected(chip)" [selected]="chip.value === 2" [color]="colors[idx].color">{{chip.label}} </mat-chip-option>
+</mat-chip-listbox></div></div>
+
+<div class="bottom-data" *ngIf="createRoleActive">
+    <div class="orders" >
+        <div class="header">
+            <h2>CREATE ROLE BASED USER</h2>
+          <button mat-fab color="accent" matTooltip="Role Details Panel" matTooltipPosition="right" aria-label="Example icon button with a filter list icon">
+            <mat-icon>group_add</mat-icon>
+          </button>
+        </div>
+
+        <mat-card class="roleCard">
+          <mat-card-content>
+
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>FirstName</mat-label>
+              <input matInput placeholder="Ex. Albert" [(ngModel)]="userFirstName" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>LastName</mat-label>
+              <input matInput placeholder="Ex. Stuart" [(ngModel)]="userLastName" [ngModelOptions]="{standalone: true}">
+            </mat-form-field><br>
+
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>Username</mat-label>
+              <input matInput [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>Password</mat-label>
+              <input matInput [(ngModel)]="userPassword" [ngModelOptions]="{standalone: true}">
+            </mat-form-field><br>
+
+<!--            <mat-form-field appearance="outline" style="width: 45%">-->
+<!--              <mat-label>Role Type</mat-label>-->
+<!--              <input matInput placeholder="Ex. Admin" [(ngModel)]="roleName" [ngModelOptions]="{standalone: true}" (ngModelChange)="updateDropdownState()">-->
+<!--            </mat-form-field>-->
+            &nbsp;&nbsp;
+
+            <mat-form-field appearance="outline" style="width: 45%;float: left">
+              <mat-label>Role Types</mat-label>
+              <mat-select [(ngModel)]="roleName" name="manager" (ngModelChange)="updateDropdownState()">
+                <mat-option *ngFor="let role of roles" [value]="role">
+                  {{role}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field appearance="outline" style="width: 45%">
+              <mat-label>Manager List</mat-label>
+              <mat-select [(ngModel)]="selectedValue" name="manager" [disabled]="dropdownEnable">
+                <mat-option *ngFor="let manager of uniqueManagers"  [value]="manager">
+                  {{manager.managerName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+<!--            <p> Selected Manager: {{selectedValue | json}} </p>-->
+
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Role Description</mat-label>
+              <input matInput [(ngModel)]="roleDescription" [ngModelOptions]="{standalone: true}">
+            </mat-form-field><br>
+
+            <div style="text-align: center">
+            <button mat-raised-button color="primary" (click)="addRoleService()">Add Role</button>&nbsp;&nbsp;
+            <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+            </div>
+          </mat-card-content>
+        </mat-card><br><br>
+
+
+<!--      <div class="header">-->
+<!--        <h2>EXISTING USERS TABLE</h2>-->
+<!--      </div>-->
+<!--      <table *ngIf="usersDb" class="content-table">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--          <th>USERNAME</th>-->
+<!--          <th>FIRSTNAME</th>-->
+<!--          <th>LASTNAME</th>-->
+<!--          <th>ROLE TYPE</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr *ngFor="let user of usersDb">-->
+<!--          <td>-->
+<!--&lt;!&ndash;          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">&ndash;&gt;-->
+<!--            <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">-->
+<!--            {{ user.userName }}</td>-->
+<!--          <td>{{ user.userFirstName }}</td>-->
+<!--          <td>{{ user.userLastName }}</td>-->
+<!--&lt;!&ndash;          <td>{{ user.userPassword }}</td>&ndash;&gt;-->
+<!--          <td>{{ user?.role[0].roleName }}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+
+
+<!--      <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>-->
+
+<!--        &lt;!&ndash; ID Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="userName">-->
+<!--          <mat-header-cell *matHeaderCellDef mat-sort-header> UserName </mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let row"> {{row.userName}} </mat-cell>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; Progress Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="userFirstName">-->
+<!--          <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let row"> {{row.userFirstName}} </mat-cell>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; Name Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="userLastName">-->
+<!--          <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let row"> {{row.userLastName}} </mat-cell>-->
+<!--        </ng-container>-->
+
+<!--        &lt;!&ndash; Color Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="roleType">-->
+<!--          <mat-header-cell *matHeaderCellDef > Role Type </mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let row"> {{row?.role[0].roleName}} </mat-cell>-->
+<!--        </ng-container>-->
+
+
+
+<!--&lt;!&ndash;        <ng-container matColumnDef="download">&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-header-cell *matHeaderCellDef>Operation</mat-header-cell>&ndash;&gt;-->
+<!--&lt;!&ndash;          <mat-cell *matCellDef="let element">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button mat-mini-fab color="primary"&ndash;&gt;-->
+<!--&lt;!&ndash;                    matTooltip="Click to download"&ndash;&gt;-->
+<!--&lt;!&ndash;                    matTooltipPosition="right"&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    (click)="isFilterClicked()">&ndash;&gt;-->
+<!--&lt;!&ndash;              <mat-icon> archive </mat-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;            </button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </mat-cell>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ng-container>&ndash;&gt;-->
+
+
+<!--        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
+<!--        <mat-row *matRowDef="let row; columns: displayedColumns;">-->
+<!--        </mat-row>-->
+<!--      </mat-table>-->
+
+<!--      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"-->
+<!--                     showFirstLastButtons-->
+<!--                     aria-label="Select page of user Roles">-->
+
+<!--      </mat-paginator>-->
+    </div></div>
+<br>
+
+<div class="bottom-data" *ngIf="viewRole">
+  <div class="orders" >
+    <div class="header">
+    <h2>EXISTING USER-ROLES</h2>
+      <button mat-fab color="accent" matTooltip="Refresh Table" matTooltipPosition="right" (click)="fetchRoleHelperService()"><mat-icon>history</mat-icon></button>
+  </div>
+
+    <table *ngIf="usersDb" class="content-table">
+      <thead>
+      <tr>
+        <th>USERNAME</th>
+        <th>FIRSTNAME</th>
+        <th>LASTNAME</th>
+        <th>ROLE TYPE</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of usersDb">
+        <td>
+          <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
+          <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+          {{ user.userName }}</td>
+        <td>{{ user.userFirstName }}</td>
+        <td>{{ user.userLastName }}</td>
+        <!--          <td>{{ user.userPassword }}</td>-->
+        <td>{{ user?.role[0].roleName }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div></div>
+<br>
+
+<div class="bottom-data" *ngIf="searchRoles">
+  <div class="orders" >
+    <div class="header">
+      <h2>SEARCH FROM EXISTING USERS</h2>
+      <button mat-fab color="accent"
+              matTooltip="Search Results"
+              matTooltipPosition="left"
+              style="margin-bottom: 2%"
+              (click)="isFilterClicked()">
+        <mat-icon>filter_alt</mat-icon>
+      </button>
+      <mat-form-field *ngIf="$filterClicked" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Husein Vohra">
+      </mat-form-field>
+    </div>
+
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="userName">
+                <img class="avatar" src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> UserName </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.userName}} </mat-cell>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="userFirstName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.userFirstName}} </mat-cell>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="userLastName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.userLastName}} </mat-cell>
+              </ng-container>
+
+              <!-- Color Column -->
+              <ng-container matColumnDef="roleType">
+                <mat-header-cell *matHeaderCellDef > Role Type </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row?.role[0]?.roleName}} </mat-cell>
+              </ng-container>
+
+<!--      <ng-container matColumnDef="action">-->
+<!--        <mat-header-cell *matHeaderCellDef > Action </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row">-->
+<!--          <button mat-icon-button color="primary" matTooltip="Edit Record" matTooltipPosition="right" ><mat-icon>drive_file_rename_outline</mat-icon></button>-->
+<!--        </mat-cell>-->
+<!--      </ng-container>-->
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;">
+              </mat-row>
+            </mat-table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                           showFirstLastButtons
+                           aria-label="Select page of user Roles">
+            </mat-paginator>
+  </div></div>
+<br>
+
+<div class="bottom-data" *ngIf="modifyRoles">
+  <div class="orders" >
+    <div class="header">
+      <h2 >MODIFY EXISTING RECORDS</h2>
+      <button mat-fab color="accent" matTooltip="Refresh Table" matTooltipPosition="right" (click)="fetchRoleHelperService()"><mat-icon>event_repeat</mat-icon></button>
+    </div>
+<!--    <button mat-fab color="accent" matTooltip="Refresh Table" matTooltipPosition="right" (click)="fetchRoleHelperService()"><mat-icon>event_repeat</mat-icon></button><br>-->
+    <table *ngIf="usersDb" class="content-table-Delete">
+      <thead>
+      <tr>
+        <th>USERNAME</th>
+        <th>FIRSTNAME</th>
+        <th>LASTNAME</th>
+        <th>ROLE TYPE</th>
+        <th>ACTION</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of usersDb;let idx = index">
+        <td>
+          <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
+          <img src="https://cliply.co/wp-content/uploads/2020/08/442008110_GLANCING_AVATAR_3D_400px.gif">
+          {{ user.userName }}</td>
+        <td>{{ user.userFirstName }}</td>
+        <td>{{ user.userLastName }}</td>
+        <!--          <td>{{ user.userPassword }}</td>-->
+        <td>{{ user?.role[0].roleName }}</td>
+        <td>
+          <button mat-mini-fab color="primary" matTooltip="Edit Record" matTooltipPosition="left" (click)="updateRecord(idx)"><mat-icon>drive_file_rename_outline</mat-icon></button>&nbsp;&nbsp;
+          <button mat-mini-fab color="warn" matTooltip="Delete Record" matTooltipPosition="right" (click)="deleteRecord(idx)"><mat-icon>delete_forever</mat-icon></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div></div>
+<br>
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
