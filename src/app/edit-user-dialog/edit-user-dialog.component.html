@@ -1,0 +1,45 @@
+
+<div class="containerDialog">
+  <h1>Edit User Details</h1><br>
+
+  <mat-form-field appearance="outline" style="width: 45%">
+    <mat-label>FirstName</mat-label>
+    <input matInput placeholder="Ex. Albert" [(ngModel)]="userFirstName" [ngModelOptions]="{standalone: true}">
+  </mat-form-field>&nbsp;&nbsp;
+
+  <mat-form-field appearance="outline" style="width: 45%">
+    <mat-label>LastName</mat-label>
+    <input matInput placeholder="Ex. Stuart" [(ngModel)]="userLastName" [ngModelOptions]="{standalone: true}">
+  </mat-form-field><br>
+
+  <mat-form-field appearance="outline" style="width: 45%" >
+    <mat-label>Username</mat-label>
+    <input matInput [(ngModel)]="userName" [ngModelOptions]="{standalone: true}" [disabled]="true">
+  </mat-form-field>&nbsp;&nbsp;
+
+  <mat-form-field appearance="outline" style="width: 45%">
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="userPassword" [ngModelOptions]="{standalone: true}">
+  </mat-form-field>&nbsp;&nbsp;
+
+  <mat-form-field appearance="outline" style="width: 45%;float: left">
+    <mat-label>Role Types</mat-label>
+    <mat-select [(ngModel)]="roleName" name="manager" >
+      <mat-option *ngFor="let role of roles" [value]="role">
+        {{role}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>&nbsp;&nbsp;
+
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Role Description</mat-label>
+    <input matInput [(ngModel)]="roleDescription" [ngModelOptions]="{standalone: true}">
+  </mat-form-field><br>
+
+  <div style="text-align: center">
+    <button mat-raised-button color="primary" type="submit" (click)="updateHelper()">Submit</button>&nbsp;&nbsp;
+    <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+  </div>
+  <br><br>
+</div>
+
