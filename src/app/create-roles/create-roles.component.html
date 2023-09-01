@@ -1,4 +1,5 @@
 
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
 <div class="bottom-data">
   <div class="orders" >
 
@@ -18,22 +19,22 @@
         <mat-card class="roleCard">
           <mat-card-content>
 
-            <mat-form-field appearance="outline" style="width: 45%">
-              <mat-label>FirstName</mat-label>
-              <input matInput placeholder="Ex. Albert" [(ngModel)]="userFirstName" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>&nbsp;&nbsp;
-
-            <mat-form-field appearance="outline" style="width: 45%">
-              <mat-label>LastName</mat-label>
-              <input matInput placeholder="Ex. Stuart" [(ngModel)]="userLastName" [ngModelOptions]="{standalone: true}">
+            <mat-form-field appearance="outline" style="width: 50%">
+              <mat-label>Full Name</mat-label>
+              <input matInput placeholder="Ex. John Snow" [(ngModel)]="fullName" [ngModelOptions]="{standalone: true}">
             </mat-form-field><br>
 
-            <mat-form-field appearance="outline" style="width: 45%">
-              <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>&nbsp;&nbsp;
+            <mat-form-field appearance="outline" style="width: 50%">
+              <mat-label>UserName</mat-label>
+              <input matInput placeholder="Ex. dev1998" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
+            </mat-form-field><br>
 
-            <mat-form-field appearance="outline" style="width: 45%">
+<!--            <mat-form-field appearance="outline" style="width: 45%">-->
+<!--              <mat-label>Username</mat-label>-->
+<!--              <input matInput [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">-->
+<!--            </mat-form-field>&nbsp;&nbsp;-->
+
+            <mat-form-field appearance="outline" style="width: 50%">
               <mat-label>Password</mat-label>
               <input matInput [(ngModel)]="userPassword" [ngModelOptions]="{standalone: true}">
             </mat-form-field><br>
@@ -44,28 +45,33 @@
 <!--            </mat-form-field>-->
             &nbsp;&nbsp;
 
-            <mat-form-field appearance="outline" style="width: 45%;float: left">
-              <mat-label>Role Types</mat-label>
-              <mat-select [(ngModel)]="roleName" name="manager" (ngModelChange)="updateDropdownState()">
+            <mat-form-field appearance="outline" style="width: 50%;">
+              <mat-label>Role Type</mat-label>
+              <mat-select [(ngModel)]="roleType" name="manager" (ngModelChange)="updateDropdownState()">
                 <mat-option *ngFor="let role of roles" [value]="role">
                   {{role}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>&nbsp;&nbsp;
+            </mat-form-field><br>
 
-            <mat-form-field appearance="outline" style="width: 45%">
+            <mat-form-field appearance="outline" style="width: 50%">
               <mat-label>Manager List</mat-label>
               <mat-select [(ngModel)]="selectedValue" name="manager" [disabled]="dropdownEnable">
                 <mat-option *ngFor="let manager of uniqueManagers"  [value]="manager">
                   {{manager.managerName}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field><br>
 <!--            <p> Selected Manager: {{selectedValue | json}} </p>-->
 
-            <mat-form-field appearance="outline" style="width: 100%">
-              <mat-label>Role Description</mat-label>
-              <input matInput [(ngModel)]="roleDescription" [ngModelOptions]="{standalone: true}">
+            <mat-form-field *ngIf="activeManagerId" appearance="outline" style="width: 50%">
+              <mat-label>Manager ID</mat-label>
+              <input matInput [(ngModel)]="managerId" [ngModelOptions]="{standalone: true}">
+            </mat-form-field><br>
+
+            <mat-form-field *ngIf="activeAdminId" appearance="outline" style="width: 50%">
+              <mat-label>Admin ID</mat-label>
+              <input matInput [(ngModel)]="adminId" [ngModelOptions]="{standalone: true}">
             </mat-form-field><br>
 
             <div style="text-align: center">
@@ -169,8 +175,8 @@
       <thead>
       <tr>
         <th>USERNAME</th>
-        <th>FIRSTNAME</th>
-        <th>LASTNAME</th>
+        <th>FULL NAME</th>
+        <th>MANAGER NAME</th>
         <th>ROLE TYPE</th>
       </tr>
       </thead>
@@ -180,10 +186,11 @@
           <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
           <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
           {{ user.userName }}</td>
-        <td>{{ user.userFirstName }}</td>
-        <td>{{ user.userLastName }}</td>
-        <!--          <td>{{ user.userPassword }}</td>-->
-        <td>{{ user?.role[0].roleName }}</td>
+        <td *ngIf="user.adminName">{{ user.adminName }}</td>
+        <td *ngIf="user.managerName && !user.agentName">{{ user.managerName }}</td>
+        <td *ngIf="user.agentName">{{ user.agentName }}</td>
+        <td>{{user.managerName && user.agentName ? user.managerName : ' - '}}</td>
+        <td>{{ user.roleType }}</td>
       </tr>
       </tbody>
     </table>
@@ -217,21 +224,23 @@
               </ng-container>
 
               <!-- Progress Column -->
-              <ng-container matColumnDef="userFirstName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.userFirstName}} </mat-cell>
+              <ng-container matColumnDef="fullName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </mat-header-cell>
+                <mat-cell  *matCellDef="let row">
+                  {{row.managerName && !row.agentName? row.managerName : row.agentName}}
+                </mat-cell>
               </ng-container>
 
               <!-- Name Column -->
-              <ng-container matColumnDef="userLastName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.userLastName}} </mat-cell>
+              <ng-container matColumnDef="managerName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Manager Name </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.managerName && row.agentName ? row.managerName : '-'}} </mat-cell>
               </ng-container>
 
               <!-- Color Column -->
-              <ng-container matColumnDef="roleType">
-                <mat-header-cell *matHeaderCellDef > Role Type </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row?.role[0]?.roleName}} </mat-cell>
+              <ng-container matColumnDef="roleType" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Role Type </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.roleType}} </mat-cell>
               </ng-container>
 
 <!--      <ng-container matColumnDef="action">-->
@@ -263,8 +272,8 @@
       <thead>
       <tr>
         <th>USERNAME</th>
-        <th>FIRSTNAME</th>
-        <th>LASTNAME</th>
+        <th>FULL NAME</th>
+        <th>MANAGER NAME</th>
         <th>ROLE TYPE</th>
         <th>ACTION</th>
       </tr>
@@ -273,14 +282,15 @@
       <tr *ngFor="let user of usersDb;let idx = index">
         <td>
           <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-          <img src="https://cliply.co/wp-content/uploads/2020/08/442008110_GLANCING_AVATAR_3D_400px.gif">
+          <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
           {{ user.userName }}</td>
-        <td>{{ user.userFirstName }}</td>
-        <td>{{ user.userLastName }}</td>
-        <!--          <td>{{ user.userPassword }}</td>-->
-        <td>{{ user?.role[0].roleName }}</td>
+        <td *ngIf="user.adminName">{{ user.adminName }}</td>
+        <td *ngIf="user.managerName && !user.agentName">{{ user.managerName }}</td>
+        <td *ngIf="user.agentName">{{ user.agentName }}</td>
+        <td>{{user.managerName && user.agentName ? user.managerName : 'N/A'}}</td>
+        <td>{{ user.roleType }}</td>
         <td>
-          <button mat-mini-fab color="primary" matTooltip="Edit Record" matTooltipPosition="left" (click)="updateRecord(idx)"><mat-icon>drive_file_rename_outline</mat-icon></button>&nbsp;&nbsp;
+          <button mat-mini-fab color="primary" matTooltip="Edit Record" matTooltipPosition="left" (click)="updateRecord(user)"><mat-icon>drive_file_rename_outline</mat-icon></button>&nbsp;&nbsp;
           <button mat-mini-fab color="warn" matTooltip="Delete Record" matTooltipPosition="right" (click)="deleteRecord(idx)"><mat-icon>delete_forever</mat-icon></button>
         </td>
       </tr>
@@ -288,4 +298,3 @@
     </table>
   </div></div>
 <br>
-<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>

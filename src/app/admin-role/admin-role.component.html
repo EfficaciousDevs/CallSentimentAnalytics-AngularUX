@@ -1,31 +1,34 @@
+
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
+
 <!-- Insights -->
-<ul class="insights">
-  <li>
-    <i class='bx bx-calendar-check'></i>
-    <span class="info">
-                        <h3 id="legacyCalls"></h3>
-                        <p>Legacy Calls</p>
-                    </span>
-  </li>
-  <li><i class='bx bxs-user-detail'></i>
-    <span class="info">
-                        <h3 id="queriesSolved"></h3>
-                        <p>Queries Resolved</p>
-                    </span>
-  </li>
-  <li><i class='bx bx-line-chart'></i>
-    <span class="info">
-                        <h3 id="reportingProgress"></h3>
-                        <p>Reporting Files</p>
-                    </span>
-  </li>
-  <li><i class='bx bxs-user-voice'></i>
-    <span class="info">
-                        <h3 id="totalQueries"></h3>
-                        <p>Total Queries</p>
-                    </span>
-  </li>
-</ul>
+<!--<ul class="insights">-->
+<!--  <li>-->
+<!--    <i class='bx bx-calendar-check'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="legacyCalls"></h3>-->
+<!--                        <p>Legacy Calls</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bxs-user-detail'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="queriesSolved"></h3>-->
+<!--                        <p>Queries Resolved</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bx-line-chart'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="reportingProgress"></h3>-->
+<!--                        <p>Reporting Files</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bxs-user-voice'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="totalQueries"></h3>-->
+<!--                        <p>Total Queries</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--</ul>-->
 
 
 <div class="bottom-data">
@@ -41,82 +44,77 @@
       <div class="orders">
         <div class="header">
           <i class='bx bx-receipt' style="color: #01BAEF"></i>
-          <h3>Recent Details</h3>
-          <i class='bx bx-filter'></i>
-          <i class='bx bx-search'></i>
-        </div>
+          <h3>Learning & Development Program Details</h3>
+<!--          <i class='bx bx-filter'></i>-->
+<!--          <i class='bx bx-search'></i>-->
+        </div><br>
+
+        <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
+                matTooltip="Filter Results"
+                matTooltipPosition="right" (click)="isFilterClicked()">
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+        <mat-form-field *ngIf="$filterClicked" appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Credit Card">
+        </mat-form-field>
         <table>
           <thead>
           <tr>
-            <th>Support Agent</th>
-            <th>Assistance Date</th>
-            <th>Resolution Status</th>
+            <th>AGENT NAME</th>
+            <th>MANAGER NAME</th>
+            <th>TRAINING START DATE</th>
+            <th>TRAINING END DATE</th>
+            <th>LEARNING PROGRAM</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>
+          <tr *ngFor="let user of filteredLearnerData">
+            <td [@slide]>
               <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
-<!--              <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-              <p>Gaurav Pandey</p>
+              {{ user.agentName }}
             </td>
-            <td>02-08-2023</td>
-            <td><span class="status completed">Completed</span></td>
-          </tr>
-          <tr>
-            <td>
-              <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
-<!--              <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-              <p>Ramesh</p>
-            </td>
-            <td>24-08-2023</td>
-            <td><span class="status pending">Pending</span></td>
-          </tr>
-          <tr>
-            <td>
-              <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
-<!--              <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-              <p>Mahesh</p>
-            </td>
-            <td>03-08-2023</td>
-            <td><span class="status process">Processing</span></td>
+            <td [@slide]>{{user.managerName}}</td>
+            <td [@slide]>{{user.trainingStartDate? (user.trainingStartDate | date): 'Not Started'}}</td>
+            <td [@slide]>{{ user.trainingEndDate? (user.trainingEndDate | date): 'Not Started' }}</td>
+            <td [@slide] style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.trainingCourse? user.trainingCourse : 'Training Program' }}" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" ><mat-icon>extension</mat-icon></button></td>
           </tr>
           </tbody>
         </table>
       </div>
 
       <!-- Reminders -->
-      <div class="reminders">
-        <div class="header">
-          <i class='bx bx-alarm-exclamation' style="color: crimson"></i>
-          <h3>Alerts</h3>
-          <i class='bx bx-filter'></i>
-          <i class='bx bx-plus'></i>
-        </div>
-        <ul class="task-list">
-          <li class="completed">
-            <div class="task-title">
-              <i class='bx bx-check-circle'></i>
-              <p>Sundar</p>
-            </div>
-            <i class='bx bx-dots-vertical-rounded'></i>
-          </li>
-          <li class="completed">
-            <div class="task-title">
-              <i class='bx bx-check-circle'></i>
-              <p>Sakthivel</p>
-            </div>
-            <i class='bx bx-dots-vertical-rounded'></i>
-          </li>
-          <li class="not-completed">
-            <div class="task-title">
-              <i class='bx bx-x-circle'></i>
-              <p>Shouvik</p>
-            </div>
-            <i class='bx bx-dots-vertical-rounded'></i>
-          </li>
-        </ul>
-      </div>
+<!--      <div class="reminders">-->
+<!--        <div class="header">-->
+<!--          <i class='bx bx-alarm-exclamation' style="color: crimson"></i>-->
+<!--          <h3>Alerts</h3>-->
+<!--          <i class='bx bx-filter'></i>-->
+<!--          <i class='bx bx-plus'></i>-->
+<!--        </div>-->
+<!--        <ul class="task-list">-->
+<!--          <li class="completed">-->
+<!--            <div class="task-title">-->
+<!--              <i class='bx bx-check-circle'></i>-->
+<!--              <p>Sundar</p>-->
+<!--            </div>-->
+<!--            <i class='bx bx-dots-vertical-rounded'></i>-->
+<!--          </li>-->
+<!--          <li class="completed">-->
+<!--            <div class="task-title">-->
+<!--              <i class='bx bx-check-circle'></i>-->
+<!--              <p>Sakthivel</p>-->
+<!--            </div>-->
+<!--            <i class='bx bx-dots-vertical-rounded'></i>-->
+<!--          </li>-->
+<!--          <li class="not-completed">-->
+<!--            <div class="task-title">-->
+<!--              <i class='bx bx-x-circle'></i>-->
+<!--              <p>Shouvik</p>-->
+<!--            </div>-->
+<!--            <i class='bx bx-dots-vertical-rounded'></i>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
 
       <!-- End of Reminders-->
 

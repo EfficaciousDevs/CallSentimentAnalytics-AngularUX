@@ -19,10 +19,10 @@ const routes: Routes = [
     path: 'login', component: LoginComponent
   },
   {
-    path: 'dashboard', component: DashboardComponent,
+    path: 'dashboard', component: DashboardComponent,canActivate: [AuthGuard],data:{roles:['Admin','Manager','User']},
     children: [
       {
-        path: 'callSentimentsAnalytics', component: CallAnalyticsComponent
+        path: 'callSentimentsAnalytics', component: CallAnalyticsComponent,canActivate: [AuthGuard],data:{roles:['Admin','Manager','User']},
       },
       {
         path: 'adminAccess', component: AdminRoleComponent, canActivate: [AuthGuard],data:{roles:['Admin']}
@@ -40,7 +40,7 @@ const routes: Routes = [
         path: 'rulesBasedAction', component: RulesBasedActionComponent, canActivate: [AuthGuard],data:{roles:['Manager']}
       },
       {
-        path: 'reportingDashboard', component: ReportingDashboardComponent
+        path: 'reportingDashboard', component: ReportingDashboardComponent,canActivate: [AuthGuard],data:{roles:['Admin','Manager','User']}
       },
       {
         path: 'addNewRole', component: CreateRolesComponent,canActivate: [AuthGuard],data:{roles:['Admin']}

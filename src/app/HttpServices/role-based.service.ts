@@ -11,10 +11,12 @@ export class RoleBasedService {
   authenticationAPI: string = 'http://localhost:8089/authenticate';
   userAPI: string = 'http://localhost:8089/forUser';
   adminAPI: string = 'http://localhost:8089/forAdmin';
-  createRolesAPI: string = 'http://localhost:8089/registerNewUser';
-  getUsersAPI: string = 'http://localhost:8089/getUsers';
-  deleteUserAPI: string = 'http://localhost:8089/deleteUser';
+  createRolesAPI: string = 'http://localhost:8089/register-user';
+  // getUsersAPI: string = 'http://localhost:8089/getUsers';
+  getMainUsers: string = 'http://localhost:8089/get-users';
+  deleteUserAPI: string = 'http://localhost:8089/delete-user';
   updateUserAPI: string = 'http://localhost:8089/updateUser';
+  updateUserDetailsAPI : string = 'http://localhost:8089/update-user';
 
   requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
   constructor(
@@ -28,10 +30,11 @@ export class RoleBasedService {
     });
   }
 
-  public deleteRecord(recordUserName: string) {
-
+  public deleteRecord(userId: number) {
+    const deleteId = new FormData();
+    deleteId.append("userId",userId.toString())
     // @ts-ignore
-    return this.httpclient.post(this.deleteUserAPI, recordUserName,{
+    return this.httpclient.post(this.deleteUserAPI, deleteId,{
       headers: this.requestHeader, responseType: 'text'
     },);
   }
@@ -70,13 +73,14 @@ export class RoleBasedService {
 
   public createRoles(roleDetails: any) {
     return this.httpclient.post(this.createRolesAPI, roleDetails, {
-      headers: this.requestHeader,
+      headers: this.requestHeader,responseType: 'text'
     });
   }
 
   public getRolesList(){
-    return this.httpclient.get(this.getUsersAPI);
+    return this.httpclient.get(this.getMainUsers);
   }
+
 
   public roleMatch(allowedRoles : any): boolean {
     let isMatch = false;
@@ -85,7 +89,7 @@ export class RoleBasedService {
     if (userRoles != null && userRoles) {
       for (let i = 0; i < userRoles.length; i++) {
         for (let j = 0; j < allowedRoles.length; j++) {
-          if (userRoles[i].roleName === allowedRoles[j]) {
+          if (userRoles == allowedRoles[j]) {
             isMatch = true;
             return isMatch;
           } else {
@@ -107,5 +111,15 @@ export class RoleBasedService {
     });
   }
 
+  public getUsersDB(){
+    return this.httpclient.get('http://localhost:8089/get-users');
+  }
 
+  public updateOperation(userObject: any){
+
+
+    return this.httpclient.post(this.updateUserDetailsAPI,userObject,{
+      headers: this.requestHeader,responseType: 'text'
+    })
+  }
 }

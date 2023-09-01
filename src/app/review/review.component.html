@@ -2,43 +2,152 @@
   <div class="orders" >
     <div class="header">
       <h2>REVIEW PAGE</h2>
-      <button style="float: right" mat-fab color="accent" matTooltip="Agents History Table" matTooltipPosition="right" (click)="getReviewDetails()"><mat-icon>accessibility_new</mat-icon></button>
+      <button style="float: right" mat-fab color="accent"
+              matTooltip="Review Page Details"
+              matTooltipPosition="right">
+        <mat-icon>accessibility_new</mat-icon>
+      </button>
+
     </div>
+    <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
+            matTooltip="Filter Results"
+            matTooltipPosition="right" (click)="isFilterClicked()">
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+    <mat-form-field *ngIf="$filterClicked" >
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Credit Card">
+    </mat-form-field>&nbsp;&nbsp;
+
+    <mat-form-field *ngIf="$filterClicked" >
+      <mat-label>Date Range Filter</mat-label>
+      <mat-date-range-input  [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="startDate" placeholder="Start date">
+        <input matEndDate [(ngModel)]="endDate" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+      <mat-date-range-picker #picker>
+        <mat-date-range-picker-actions>
+          <button mat-button matDateRangePickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDateRangePickerApply (click)="filterData()">Apply</button>
+        </mat-date-range-picker-actions>
+      </mat-date-range-picker>
+
+    </mat-form-field>
 
     <table *ngIf="reviewData" class="content-table">
       <thead>
       <tr>
-
         <th></th>
         <th style="text-align: center">AGENT_ID</th>
-        <th>CALL CATEGORY</th>
-        <th>CUSTOMER QUERY</th>
+        <th>AGENT_NAME</th>
+        <th>CALL_CATEGORY</th>
+        <th>CUSTOMER_QUERY</th>
         <th>SUMMARY</th>
-        <th>CUSTOMER_SUPPORT_SENTIMENT</th>
+        <th>AUDIO_PLAYBACK</th>
+        <th>KEY SCORE</th>
+        <th>AGENT_SENTIMENT</th>
         <th>CALL_HOLD_PERMISSION</th>
         <th>TRANSFER_PERMISSION</th>
         <th >DATE & TIMESTAMP</th>
-        <th>AUDIO_PLAYBACK</th>
-
-        <th style="text-align: center">REMARKS</th>
+        <th style="text-align: center">ACTION</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of reviewData;let idx = index">
+      <tr *ngFor="let user of filteredReviewData" [ngStyle]="{'background': user.keyScore < 60 ? '#FECDD3' : ''}">
         <td></td>
         <td >{{ user.agentId }}</td>
-        <td>{{ user.callCategory }}</td>
-        <td>{{ user.customerProblem }}</td>
+        <td>{{user.agentName}}</td>
+        <td><strong>{{ user.callCategory }}</strong></td>
+        <td><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
         <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
+        <td [ngStyle]="{'color': user.keyScore < 60 ? 'crimson' : '','font-weight': user.keyScore < 60 ? 'bold': ''}">{{user.keyScore}}</td>
         <td>{{ user.custSuppSentiment }}</td>
         <td>{{ user.callHoldPermission }}</td>
         <td>{{ user.transferPermission }}</td>
-        <td>{{ user.dateTime | date:'medium' }}</td>
-        <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
-        <td><button mat-mini-fab color="warn" matTooltip="{{ user.remark ? user.remark +' Click to add remarks': 'N/A. Click to add remarks'}}" matTooltipPosition="above" (click)="editRemark(idx)"><mat-icon>assignment</mat-icon></button></td>
+        <td>{{ user.dateTime | date : 'medium' }}</td>
+        <td><button mat-mini-fab matTooltip="Take required Action." matTooltipPosition="above" (click)="actionHelper(user)"><mat-icon>assignment</mat-icon></button></td>
       </tr>
+
       </tbody>
     </table>
+<!--    <mat-paginator [length]="reviewData.length" [pageSize]="itemsPerPage" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPageChange($event)"></mat-paginator>-->
+<!--    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>-->
+
+<!--      &lt;!&ndash; ID Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="agentName">-->
+<!--        <mat-header-cell *matHeaderCellDef mat-sort-header> Agent Name </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.agentName}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      &lt;!&ndash; Progress Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="callCategory">-->
+<!--        <mat-header-cell *matHeaderCellDef mat-sort-header> Call Category </mat-header-cell>-->
+<!--        <mat-cell  *matCellDef="let row">-->
+<!--          {{row.callCategory}}-->
+<!--        </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      &lt;!&ndash; Name Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="customerQuery">-->
+<!--        <mat-header-cell *matHeaderCellDef> Customer Query </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.customerQuery}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      &lt;!&ndash; Color Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="summary" >-->
+<!--        <mat-header-cell *matHeaderCellDef > Summary </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.summary}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--            <ng-container matColumnDef="audioPlay">-->
+<!--              <mat-header-cell *matHeaderCellDef > Audio Playback </mat-header-cell>-->
+<!--              <mat-cell *matCellDef="let row">-->
+<!--                <button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(row.callId)"><mat-icon>settings_phone</mat-icon></button>-->
+<!--              </mat-cell>-->
+<!--            </ng-container>-->
+
+<!--      <ng-container matColumnDef="keyScore" >-->
+<!--        <mat-header-cell *matHeaderCellDef > Key Score </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.keyScore}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <ng-container matColumnDef="customerSupportSentiment" >-->
+<!--        <mat-header-cell *matHeaderCellDef > Customer Support Sentiment </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.customerSupportSentiment}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <ng-container matColumnDef="callHoldPermission" >-->
+<!--        <mat-header-cell *matHeaderCellDef > callHoldPermission </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.callHoldPermission}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <ng-container matColumnDef="callTransferPermission" >-->
+<!--        <mat-header-cell *matHeaderCellDef > callTransferPermission </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.callTransferPermission}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <ng-container matColumnDef="dateTime" >-->
+<!--        <mat-header-cell *matHeaderCellDef > Timestamp </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.dateTime}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <ng-container matColumnDef="action" >-->
+<!--        <mat-header-cell *matHeaderCellDef > action </mat-header-cell>-->
+<!--        <mat-cell *matCellDef="let row"> {{row.callHoldPermission}} </mat-cell>-->
+<!--      </ng-container>-->
+
+<!--      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
+<!--      <mat-row *matRowDef="let row; columns: displayedColumns;">-->
+<!--      </mat-row>-->
+<!--    </mat-table>-->
+
+<!--    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"-->
+<!--                   showFirstLastButtons-->
+<!--                   aria-label="Select page of user Roles">-->
+<!--    </mat-paginator>-->
   </div></div>
 <br>
 <ngx-spinner size="medium" type="ball-circus"></ngx-spinner>

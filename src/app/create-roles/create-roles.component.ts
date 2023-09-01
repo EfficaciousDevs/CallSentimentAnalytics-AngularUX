@@ -26,6 +26,8 @@ export class CreateRolesComponent implements OnInit{
     { label: 'Search/Filter Users', value: 3 },
     { label: 'Modify Users', value: 4 },
   ];
+
+
   createRoleActive: boolean = false;
   viewRole: boolean = true;
   searchRoles: boolean = false;
@@ -72,61 +74,112 @@ export class CreateRolesComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort | undefined;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   userName: string = '';
-  userFirstName: string = '';
-  userLastName: string = '';
+  // @ts-ignore
+  agentName: string = null;
+  // @ts-ignore
+  adminName: string = null;
+  // @ts-ignore
+  managerName: string = null;
   userPassword: string = '';
-  roleName: string = '';
-  roleDescription: string = '';
+  roleType: string = '';
+  adminId: number = 0;
+  managerId: number = 0;
+  fullName: string = '';
   managers: any = [];
   selectedValue: any;
   dropdownEnable: boolean = true;
+  activeManagerId: boolean = false;
+  activeAdminId: boolean = false;
   roles = ['Admin','Manager','User'];
   updateDropdownState(){
-    this.dropdownEnable = this.roleName.toLowerCase() !== 'user';
+    this.dropdownEnable = this.roleType.toLowerCase() !== 'user';
+    this.activeAdminId  = this.roleType.toLowerCase() === 'admin';
+    this.activeManagerId = this.roleType.toLowerCase() === 'manager';
   };
   addRoleService(){
-    const formData: UserRole = {
-      userName: this.userName,
-      userFirstName: this.userFirstName,
-      userLastName: this.userLastName,
-      userPassword: this.userPassword,
-      role: [{
-        roleName: this.roleName,
-        roleDescription: this.roleDescription
-      }]
-    };
 
-    // this.spinner.show();
-    this.roleBasedService.createRoles(formData).subscribe((response: any)=>{
-      console.log(response.userName);
-      console.log(response.userPassword);
-      this.snackBar.open('Role Added Successfully', 'close');
-    });
-
-    if(this.roleName.toLowerCase() === 'user' ) {
+    if(this.roleType.toLowerCase() === 'user' ) {
       const agentData = {
-        "agentName": this.userFirstName + " " + this.userLastName,
+        "agentName": this.fullName,
         "managerId": this.selectedValue.managerId,
-        "managerName": this.selectedValue.managerName
+        "managerName": this.selectedValue.managerName,
+        "password": this.userPassword,
+        "roleType": this.roleType,
+        "userName": this.userName
       };
-      this.roleBasedService.tagManagerAgents(agentData).subscribe((response)=>{
+      this.spinner.show();
+      this.roleBasedService.createRoles(agentData).subscribe((response: any)=>{
         console.log(response);
-      })
+
+        this.spinner.hide();
+        this.snackBar.open('User Role Added Successfully', 'close');
+      });
+        this.snackBar.dismiss();
+
     }
+    else if(this.roleType.toLowerCase() === 'manager') {
+      const managerData: any = {
+        "managerId": this.managerId,
+        "managerName": this.fullName,
+        "password": this.userPassword,
+        "roleType": this.roleType,
+        "userName": this.userName
+      };
+      this.spinner.show();
+      this.roleBasedService.createRoles(managerData).subscribe((response: any)=>{
+        console.log(response);
+        this.snackBar.open('Manager Role Added Successfully', 'close');
+        this.spinner.hide();
+      });
+        this.snackBar.dismiss();
+
+    }else{
+      const adminData = {
+        "adminId": this.adminId,
+        "adminName": this.fullName,
+        "userName": this.userName,
+        "roleType": this.roleType,
+        "password": this.userPassword
+
+      };
+      this.spinner.show();
+      this.roleBasedService.createRoles(adminData).subscribe((response: any)=>{
+        console.log(response);
+        this.snackBar.open('Admin Role Added Successfully', 'close');
+        this.spinner.hide();
+      });
+        this.snackBar.dismiss();
+    }
+    // this.spinner.show();
+    // this.roleBasedService.createRoles(formData).subscribe((response: any)=>{
+    //   console.log(response.userName);
+    //   console.log(response.userPassword);
+    //   this.snackBar.open('Role Added Successfully', 'close');
+    // });
+
+    // if(this.roleType.toLowerCase() === 'user' ) {
+    //   const agentData = {
+    //     "agentName": this.fullName,
+    //     "managerId": this.selectedValue.managerId,
+    //     "managerName": this.selectedValue.managerName
+    //   };
+    //   this.roleBasedService.tagManagerAgents(agentData).subscribe((response)=>{
+    //     console.log(response);
+    //   })
+    // }
     // this.spinner.hide();
-    setTimeout((): void => {
-      this.snackBar.dismiss();
-    }, 1000);
+
 
   }
 
   resetForm(){
-    this.userName = '';
-    this.userFirstName= '';
-    this.userLastName = '';
+    this.fullName = '';
+    this.userName= '';
     this.userPassword = '';
-    this.roleName = '';
-    this.roleDescription = '';
+    this.roleType = '';
+    this.activeManagerId = false;
+    this.activeAdminId = false;
+    this.selectedValue = null;
   }
   usersDb: any;
   fetchRoleHelperService(){
@@ -135,7 +188,7 @@ export class CreateRolesComponent implements OnInit{
     this.roleBasedService.getRolesList().subscribe((response):void=>{
       this.usersDb = response;
       // @ts-ignore
-      this.dataSource.data = response;
+      this.dataSource.data = response.filter((user)=> user.roleType !== 'Admin');
       // @ts-ignore
       this.dataSource.paginator = this.paginator;
       // @ts-ignore
@@ -151,7 +204,7 @@ export class CreateRolesComponent implements OnInit{
 
 
   dataSource = new MatTableDataSource<UserRole>();
-  displayedColumns: string[] = ['userName', 'userFirstName', 'userLastName','roleType'];
+  displayedColumns: string[] = ['userName', 'fullName', 'managerName','roleType'];
   applyFilter(filterValue: any) {
     filterValue = filterValue.target.value.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
@@ -161,14 +214,15 @@ export class CreateRolesComponent implements OnInit{
   deleteRecord(rowIndex: number){
     let deleted_record = this.usersDb[rowIndex];
     console.log(deleted_record.userName);
-    this.roleBasedService.deleteRecord(deleted_record.userName).subscribe(response=>{
+
+    this.roleBasedService.deleteRecord(deleted_record.userId).subscribe(response=>{
       console.log(response);
       this.fetchRoleHelperService();
     });
   }
   passedForm : any;
-  updateRecord(rowIndex: number){
-    this.passedForm = this.usersDb[rowIndex];
+  updateRecord(userEntity: any){
+    this.passedForm = userEntity;
     this.openEditDialog(this.passedForm);
 
   }
@@ -191,23 +245,20 @@ export class CreateRolesComponent implements OnInit{
   }
 
   fetchManagers(){
-    this.roleBasedService.getManagers().subscribe(response=> {
+    this.roleBasedService.getUsersDB().subscribe(response=> {
       this.managers = response;
-      // @ts-ignore
-      // this.managers  = Array.from(new Set(response.map((item) => item.managerName)));
       console.log(response);
 
       this.managers.forEach((agent: { managerId: number; managerName: any; }) => {
         const managerExists = this.uniqueManagers.some(manager => manager.managerId === agent.managerId);
 
-        if (!managerExists) {
+        if (!managerExists && agent.managerId !== 0 && agent.managerName.length > 0) {
           this.uniqueManagers.push({
             managerId: agent.managerId,
             managerName: agent.managerName
           });
         }
       });
-
       console.log(this.uniqueManagers);
 
     })
@@ -238,4 +289,9 @@ managerName: string
 export interface ChipColor {
   name: string;
   color: ThemePalette;
+}
+
+
+export interface MainDbUser{
+
 }

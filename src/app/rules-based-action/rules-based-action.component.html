@@ -1,34 +1,36 @@
-<div class="bottom-data">
-  <div class="orders" >
-    <!--    <div class="header">-->
-    <!--&lt;!&ndash;      <h2 >Rule Based Action</h2>&ndash;&gt;-->
-    <!--&lt;!&ndash;      <i class='bx bx-search'></i>&ndash;&gt;-->
-    <!--&lt;!&ndash;      <i class='bx bx-filter'></i>&ndash;&gt;-->
-    <!--      <button mat-fab color="accent" style="float: right"><mat-icon>style</mat-icon></button>-->
-    <!--    </div>-->
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
 
-    <ngx-charts-bar-vertical-2d
-      [view]="[800, 600]"
-      [scheme]="colorScheme"
-      [results]="agentDetails"
-      [gradient]="gradient"
-      [xAxis]="showXAxis"
-      [yAxis]="showYAxis"
-      [legend]="showLegend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [legendTitle]="legendTitle"
-      (select)="onSelect($event)"
-      (activate)="onActivate($event)"
-      (deactivate)="onDeactivate($event)">
-    </ngx-charts-bar-vertical-2d>
-<!--    <ul *ngFor="let learners of learnerList">-->
-<!--      <li>{{learners.agentId}}</li>-->
-<!--    </ul>-->
-  </div></div>
-<br>
+<!--<div class="bottom-data">-->
+<!--  <div class="orders" >-->
+<!--    &lt;!&ndash;    <div class="header">&ndash;&gt;-->
+<!--    &lt;!&ndash;&lt;!&ndash;      <h2 >Rule Based Action</h2>&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;&lt;!&ndash;      <i class='bx bx-search'></i>&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;&lt;!&ndash;      <i class='bx bx-filter'></i>&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;      <button mat-fab color="accent" style="float: right"><mat-icon>style</mat-icon></button>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--    <ngx-charts-bar-vertical-2d-->
+<!--      [view]="[800, 600]"-->
+<!--      [scheme]="colorScheme"-->
+<!--      [results]="agentDetails"-->
+<!--      [gradient]="gradient"-->
+<!--      [xAxis]="showXAxis"-->
+<!--      [yAxis]="showYAxis"-->
+<!--      [legend]="showLegend"-->
+<!--      [showXAxisLabel]="showXAxisLabel"-->
+<!--      [showYAxisLabel]="showYAxisLabel"-->
+<!--      [xAxisLabel]="xAxisLabel"-->
+<!--      [yAxisLabel]="yAxisLabel"-->
+<!--      [legendTitle]="legendTitle"-->
+<!--      (select)="onSelect($event)"-->
+<!--      (activate)="onActivate($event)"-->
+<!--      (deactivate)="onDeactivate($event)">-->
+<!--    </ngx-charts-bar-vertical-2d>-->
+<!--&lt;!&ndash;    <ul *ngFor="let learners of learnerList">&ndash;&gt;-->
+<!--&lt;!&ndash;      <li>{{learners.agentId}}</li>&ndash;&gt;-->
+<!--&lt;!&ndash;    </ul>&ndash;&gt;-->
+<!--  </div></div>-->
+<!--<br>-->
 
 
 
@@ -43,37 +45,36 @@
 <!--      </mat-chip-listbox></div>-->
 
 
-    <table *ngIf="agentList.length > 0" class="content-table">
-      <thead>
-      <tr>
-        <th></th>
-        <th style="text-align: center">AGENT_ID</th>
-        <th>AGENT_NAME</th>
-        <th>TRAINING_DETAILS</th>
-        <th>TRAINING_START_DATE</th>
-        <th>TRAINING_END_DATE</th>
-        <th>TRAINING_FLAG</th>
-        <th>TRAINING_DAYS</th>
-        <th>ACTION</th>
-      </tr>
-      </thead>
+<!--    <table *ngIf="agentList.length > 0" class="content-table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th></th>-->
+<!--        <th style="text-align: center">AGENT_ID</th>-->
+<!--        <th>AGENT_NAME</th>-->
+<!--        <th>TRAINING_DETAILS</th>-->
+<!--        <th>TRAINING_START_DATE</th>-->
+<!--        <th>TRAINING_END_DATE</th>-->
+<!--        <th>TRAINING_FLAG</th>-->
+<!--        <th>TRAINING_DAYS</th>-->
+<!--        <th>ACTION</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
 
-      <tbody>
-      <tr *ngFor="let user of agentList">
-        <td></td>
-        <td >{{ user.agentId }}</td>
-        <td>{{ user.agentName }}</td>
-        <td><button mat-mini-fab color="primary" matTooltip="{{ user.trainingCourse? user.trainingCourse : 'click to assign new training program' }}" matTooltipPosition="above" matTooltipClass="my-custom-tooltip" (click)="addTrainingProgram(user)"><mat-icon>extension</mat-icon></button></td>
-        <td>{{ user.trainingStartDate? (user.trainingStartDate | date:'medium'): 'N/A' }}</td>
-        <td>{{ user.trainingEndDate? (user.trainingEndDate | date:'medium'): 'N/A' }}</td>
-        <td>{{ user.trainingFlag }}</td>
-
-        <td>{{user.trainingDays}}</td>
-        <td><button mat-mini-fab color="warn" matTooltip="Move to Learning & Improvement Program" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" (click)="swipeHelper(user)">	<mat-icon>label_important</mat-icon></button></td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
+<!--      <tbody>-->
+<!--      <tr *ngFor="let user of agentList">-->
+<!--        <td></td>-->
+<!--        <td >{{ user.userId }}</td>-->
+<!--        <td>{{ user.agentName }}</td>-->
+<!--&lt;!&ndash;        <td><button mat-mini-fab color="primary" matTooltip="{{ user.trainingProgram? user.trainingProgram : 'click to assign new training program' }}" matTooltipPosition="above" matTooltipClass="my-custom-tooltip" (click)="addTrainingProgram(user)"><mat-icon>extension</mat-icon></button></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td>{{ user.trainingStartDate? (user.trainingStartDate | date): 'N/A' }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td>{{ user.trainingEndDate? (user.trainingEndDate | date): 'N/A' }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td>{{ user.trainingFlag }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td>{{user.trainingDays}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;        <td><button mat-mini-fab color="warn" matTooltip="Move to Learning & Improvement Program" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" (click)="swipeHelper(user)">	<mat-icon>label_important</mat-icon></button></td>&ndash;&gt;-->
+<!--        <td></td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
     </div></div></div>
 <br>
-<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
+

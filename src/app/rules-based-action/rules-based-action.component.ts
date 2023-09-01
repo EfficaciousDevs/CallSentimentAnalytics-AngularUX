@@ -1,10 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {agentDetails} from "./data";
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
-import { Color, ScaleType } from '@swimlane/ngx-charts';
+// import { Color, ScaleType } from '@swimlane/ngx-charts';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {NgxSpinnerService} from "ngx-spinner";
 import {AuthService} from "../HttpServices/auth.service";
+import {of, switchMap} from "rxjs";
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-rules-based-action',
   templateUrl: './rules-based-action.component.html',
@@ -18,67 +21,34 @@ export class RulesBasedActionComponent implements OnInit {
     Object.assign(this, { agentDetails })
   }
   agentList: any = [];
-  chipList = [
-    { label: 'Shashank Naik', value: 100 },
-    { label: 'Harshit Soni', value: 102 },
-    { label: 'Rohan Bait', value: 103 },
-  ];
+  // chipList = [
+  //   { label: 'Shashank Naik', value: 100 },
+  //   { label: 'Harshit Soni', value: 102 },
+  //   { label: 'Rohan Bait', value: 103 },
+  // ];
+  //
+  // shashankAgents: any = [];
+  // harshitAgents: any = [];
+  // rohanAgents: any = [];
 
-  shashankAgents: any = [];
-  harshitAgents: any = [];
-  rohanAgents: any = [];
 
-
-  chipSelected(chip: any){
-    if(chip.value === 100){
-      this.agentList = this.shashankAgents;
-    }else if(chip.value === 102) {
-      this.agentList = this.harshitAgents;
-    }else{
-      this.agentList = this.rohanAgents;
-    }
-  }
+  // chipSelected(chip: any){
+  //   if(chip.value === 100){
+  //     this.agentList = this.shashankAgents;
+  //   }else if(chip.value === 102) {
+  //     this.agentList = this.harshitAgents;
+  //   }else{
+  //     this.agentList = this.rohanAgents;
+  //   }
+  // }
   tempList: any = [];
   getAgentList(){
     this.spinner.show();
-    this.shashankAgents = [];
-    this.harshitAgents = [];
-    this.rohanAgents= [];
-    this.callProxy.getAgentList().subscribe((agentList: any)=>{
-      this.tempList = agentList;
-
-      for(const agent of agentList) {
-        if(agent.managerId === shashankIdToSearch && agent.managerName === shashankNameToSearch){
-          this.shashankAgents.push(agent);
-        }else if(agent.managerId === harshitIdToSearch && agent.managerName === harshitNameToSearch){
-          this.harshitAgents.push(agent);
-        }else{
-          this.rohanAgents.push(agent);
-        }
-      }
+    this.callProxy.fetchManagers().subscribe((agentList: any)=>{
+      this.agentList = agentList.filter((entity : any)=> entity.managerName == this.auth.fullName && entity.agentName)
+      this.spinner.hide();
     });
 
-
-    const shashankIdToSearch = 100;
-    const shashankNameToSearch = "Shashank Naik";
-
-    const harshitIdToSearch = 101;
-    const harshitNameToSearch = "Harshit Soni";
-
-    const rohanIdToSearch = 102;
-    const rohanNameToSearch = "Rohan Bait";
-
-    // this.agentList = this.shashankAgents;
-
-    const managerName = this.auth.authFirstName + " " + this.auth.authLastName;
-    if(managerName == shashankNameToSearch){
-      this.agentList = this.shashankAgents;
-    }else if(managerName == harshitNameToSearch){
-      this.agentList = this.harshitAgents;
-    }else if(managerName == rohanNameToSearch){
-      this.agentList = this.rohanAgents;
-    }
-    this.spinner.hide();
   }
   ngOnInit(): void {
     this.getAgentList();
@@ -106,20 +76,13 @@ export class RulesBasedActionComponent implements OnInit {
 
     console.log(this.agentSentimentArray);
     });
-    this.getLearnerDetails();
+    // this.getLearnerDetails();
   }
 
   learnerList: any = [];
   agentSentimentArray: { name: string; value: number;  }[] = [];
   addTrainingProgram(user: any){
-    let reqTraining;
-    for(const agent of this.tempList){
-      if(agent.agentId === user.agentId){
-        reqTraining = user;
-        break;
-      }
-    }
-    this.openDialog(reqTraining);
+    this.openDialog(user);
   }
   openDialog(agentObject: any): void {
     const dialogRef = this.dialog.open(TrainingDialog, {
@@ -140,59 +103,61 @@ export class RulesBasedActionComponent implements OnInit {
 
   // agentDetails: any[];
 
-  // options
-  showXAxis: boolean = true;
-  showYAxis: boolean = true;
-  gradient: boolean = true;
-  showLegend: boolean = true;
-  showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Call Category';
-  showYAxisLabel: boolean = true;
-  yAxisLabel: string = 'Agent Frequency';
-  legendTitle: string = 'Sentiment';
+  // // options
+  // showXAxis: boolean = true;
+  // showYAxis: boolean = true;
+  // gradient: boolean = true;
+  // showLegend: boolean = true;
+  // showXAxisLabel: boolean = true;
+  // xAxisLabel: string = 'Call Category';
+  // showYAxisLabel: boolean = true;
+  // yAxisLabel: string = 'Agent Frequency';
+  // legendTitle: string = 'Sentiment';
 
 
 
-  colorScheme: Color = {
-    domain: ['#0e9aa7', '#ff8b94', '#AAAAAA'],
-    group: ScaleType.Ordinal,
-    selectable: true,
-    name: 'Call Sentiments',
-  };
+  // colorScheme: Color = {
+  //   domain: ['#0e9aa7', '#ff8b94', '#AAAAAA'],
+  //   group: ScaleType.Ordinal,
+  //   selectable: true,
+  //   name: 'Call Sentiments',
+  // };
 
-  onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
-
-  onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
-
-  onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
-  getLearnerDetails(){
-    this.callProxy.getLearners().subscribe((response)=>{
-      this.learnerList = response;
-    });
-  }
+  // onSelect(data: any): void {
+  //   console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  // }
+  //
+  // onActivate(data: any): void {
+  //   console.log('Activate', JSON.parse(JSON.stringify(data)));
+  // }
+  //
+  // onDeactivate(data: any): void {
+  //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  // }
+  // getLearnerDetails(){
+  //   this.callProxy.getLearners().subscribe((response)=>{
+  //     this.learnerList = response;
+  //   });
+  // }
   swipeHelper(omitUser: any){
-    console.log(omitUser);
+    // console.log(omitUser);
     this.spinner.show();
-    this.callProxy.addLearner(omitUser).subscribe(response=>{
-      console.log(response);
+    this.callProxy.addLearner(omitUser).pipe(
+      switchMap((data)=>{
+        return of(data);
+      }),
+      switchMap(()=>{
+        return this.callProxy.deleteAgents(omitUser.userId);
+      })
+    ).subscribe(()=>{
+      this.getAgentList();
+      this.spinner.hide();
     });
-
-    this.callProxy.deleteAgents(omitUser.agentId).subscribe(response=>{
-      console.log(response);
-    });
-
-    this.spinner.hide();
   }
 
 
 
-  protected readonly agentDetails = agentDetails;
+  // protected readonly agentDetails = agentDetails;
 }
 
 
@@ -208,27 +173,43 @@ export class TrainingDialog {
     private callService: CallAnalyticsProxiesService
   ) {}
 
-  trainingProgram: string = this.data.trainingCourse;
-  trainingStartDate: any =  this.data.trainingStartDate;
-  trainingEndDate: any = this.data.trainingEndDate;
-  trainingFlag : number = this.data.trainingFlag;
+  trainingProgram: string = this.data.trainingProgram ? this.data.trainingProgram : '';
+  trainingStartDate: any =  this.data.trainingStartDate ? this.data.trainingStartDate : '';
+  trainingEndDate: any = this.data.trainingEndDate ? this.data.trainingEndDate: '';
+  trainingFlag : string = this.data.trainingFlag;
   trainingDays: number = this.data.trainingDays;
 
-  calculateDays(startDate: any,endDate: any) {
-    const timeDifference = startDate.getTime() - endDate.getTime();
-    return Math.floor(timeDifference / (1000 * 3600 * 24));
+  calculateDays() {
+    const startingDate = new Date(this.trainingStartDate);
+    const endingDate : Date = new Date(this.trainingEndDate);
+
+    let momentLib = moment(endingDate);
+
+    this.trainingDays = momentLib.diff(startingDate,"days");
+    this.trainingFlag = 'Active';
   }
+
+  trainingPrograms: string[] = [
+    "Service Excellence Training",
+    "Customer Care Mastery",
+    "SupportPro Training",
+    "Empathy and Communication Skills Workshop",
+    "Client-Centric Training Program",
+    "Effective Problem Solving for Support Agents",
+    "Building Customer Relationships",
+    "Mastering Multichannel Support",
+    "Advanced Troubleshooting Techniques",
+    "Navigating Difficult Customer Interactions"
+  ];
+
   onSubmit(): void {
     const agentData = {
-      "agentId": this.data.agentId,
-      "agentName": this.data.agentName,
-      "managerId": this.data.managerId,
-      "managerName": this.data.managerName,
-      "trainingFlag": this.trainingFlag,
+      "userId": this.data.userId,
+      "trainingFlag": this.trainingEndDate ? this.trainingFlag : 'Not Active',
       "trainingStartDate": this.trainingStartDate,
       "trainingEndDate": this.trainingEndDate,
       "trainingDays": this.trainingDays,
-      "trainingCourse": this.trainingProgram
+      "trainingProgram": this.trainingProgram
 
     };
     this.callService.tagTrainingCourse(agentData).subscribe((response)=>{

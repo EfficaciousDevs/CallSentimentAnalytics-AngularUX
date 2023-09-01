@@ -1,3 +1,4 @@
+
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
@@ -5,10 +6,18 @@
 <!--      <i class='bx bx-search'></i>-->
 <!--      <i class='bx bx-filter'></i>-->
     </div>
-<!--    <iframe title="call_qc_real_template" width="100%" height="1280" src="https://app.powerbi.com/reportEmbed?reportId=888e2666-7033-46fe-b774-97078701542a&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" frameborder="0" allowFullScreen="true"></iframe>-->
-<!--    <iframe title="aaaa" width="100%" height="541.25" src="https://app.powerbi.com/groups/me/reports/888e2666-7033-46fe-b774-97078701542a/ReportSection?ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706&experience=power-bi" frameborder="0" allowFullScreen="true" style="border: 2px solid slategray; border-radius: 5px"></iframe>-->
-    <iframe title="call_qc_real_template_bkp" width="100%" height="1920" src="https://app.powerbi.com/reportEmbed?reportId=715d04b1-123b-43ef-9ad8-67b630f7ea21&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" frameborder="0" allowFullScreen="true"></iframe>
+    <div *ngIf="roleName == 'Admin'" style=" height: 100vh; overflow: hidden">
+<!--      <iframe width="100%" src="https://app.powerbi.com/reportEmbed?reportId=715d04b1-123b-43ef-9ad8-67b630f7ea21&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" style="height:1920px; transform: scale(0.74); transform-origin: 0 0; border: none"></iframe>-->
+      <iframe title="dashboard" [src]="adminStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>
+    </div>
 
-<!--    <div #chart>Donut</div>-->
-  </div></div>
+    <div *ngIf="roleName == 'Manager'" style="height: 100vh; overflow: hidden">
+      <iframe title="dashboard" [src]="managerStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>
+    </div>
+
+    <div *ngIf="roleName == 'User'" style="height: 100vh; overflow: hidden">
+      <iframe title="dashboard" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none" [src]="agentStreamLitURL"></iframe>
+    </div>
+    </div></div>
 <br>
+

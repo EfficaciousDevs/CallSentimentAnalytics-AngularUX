@@ -1,41 +1,126 @@
-
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
 <!-- Insights -->
-<ul class="insights">
-  <li>
-    <i class='bx bx-calendar-check'></i>
-    <span class="info">
-                        <h3 id="legacyCalls"></h3>
-                        <p>Legacy Calls</p>
-                    </span>
-  </li>
-  <li><i class='bx bxs-user-detail'></i>
-    <span class="info">
-                        <h3 id="queriesSolved"></h3>
-                        <p>Queries Resolved</p>
-                    </span>
-  </li>
-  <li><i class='bx bx-line-chart'></i>
-    <span class="info">
-                        <h3 id="reportingProgress"></h3>
-                        <p>Reporting Files</p>
-                    </span>
-  </li>
-  <li><i class='bx bxs-user-voice'></i>
-    <span class="info">
-                        <h3 id="totalQueries"></h3>
-                        <p>Total Queries</p>
-                    </span>
-  </li>
-</ul>
+<!--<ul class="insights">-->
+<!--  <li>-->
+<!--    <i class='bx bx-calendar-check'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="legacyCalls"></h3>-->
+<!--                        <p>Legacy Calls</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bxs-user-detail'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="queriesSolved"></h3>-->
+<!--                        <p>Queries Resolved</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bx-line-chart'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="reportingProgress"></h3>-->
+<!--                        <p>Reporting Files</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--  <li><i class='bx bxs-user-voice'></i>-->
+<!--    <span class="info">-->
+<!--                        <h3 id="totalQueries"></h3>-->
+<!--                        <p>Total Queries</p>-->
+<!--                    </span>-->
+<!--  </li>-->
+<!--</ul>-->
 
+<!--<div class="bottom-data">-->
+<!--  <div class="orders">-->
 
-
+<!--  </div>-->
+<!--</div>-->
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
-      <h3 >User Dashboard</h3>
-      <i class='bx bx-search'></i>
-      <i class='bx bx-filter'></i>
+      <h3 >Active Training Details </h3>
+
+      <button mat-fab color="warn"><mat-icon>style</mat-icon></button>
+
     </div>
+
+    <table *ngIf="trainingDetails" class="content-table">
+      <thead>
+      <tr>
+        <th></th>
+        <th style="text-align: center">LEARNING PROGRAM</th>
+        <th style="text-align: center">MANAGER NAME</th>
+        <th style="text-align: center">START DATE</th>
+        <th style="text-align: center">END DATE</th>
+        <th>LAST LOGGED IN</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of trainingDetails">
+        <td></td>
+        <td><button mat-mini-fab color="primary" matTooltip="{{ user.trainingProgram }}" matTooltipPosition="below" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td style="text-align: center"><strong>{{user.managerName }}</strong></td>
+        <td style="text-align: center"><strong>{{ user.trainingStartDate | date }}</strong></td>
+        <td style="text-align: center"><strong>{{ user.trainingEndDate | date }}</strong></td>
+        <td><strong>{{ user.lastLoggedIn | date }}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div></div>
+<br>
+<div class="bottom-data">
+  <div class="orders" >
+    <div class="header">
+      <h3 >Agent Details Page</h3>
+<!--      <i class='bx bx-search'></i>-->
+<!--      <i class='bx bx-filter '></i>-->
+      <button mat-fab color="accent"><mat-icon>style</mat-icon></button>
+
+    </div>
+    <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
+            matTooltip="Filter Results"
+            matTooltipPosition="right" (click)="isFilterClicked()">
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+    <mat-form-field *ngIf="$filterClicked" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Credit Card">
+    </mat-form-field>
+
+    <table *ngIf="reviewData" class="content-table">
+      <thead>
+      <tr>
+
+        <th></th>
+<!--        <th style="text-align: center">AGENT_ID</th>-->
+        <th>CALL CATEGORY</th>
+        <th>CUSTOMER QUERY</th>
+        <th>SUMMARY</th>
+        <th>CUSTOMER_SUPPORT_SENTIMENT</th>
+        <th>CALL_HOLD_PERMISSION</th>
+        <th>TRANSFER_PERMISSION</th>
+        <th >DATE & TIMESTAMP</th>
+        <th>AUDIO_PLAYBACK</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of filteredReviewData;let idx = index">
+        <td></td>
+<!--        <td >{{ user.agentId }}</td>-->
+        <td [@slide]>{{ user.callCategory }}</td>
+        <td [@slide]><button mat-mini-fab color="primary" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>perm_phone_msg</mat-icon></button></td>
+        <td [@slide]><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td [@slide]>{{ user.custSuppSentiment }}</td>
+        <td [@slide]>{{ user.callHoldPermission }}</td>
+        <td [@slide]>{{ user.transferPermission }}</td>
+        <td [@slide]>{{ user.dateTime | date:'medium' }}</td>
+        <td [@slide]><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
+      </tr>
+      </tbody>
+    </table>
+
 </div></div>
 <br>
+
+
+

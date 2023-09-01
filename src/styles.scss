@@ -42,11 +42,13 @@ body.dark{
   --light: #181a1e;
   --grey: #25252c;
   --dark: #fbfbfb
+
 }
 
 body{
   background: var(--grey);
   overflow-x: hidden;
+
 }
 
 .sidebar{
@@ -416,23 +418,23 @@ body{
   justify-content: center;
 }
 
-.content main .insights li:nth-child(1) .bx{
+.content main .insights li:nth-child(3) .bx{
   background: var(--light-primary);
   color: var(--primary);
 }
 
+//.content main .insights li:nth-child(3) .bx{
+//  background: var(--light-success);
+//  color: var(--success);
+//
+//}
+
 .content main .insights li:nth-child(2) .bx{
   background: var(--light-success);
-  color: var(--success);
-
+  color: var(--success);;
 }
 
-.content main .insights li:nth-child(3) .bx{
-  background: var(--light-warning);
-  color: var(--warning);
-}
-
-.content main .insights li:nth-child(4) .bx{
+.content main .insights li:nth-child(1) .bx{
   background: var(--light-danger);
   color: var(--danger);
 }

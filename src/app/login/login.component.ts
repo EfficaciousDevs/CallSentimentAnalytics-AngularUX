@@ -31,15 +31,19 @@ export class LoginComponent implements OnInit{
     this.spinner.show();
     this.roleService.login(loginData).subscribe(
         (response: any) => {
-          this.authService.setRoles(response.user.role);
+          this.authService.setRoles(response.user.roleType);
           this.authService.setToken(response.jwtToken);
-          this.authService.authFirstName = response.user.userFirstName;
-          this.authService.authLastName = response.user.userLastName;
-          const role = response.user.role[0].roleName;
-          if (role === 'Admin') {
+          this.authService.fullName =
+            response.user.roleType == 'Admin'? response.user.adminName :
+              response.user.roleType == 'Manager'? response.user.managerName : response.user.agentName;
+          this.authService.userId = response.user.userId;
+          this.authService.managerId = response.user.managerId? response.user.managerId : 0;
+          this.authService.roleType = response.user.roleType;
+          const role = response.user.roleType;
+          if (role == 'Admin') {
             this.pageRouter.navigateByUrl('/dashboard/adminAccess');
           }
-          else if (role === 'Manager') {
+          else if (role == 'Manager') {
                 this.pageRouter.navigate(['/dashboard/managerAccess']);
             }
           else {

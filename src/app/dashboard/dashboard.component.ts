@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../HttpServices/auth.service";
 import {RoleBasedService} from "../HttpServices/role-based.service";
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
+import {of, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -13,17 +14,40 @@ export class DashboardComponent implements OnInit,AfterViewInit{
 
   constructor( public authService: AuthService, private router: Router,public roleBasedService: RoleBasedService,private callService: CallAnalyticsProxiesService) { }
   negativeResults: any = [];
+  // getReviewDetails(){
+  //   this.callService.fetchStats().subscribe((data)=>{
+  //     this.negativeResults = data;
+  //     this.negativeResults  = this.negativeResults.filter((entry: { custSuppSentiment: string; }) => entry.custSuppSentiment === "Negative");
+  //     console.log(this.negativeResults);
+  //   })
+  // }
+
   getReviewDetails(){
-    this.callService.fetchStats().subscribe((data)=>{
-      this.negativeResults = data;
-      this.negativeResults  = this.negativeResults.filter((entry: { custSuppSentiment: string; }) => entry.custSuppSentiment === "Negative");
-      console.log(this.negativeResults);
-    })
+
+    this.callService.fetchManagers().pipe(
+      switchMap((data: any) => {
+        console.log(data);
+        this.agentIds = data
+          .filter((item: any) => item.managerId === this.authService.managerId && item.agentName !== null)
+          .map((item: any) => item.userId.toString());
+
+        // Return the agentIds as an observable
+        return of(this.agentIds);
+      })
+    ).subscribe((agentIds: string[]) => {
+      // Now, agentIds is available here after the first service call is completed
+      this.callService.getReviewData(agentIds).subscribe((data) => {
+        this.reviewData = data;
+        // console.log(this.reviewData);
+
+      });
+    });
   }
-
-
+  agentIds: any = [];
+  reviewData: any = [];
   ngOnInit() {
     this.getReviewDetails();
+    this.routeIsActive();
   }
 
 
@@ -80,13 +104,13 @@ export class DashboardComponent implements OnInit,AfterViewInit{
 
     toggler.addEventListener('change', function () {
       if (this.checked) {
+
         document.body.classList.add('dark');
 
       } else {
         document.body.classList.remove('dark');
       }
     });
-
 
   }
   sentimentsActive: boolean = false;
@@ -97,6 +121,20 @@ export class DashboardComponent implements OnInit,AfterViewInit{
   reviewActive: boolean = false;
   actionActive: boolean = false;
   createRoleActive: boolean = false;
+  darkModeActive: boolean = false;
+  toggleDarkMode(){
+    const toggler: HTMLInputElement = document.getElementById('theme-toggle') as HTMLInputElement;
+
+    toggler.addEventListener('change', function () {
+      if (!this.checked) {
+
+        document.body.classList.add('dark');
+
+      } else {
+        document.body.classList.remove('dark');
+      }
+    });
+  }
   routeIsActive(): string {
     if (this.router.url == '/dashboard/callSentimentsAnalytics') {
       this.sentimentsActive = true;
@@ -194,7 +232,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
 
   getUserRole():string{
     if(this.roleBasedService.roleMatch(['Admin'])){
-      return 'Administrator';
+      return 'Admin';
     }
     else if(this.roleBasedService.roleMatch(['Manager'])){
       return 'Manager'

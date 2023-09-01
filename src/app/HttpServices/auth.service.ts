@@ -5,12 +5,12 @@ import {HostListener, Injectable} from '@angular/core';
 })
 export class AuthService {
 
-    authFirstName: string = '';
-    authLastName: string = '';
-
-
-
-
+    // authFirstName: string = '';
+    // authLastName: string = '';
+    fullName: string = '';
+    userId: number = 0;
+    managerId: number = 0;
+    roleType: string = '';
     public setRoles(roles: any[]) {
         localStorage.setItem('roles', JSON.stringify(roles));
     }
@@ -37,8 +37,4 @@ export class AuthService {
         return this.getRoles() && this.getToken();
     }
 
-  @HostListener('window:beforeunload', ['$event'])
-  public clearLocalStorage(event: any) {
-    localStorage.clear();
-  }
 }

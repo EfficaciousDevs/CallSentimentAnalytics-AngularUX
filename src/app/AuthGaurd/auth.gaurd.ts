@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
         private router: Router,
         private roleBasedService: RoleBasedService
     ) {}
-
+    authorizedRoles: string[] = ['Admin','Manager','User'];
     canActivate(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
@@ -28,12 +28,10 @@ export class AuthGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        if (this.userAuthService.authFirstName.length > 0) {
+        if (this.userAuthService.getToken() != null && this.userAuthService.fullName.length > 0) {
             const role = route.data['roles'];
-
             if (role) {
-                // const match = this.roleBasedService.roleMatch(role);
-              const match = 'User';
+                const match = this.authorizedRoles.includes(role[0]);
                 if (match) {
                     return true;
                 } else {

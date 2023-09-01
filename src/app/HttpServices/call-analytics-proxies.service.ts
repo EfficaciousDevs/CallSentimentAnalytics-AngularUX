@@ -14,6 +14,10 @@ export class CallAnalyticsProxiesService {
   agentManagersAPI: string = 'http://localhost:8089/agentManagers';
   audioFileURL: string = 'http://localhost:8089/getAudioFile';
 
+  getMainDbUsers: string = 'http://localhost:8089/get-users';
+  getReviewDataURL: string = 'http://localhost:8089/getManagerReviewData';
+  updateUserDetailsAPI : string = 'http://localhost:8089/update-user';
+
   constructor(private httpClient: HttpClient) {
   }
 
@@ -27,6 +31,24 @@ export class CallAnalyticsProxiesService {
   fetchStats(){
     return this.httpClient.get(this.DEFAULT_ANALYSIS_API);
   }
+  fetchManagers(){
+    return this.httpClient.get(this.getMainDbUsers);
+  }
+
+  getReviewData(passedIds: any){
+    const agentIds = new FormData();
+    agentIds.append("agentIds",passedIds)
+    return this.httpClient.post(this.getReviewDataURL,agentIds,{
+      headers: this.requestHeader
+    })
+  }
+  fetchAgentStats(agentId: string){
+    const agentData = new FormData();
+    agentData.append("agentId",agentId);
+    return this.httpClient.post("http://localhost:8089/getAgentAnalytics",agentData,{
+      headers: this.requestHeader
+    })
+  }
   requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
   addRemarks(remarks: any){
     return this.httpClient.post(this.addRemarksURL,remarks,{
@@ -35,7 +57,7 @@ export class CallAnalyticsProxiesService {
   }
 
   tagTrainingCourse(agentObject: any){
-    return this.httpClient.post(this.assignTrainingAPI,agentObject,{
+    return this.httpClient.post('http://localhost:8089/addLearners',agentObject,{
       headers: this.requestHeader,responseType: 'text'
     })
   }
@@ -53,22 +75,22 @@ export class CallAnalyticsProxiesService {
 
   public deleteAgents(agentId: number){
     const formdata = new FormData();
-    formdata.append("agentId", agentId.toString());
-    return this.httpClient.post('http://localhost:8089/delete-agents',formdata,{
+    formdata.append("userId", agentId.toString());
+    return this.httpClient.post('http://localhost:8089/delete-user',formdata,{
       headers: this.requestHeader,responseType: 'text'
     });
   }
 
   public addLearner(learner: any){
     const learnerObject = {
-      "agentId": learner.agentId,
+      "agentId": learner.userId,
       "agentName": learner.agentName,
       "managerId": learner.managerId,
       "managerName": learner.managerName,
       "trainingStartDate": learner.trainingStartDate,
       "trainingEndDate": learner.trainingEndDate,
       "trainingDays": learner.trainingDays,
-      "trainingCourse": learner.trainingCourse
+      "trainingCourse": learner.trainingProgram
     };
     return this.httpClient.post('http://localhost:8089/addLearners',learnerObject,{
       headers: this.requestHeader,responseType: 'text'
@@ -77,5 +99,13 @@ export class CallAnalyticsProxiesService {
 
   public getLearners(){
     return this.httpClient.get('http://localhost:8089/get-learners');
+  }
+
+  public deleteCallers(callId: string){
+    const formData = new FormData();
+    formData.append("callId",callId);
+    return this.httpClient.post('http://localhost:8089/remove-agent',formData,{
+      headers: this.requestHeader,responseType: 'text'
+    })
   }
 }
