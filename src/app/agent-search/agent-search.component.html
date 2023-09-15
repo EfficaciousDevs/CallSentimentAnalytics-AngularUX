@@ -1,0 +1,55 @@
+
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
+
+<div class="bottom-data">
+  <div class="orders" >
+    <div class="header">
+      <h2>AGENT SEARCH</h2>
+      <button style="float: right" mat-fab color="accent"
+              matTooltip="Tagged Agent Details"
+              matTooltipPosition="right">
+        <mat-icon>accessibility_new</mat-icon>
+      </button>
+
+    </div>
+    <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
+            matTooltip="Show Agent Details"
+            matTooltipPosition="right">
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+    <mat-form-field appearance="outline">
+      <mat-label>Search Agent</mat-label>
+      <input matInput (keyup)="showAgents($event)" placeholder="Eg. John Smith">
+    </mat-form-field>&nbsp;&nbsp;
+
+    <table class="content-table">
+      <thead>
+      <tr>
+        <th></th>
+        <th style="text-align: center">AGENT_ID</th>
+        <th>AGENT_NAME</th>
+        <th>CALL_CATEGORY</th>
+        <th>CUSTOMER_QUERY</th>
+        <th>SUMMARY</th>
+        <th>AUDIO_PLAYBACK</th>
+        <th>AGENT_SENTIMENT</th>
+        <th >DATE & TIMESTAMP</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="searchValue.length > 0 && filteredReviewData">
+      <tr *ngFor="let user of filteredReviewData">
+        <td></td>
+        <td >{{ user.agentId }}</td>
+        <td>{{user.agentName}}</td>
+        <td><strong>{{ user.callCategory }}</strong></td>
+        <td><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
+        <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
+        <td>{{ user.custSuppSentiment }}</td>
+        <td>{{ user.dateTime | date : 'medium' }}</td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div></div>
+<br>
