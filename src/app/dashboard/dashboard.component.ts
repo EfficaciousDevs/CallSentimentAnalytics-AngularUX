@@ -4,6 +4,7 @@ import {AuthService} from "../HttpServices/auth.service";
 import {RoleBasedService} from "../HttpServices/role-based.service";
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
 import {of, switchMap} from "rxjs";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,7 @@ import {of, switchMap} from "rxjs";
 })
 export class DashboardComponent implements OnInit,AfterViewInit{
 
-  constructor( public authService: AuthService, private router: Router,public roleBasedService: RoleBasedService,private callService: CallAnalyticsProxiesService) { }
+  constructor(private sanitizer: DomSanitizer, public authService: AuthService, private router: Router,public roleBasedService: RoleBasedService,private callService: CallAnalyticsProxiesService) { }
   negativeResults: any = [];
   // getReviewDetails(){
   //   this.callService.fetchStats().subscribe((data)=>{
@@ -50,8 +51,8 @@ export class DashboardComponent implements OnInit,AfterViewInit{
     this.routeIsActive();
   }
 
-
-  sidebarToggle: boolean = false;
+  // src= this.sanitizer.bypassSecurityTrustResourceUrl("https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000");
+  // sidebarToggle: boolean = false;
 
   ngAfterViewInit() {
     const sideLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('.sidebar .side-menu li a:not(.logout)');
@@ -121,7 +122,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
   reviewActive: boolean = false;
   actionActive: boolean = false;
   createRoleActive: boolean = false;
-  darkModeActive: boolean = false;
+  searchActive: boolean = false;
   toggleDarkMode(){
     const toggler: HTMLInputElement = document.getElementById('theme-toggle') as HTMLInputElement;
 
@@ -145,7 +146,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = false;
       this.createRoleActive = false;
-      return 'Call Sentiment Analytics'
+      return 'Call Sentiment Analytics';
     } if (this.router.url == '/dashboard/adminAccess') {
       this.sentimentsActive = false;
       this.homeActive = false;
@@ -155,7 +156,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = false;
       this.createRoleActive = false;
-      return 'Admin Dashboard'
+      return 'Admin Dashboard';
     }if (this.router.url == '/dashboard/managerAccess') {
       this.sentimentsActive = false;
       this.homeActive = false;
@@ -165,7 +166,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = false;
       this.createRoleActive = false;
-      return 'Manager Dashboard'
+      return 'Manager Dashboard';
     }if (this.router.url == '/dashboard/userAccess') {
       this.sentimentsActive = false;
       this.homeActive = false;
@@ -175,7 +176,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = false;
       this.createRoleActive = false;
-      return 'User Dashboard'
+      return 'User Dashboard';
     }
     if (this.router.url == '/dashboard/review') {
       this.sentimentsActive = false;
@@ -186,7 +187,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = true;
       this.actionActive = false;
       this.createRoleActive = false;
-      return 'Review Page'
+      return 'Review Page';
     }
     if (this.router.url == '/dashboard/ruleBasedAction') {
       this.sentimentsActive = false;
@@ -197,7 +198,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = true;
       this.createRoleActive = false;
-      return 'Action Page'
+      return 'Action Page';
     }
     if (this.router.url == '/dashboard/addNewRole') {
       this.sentimentsActive = false;
@@ -208,11 +209,13 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       this.reviewActive = false;
       this.actionActive = false;
       this.createRoleActive = true;
-      return 'User Management Interface'
+      return 'User Management Interface';
     }
-
     if(this.router.url == '/dashboard/reportingDashboard'){
-      return 'Power BI Reporting'
+      return 'Reporting Window';
+    }
+    if(this.router.url == '/dashboard/searchTaggedAgents'){
+      return 'Tagged Agent Search';
     }
     else {
       this.sentimentsActive = false;
@@ -220,6 +223,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       return 'Home Page';
     }
   }
+
   openList(){
     return this.isOpenList != this.isOpenList;
   }

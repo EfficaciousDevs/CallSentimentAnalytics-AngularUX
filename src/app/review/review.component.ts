@@ -1,10 +1,19 @@
-import {AfterViewInit, Component, Inject, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {AuthService} from "../HttpServices/auth.service";
-import {of, switchMap} from "rxjs";
+import {Observable, of, switchMap} from "rxjs";
 import {ChipColor, UserRole} from "../create-roles/create-roles.component";
 import * as moment from "moment/moment";
 import {MatTableDataSource} from "@angular/material/table";
@@ -44,8 +53,8 @@ export class ReviewComponent implements OnInit{
   // }
 
   ngOnInit() {
-    let threeDaysAgo = this.startDate.getDate() - 3;
-    this.startDate.setDate(threeDaysAgo);
+    // let threeDaysAgo = this.startDate.getDate() - 3;
+    // this.startDate.setDate(threeDaysAgo);
     this.getReviewDetails();
 
     // this.spinner.show();
@@ -69,14 +78,27 @@ export class ReviewComponent implements OnInit{
     // });
   }
 
-  constructor(private auth: AuthService,private sanitizer: DomSanitizer,public dialog: MatDialog,private callService: CallAnalyticsProxiesService,private spinner: NgxSpinnerService) {
+  constructor(private _changeDetectorRef: ChangeDetectorRef,private auth: AuthService,private sanitizer: DomSanitizer,public dialog: MatDialog,private callService: CallAnalyticsProxiesService,private spinner: NgxSpinnerService) {
   }
   reviewData: any = [];
-  editedRemarkObject: any;
+  // editedRemarkObject: any;
   agentIds : string[] = [];
   managerId: number = this.auth.managerId;
   @ViewChild(MatSort) sort: MatSort | undefined;
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  // @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+
+  // dataSource: MatTableDataSource<any> | undefined;
+  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator | undefined;
+  // dataObs$: Observable<any> | undefined;
+
+  // setPagination(tableData : any) {
+  //   this.dataSource = new MatTableDataSource<any>(tableData);
+  //   this._changeDetectorRef.detectChanges();
+  //   // @ts-ignore
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataObs$ = this.dataSource.connect();
+  // }
+
   // pagedReviewData: any = []; // Array for paged data
   // itemsPerPage: number = 10; // Number of items per page
   // currentPage: number = 1; // Current page number
@@ -124,15 +146,20 @@ export class ReviewComponent implements OnInit{
           // @ts-ignore
           return dateB - dateA;
         });
+
+        this.dateFilterData = this.filteredReviewData;
         // console.log(this.reviewData);
-        this.filteredReviewData = this.reviewData.filter((user:any) => {
-          const userDate = new Date(user.dateTime);
-          return userDate >= this.startDate && userDate <= this.endDate;
-        });
+        // this.filteredReviewData = this.filteredReviewData.filter((user:any) => {
+        //   const userDate = new Date(user.dateTime);
+        //   return userDate >= this.startDate && userDate <= this.endDate;
+        // });
+        // this.setPagination(this.filteredReviewData);
         this.spinner.hide();
       });
     });
   }
+
+  dateFilterData: any;
   actionHelper(agentDetails: any){
     // this.editedRemarkObject = this.reviewData[agentIndex];
     console.log(agentDetails);
@@ -145,7 +172,8 @@ export class ReviewComponent implements OnInit{
 
   applyFilter(searchValue: any) {
     this.searchValue = searchValue.target.value.trim(); // Remove whitespace
-
+    // @ts-ignore
+    // this.dataSource.filter = this.searchValue.toLowerCase();
     this.filteredReviewData = this.reviewData.filter((user : any) => {
       const searchString = this.searchValue.toLowerCase();
       return (
@@ -160,8 +188,8 @@ export class ReviewComponent implements OnInit{
       );
     });
   }
-  startDate: Date = new Date();
-  endDate: Date = new Date();
+  startDate: any;
+  endDate: any;
   // searchDate : any;
   // filterDataByDate(event: any): void {
   //   this.searchDate = event.target.value;
@@ -189,7 +217,7 @@ export class ReviewComponent implements OnInit{
     // const endDateObj = new Date(this.endDate);
 
     // Filter the data based on the date range
-    this.filteredReviewData = this.reviewData.filter((user:any) => {
+    this.filteredReviewData = this.dateFilterData.filter((user:any) => {
       const userDate = new Date(user.dateTime);
       return userDate >= this.startDate && userDate <= this.endDate;
     });
@@ -271,8 +299,14 @@ export class ReviewDialog {
     "Navigating Difficult Customer Interactions"
   ];
   chipSelected(chip: any){
-    this.enableTraining = chip.value == 1;
+    if(chip.value == 1){
+      this.enableTraining = true;
+    }else{
+      this.enableTraining = false;
+      this.onSubmit();
+    }
   }
+  noAction: boolean = false ;
   resetForm(){
     // this.editedRemark = 'Please enter your remarks.';
   }
@@ -310,13 +344,18 @@ export class ReviewDialog {
     // this.callService.tagTrainingCourse(agentData).subscribe((response)=>{
     //   console.log(response);
     // });
+    if(this.enableTraining){
     this.callService.tagTrainingCourse(agentData).pipe(
       switchMap(()=>{
         return this.callService.deleteCallers(this.callerId);
       })
     ).subscribe((response)=>{
       console.log(response);
-    })
+    })}else{
+      this.callService.deleteCallers(this.callerId).subscribe((response: any)=>{
+        console.log(response);
+      })
+    }
 
     this.dialogRef.close("Training Details added");
   }

@@ -181,10 +181,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of usersDb">
+      <tr *ngFor="let user of dataObs$ | async">
         <td>
           <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-          <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+          <img src="./assets/avatar.jfif">
           {{ user.userName }}</td>
         <td *ngIf="user.adminName">{{ user.adminName }}</td>
         <td *ngIf="user.managerName && !user.agentName">{{ user.managerName }}</td>
@@ -194,6 +194,11 @@
       </tr>
       </tbody>
     </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      showFirstLastButtons
+      [pageSize]="5"
+    ></mat-paginator>
   </div></div>
 <br>
 
@@ -218,7 +223,7 @@
 
               <!-- ID Column -->
               <ng-container matColumnDef="userName">
-                <img class="avatar" src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+<!--                <img class="avatar" src="./assets/liveAvatar.gif" alt="">-->
                 <mat-header-cell *matHeaderCellDef mat-sort-header> UserName </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.userName}} </mat-cell>
               </ng-container>
@@ -282,7 +287,7 @@
       <tr *ngFor="let user of usersDb;let idx = index">
         <td>
           <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
-          <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+          <img src="./assets/avatar.jfif" alt="avatar Pic">
           {{ user.userName }}</td>
         <td *ngIf="user.adminName">{{ user.adminName }}</td>
         <td *ngIf="user.managerName && !user.agentName">{{ user.managerName }}</td>

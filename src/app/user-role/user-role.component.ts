@@ -85,8 +85,8 @@ ngOnInit() {
     //   })
     // }
 
-    this.callService.fetchManagers().subscribe((response: any)=>{
-      this.trainingDetails = response.filter((item: any)=> item.userId == this.auth.userId && item.trainingProgram)
+    this.callService.getLearners().subscribe((response: any)=>{
+      this.trainingDetails = response.filter((item: any)=> item.agentId == this.auth.userId && item.trainingCourse)
       console.log(this.trainingDetails);
       this.spinnerService.hide();
     })
@@ -97,7 +97,7 @@ ngOnInit() {
   filteredReviewData: any = []; // To store the filtered data
 
   applyFilter(searchValue: any) {
-    this.searchValue = searchValue.target.value.trim(); // Remove whitespace
+    this.searchValue = searchValue.target.value.trim();
 
     this.filteredReviewData = this.reviewData.filter((user : any) => {
       const searchString = this.searchValue.toLowerCase();

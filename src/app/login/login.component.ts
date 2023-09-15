@@ -4,6 +4,7 @@ import {AuthService} from "../HttpServices/auth.service";
 import {Router} from "@angular/router";
 import {RoleBasedService} from "../HttpServices/role-based.service";
 import {NgxSpinnerService} from "ngx-spinner";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,17 @@ export class LoginComponent implements OnInit{
 
   constructor(private spinner: NgxSpinnerService,private roleService: RoleBasedService,private authService: AuthService,private pageRouter: Router) {
   }
-
   username: string = '';
   password: string = '';
 
   ngOnInit() {
   }
-  authState: string = '';
+  // authState: string = '';
   invalidCredentials: string = '';
+
+ invalidChanger() {
+   this.invalidCredentials = '';
+ }
   loginHelper(){
     console.log(this.username, this.password);
     const loginData = {
@@ -54,7 +58,7 @@ export class LoginComponent implements OnInit{
         },
         (error) => {
           console.log(error);
-          this.invalidCredentials = '***INVALID CREDENTIALS***'
+          this.invalidCredentials = '*** INVALID CREDENTIALS ***'
           this.spinner.hide();
         }
 

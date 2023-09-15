@@ -45,10 +45,10 @@
 <!--          <i class='bx bx-filter'></i>-->
 <!--          <i class='bx bx-search'></i>-->
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;">
-          <p *ngIf="learnerList.length == 0">No Records to Display</p>
-        </div>
-        <table *ngIf="learnerList.length > 0">
+<!--        <div style="display: flex; justify-content: center; align-items: center;">-->
+<!--          <p *ngIf="learnerList.length == 0">No Records to Display</p>-->
+<!--        </div>-->
+        <table *ngIf="learnerList.length > 0; else noRecords">
           <thead>
           <tr>
             <th>AGENT NAME</th>
@@ -61,17 +61,19 @@
 
           <tbody >
           <tr *ngFor="let user of learnerList">
-            <td [@slide]>
-              <img src="https://cliply.co/wp-content/uploads/2020/08/442008112_GLANCING_AVATAR_3D_400px.gif">
+            <td >
+              <img src="./assets/avatar.jfif">
               {{ user.agentName }}
             </td>
-            <td [@slide]>{{ user.trainingEndDate? (user.trainingEndDate | date): 'Not Started' }}</td>
-            <td [@slide] style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.trainingCourse? user.trainingCourse : 'No Training Program' }}" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" ><mat-icon>extension</mat-icon></button></td>
-            <td [@slide] style="text-align: center">{{ user.lastLoggedIn | date }}</td>
+            <td >{{ user.trainingEndDate? (user.trainingEndDate | date): 'Not Started' }}</td>
+            <td  style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.trainingCourse? user.trainingCourse : 'No Training Program' }}" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" ><mat-icon>extension</mat-icon></button></td>
+            <td  style="text-align: center">{{ user.lastLoggedIn | date }}</td>
             <td></td>
           </tr>
           </tbody>
         </table>
+
+        <ng-template #noRecords><p style="text-align: center; font-weight: bolder">No Records to Display</p></ng-template>
       </div>
 
       <!-- Reminders -->
@@ -102,7 +104,7 @@
 <!--            <i class='bx bx-calendar-check'></i>-->
             <i class='bx bxs-alarm-add'></i>
             <span class="info">
-                                <h3 id="unReviewed">{{unreviewedData.length}}</h3>
+                                <h3 id="unReviewed">{{reviewData.length}}</h3>
                                 <p>Pending Reviews</p>
                             </span>
           </li>
@@ -111,8 +113,8 @@
 <!--          <i class='bx bxs-user-detail'></i>-->
           <i class='bx bx-world'></i>
               <span class="info">
-                                  <h3 id="totalQueries">{{reviewData.length}}</h3>
-                                  <p>Total Queries</p>
+                                  <h3 id="totalQueries">{{taggedAgents.length}}</h3>
+                                  <p>Tagged Agents</p>
                               </span>
             </li>
             <li [@slide]>

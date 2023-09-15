@@ -1,4 +1,4 @@
-import {HostListener, Injectable} from '@angular/core';
+import { Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +7,9 @@ export class AuthService {
 
     // authFirstName: string = '';
     // authLastName: string = '';
+
+
+  // ng build --base-href /admin-portal/
     fullName: string = '';
     userId: number = 0;
     managerId: number = 0;

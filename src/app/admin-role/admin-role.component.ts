@@ -1,9 +1,12 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {AlertDialogWindowComponent} from "../alert-dialog-window/alert-dialog-window.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-admin-role',

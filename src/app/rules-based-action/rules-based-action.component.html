@@ -40,9 +40,9 @@
     <div class="header">
       <h2>RULE BASED ACTION</h2>
       <button style="float: left" mat-fab color="accent" matTooltip="Agents History Table" matTooltipPosition="right" (click)="getAgentList()"><mat-icon>accessibility_new</mat-icon></button>
-<!--      <mat-chip-listbox aria-label="UMI selection" style="padding-left: 20%">-->
-<!--        <mat-chip-option matTooltip="Click to select {{chip.label}} Agent List" matTooltipPosition="above" *ngFor="let chip of chipList;let idx = index" (click)="chipSelected(chip)" >{{chip.label}} </mat-chip-option>-->
-<!--      </mat-chip-listbox></div>-->
+      <mat-chip-listbox aria-label="Rules Selection" style="padding-left: 20%">
+        <mat-chip-option matTooltip="Click to select {{chip.label}} window" matTooltipPosition="above" *ngFor="let chip of chipList;let idx = index" (click)="chipSelected(chip)" >{{chip.label}} </mat-chip-option>
+      </mat-chip-listbox></div>
 
 
 <!--    <table *ngIf="agentList.length > 0" class="content-table">-->
@@ -75,6 +75,44 @@
 <!--      </tr>-->
 <!--      </tbody>-->
 <!--    </table>-->
-    </div></div></div>
+
+
+  <table *ngIf="rulesReviewData.length > 0; else noData" class="content-table">
+    <thead>
+    <tr>
+      <th></th>
+      <th style="text-align: center">AGENT_ID</th>
+      <th>AGENT_NAME</th>
+      <th>CALL_CATEGORY</th>
+      <th>CUSTOMER_QUERY</th>
+      <th>SUMMARY</th>
+      <th>KEY SCORE</th>
+      <th>AGENT_SENTIMENT</th>
+      <th>CALL_HOLD_PERMISSION</th>
+      <th>TRANSFER_PERMISSION</th>
+      <th >DATE & TIMESTAMP</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of rulesReviewData" [ngStyle]="{'background': user.keyScore < 60 ? '#FECDD3' : ''}">
+      <td></td>
+      <td >{{ user.agentId }}</td>
+      <td>{{user.agentName}}</td>
+      <td><strong>{{ user.callCategory }}</strong></td>
+      <td><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
+      <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+      <td [ngStyle]="{'color': user.keyScore < 60 ? 'crimson' : '','font-weight': user.keyScore < 60 ? 'bold': ''}">{{user.keyScore}}</td>
+      <td>{{ user.custSuppSentiment }}</td>
+      <td>{{ user.callHoldPermission }}</td>
+      <td>{{ user.transferPermission }}</td>
+      <td>{{ user.dateTime | date : 'medium' }}</td>
+    </tr>
+
+    </tbody>
+  </table>
+
+    <ng-template #noData><p style="text-align: center; font-weight: bolder">No Records to Display<p></p></ng-template>
+  </div>
+    </div>
 <br>
 

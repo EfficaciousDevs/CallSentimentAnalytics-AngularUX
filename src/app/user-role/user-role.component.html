@@ -56,7 +56,7 @@
       <tbody>
       <tr *ngFor="let user of trainingDetails">
         <td></td>
-        <td><button mat-mini-fab color="primary" matTooltip="{{ user.trainingProgram }}" matTooltipPosition="below" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td><button mat-mini-fab color="primary" matTooltip="{{ user.trainingCourse }}" matTooltipPosition="below" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
         <td style="text-align: center"><strong>{{user.managerName }}</strong></td>
         <td style="text-align: center"><strong>{{ user.trainingStartDate | date }}</strong></td>
         <td style="text-align: center"><strong>{{ user.trainingEndDate | date }}</strong></td>
@@ -108,7 +108,7 @@
         <td></td>
 <!--        <td >{{ user.agentId }}</td>-->
         <td [@slide]>{{ user.callCategory }}</td>
-        <td [@slide]><button mat-mini-fab color="primary" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>perm_phone_msg</mat-icon></button></td>
+        <td [@slide]><button mat-mini-fab color="primary" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
         <td [@slide]><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
         <td [@slide]>{{ user.custSuppSentiment }}</td>
         <td [@slide]>{{ user.callHoldPermission }}</td>

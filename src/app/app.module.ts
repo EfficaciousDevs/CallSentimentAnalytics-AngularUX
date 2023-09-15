@@ -50,6 +50,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AgentSearchComponent } from './agent-search/agent-search.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +68,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CreateRolesComponent,
     ForbiddenComponent,
     EditUserDialogComponent,
-    ReviewDialog,TrainingDialog,AudioDialog
+    ReviewDialog,TrainingDialog,AudioDialog, AgentSearchComponent
   ],
     imports: [
         BrowserModule,
@@ -99,7 +101,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
         MatChipsModule,
         MatRippleModule,
         MatDialogModule,
-        MatStepperModule,
+        MatStepperModule,MatAutocompleteModule,
         MatDatepickerModule, MatCardModule, MatTableModule,NgxChartsModule,
         MatNativeDateModule, MatSlideToggleModule, MatExpansionModule,
         MatPaginatorModule, MatSortModule, MatMenuModule, MatSidenavModule, MatCheckboxModule

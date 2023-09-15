@@ -8,15 +8,15 @@ import {UserRole} from "../create-roles/create-roles.component";
 })
 export class RoleBasedService {
 
-  authenticationAPI: string = 'http://localhost:8089/authenticate';
-  userAPI: string = 'http://localhost:8089/forUser';
-  adminAPI: string = 'http://localhost:8089/forAdmin';
-  createRolesAPI: string = 'http://localhost:8089/register-user';
+  authenticationAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/authenticate';
+  // userAPI: string = 'http://localhost:8089/forUser';
+  // adminAPI: string = 'http://localhost:8089/forAdmin';
+  createRolesAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/register-user';
   // getUsersAPI: string = 'http://localhost:8089/getUsers';
-  getMainUsers: string = 'http://localhost:8089/get-users';
-  deleteUserAPI: string = 'http://localhost:8089/delete-user';
-  updateUserAPI: string = 'http://localhost:8089/updateUser';
-  updateUserDetailsAPI : string = 'http://localhost:8089/update-user';
+  getMainUsers: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/get-users';
+  deleteUserAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/delete-user';
+  // updateUserAPI: string = 'http://localhost:8089/updateUser';
+  updateUserDetailsAPI : string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/update-user';
 
   requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
   constructor(
@@ -39,38 +39,6 @@ export class RoleBasedService {
     },);
   }
 
-  public updateRecord(user : any){
-    const updatedUser = {
-      "userName": user.userName,
-      "userFirstName": user.userFirstName,
-      "userLastName": user.userLastName,
-      "userPassword": user.userPassword,
-      "role": [
-      {
-        "roleName": user.role[0].roleName,
-        "roleDescription": user.role[0].roleDescription
-      }
-    ]
-    };
-
-    return this.httpclient.post(this.updateUserAPI,updatedUser,{
-      headers: this.requestHeader,responseType: 'text'
-    });
-  }
-
-  public forUser() {
-    return this.httpclient.get(this.userAPI, {
-      responseType: 'text',
-    });
-  }
-
-
-  public forAdmin() {
-    return this.httpclient.get(this.adminAPI, {
-      responseType: 'text',
-    });
-  }
-
   public createRoles(roleDetails: any) {
     return this.httpclient.post(this.createRolesAPI, roleDetails, {
       headers: this.requestHeader,responseType: 'text'
@@ -80,7 +48,6 @@ export class RoleBasedService {
   public getRolesList(){
     return this.httpclient.get(this.getMainUsers);
   }
-
 
   public roleMatch(allowedRoles : any): boolean {
     let isMatch = false;
@@ -102,17 +69,17 @@ export class RoleBasedService {
   }
 
   public getManagers(){
-    return this.httpclient.get('http://localhost:8089/agentManagers');
+    return this.httpclient.get('http://52.172.252.7:8080/Call-Sentiments-Analytics/agentManagers');
   }
 
   public tagManagerAgents(agent: any){
-    return this.httpclient.post('http://localhost:8089/addNewAgents',agent,{
+    return this.httpclient.post('http://52.172.252.7:8080/Call-Sentiments-Analytics/addNewAgents',agent,{
       headers: this.requestHeader,responseType: 'text'
     });
   }
 
   public getUsersDB(){
-    return this.httpclient.get('http://localhost:8089/get-users');
+    return this.httpclient.get('http://52.172.252.7:8080/Call-Sentiments-Analytics/get-users');
   }
 
   public updateOperation(userObject: any){

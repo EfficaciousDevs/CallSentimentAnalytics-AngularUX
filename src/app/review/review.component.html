@@ -1,3 +1,6 @@
+
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
+
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
@@ -20,11 +23,12 @@
     </mat-form-field>&nbsp;&nbsp;
 
     <mat-form-field *ngIf="$filterClicked" >
-      <mat-label>Date Range Filter</mat-label>
+      <mat-label>Select Date Range</mat-label>
       <mat-date-range-input  [rangePicker]="picker">
         <input matStartDate [(ngModel)]="startDate" placeholder="Start date">
         <input matEndDate [(ngModel)]="endDate" placeholder="End date">
       </mat-date-range-input>
+      <mat-hint>Note: End date is exclusive</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 
       <mat-date-range-picker #picker>
@@ -48,8 +52,8 @@
         <th>AUDIO_PLAYBACK</th>
         <th>KEY SCORE</th>
         <th>AGENT_SENTIMENT</th>
-        <th>CALL_HOLD_PERMISSION</th>
-        <th>TRANSFER_PERMISSION</th>
+<!--        <th>CALL_HOLD_PERMISSION</th>-->
+<!--        <th>TRANSFER_PERMISSION</th>-->
         <th >DATE & TIMESTAMP</th>
         <th style="text-align: center">ACTION</th>
       </tr>
@@ -65,8 +69,8 @@
         <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
         <td [ngStyle]="{'color': user.keyScore < 60 ? 'crimson' : '','font-weight': user.keyScore < 60 ? 'bold': ''}">{{user.keyScore}}</td>
         <td>{{ user.custSuppSentiment }}</td>
-        <td>{{ user.callHoldPermission }}</td>
-        <td>{{ user.transferPermission }}</td>
+<!--        <td>{{ user.callHoldPermission }}</td>-->
+<!--        <td>{{ user.transferPermission }}</td>-->
         <td>{{ user.dateTime | date : 'medium' }}</td>
         <td><button mat-mini-fab matTooltip="Take required Action." matTooltipPosition="above" (click)="actionHelper(user)"><mat-icon>assignment</mat-icon></button></td>
       </tr>
@@ -148,6 +152,10 @@
 <!--                   showFirstLastButtons-->
 <!--                   aria-label="Select page of user Roles">-->
 <!--    </mat-paginator>-->
+<!--    <mat-paginator-->
+<!--      [pageSizeOptions]="[5, 10, 25, 100]"-->
+<!--      showFirstLastButtons-->
+<!--      [pageSize]="5"-->
+<!--    ></mat-paginator>-->
   </div></div>
 <br>
-<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>

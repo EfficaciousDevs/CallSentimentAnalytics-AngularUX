@@ -8,13 +8,13 @@
         <h2 class="title">Sign in</h2>
         <div class="input-field">
           <i class="fas fa-user"></i>
-          <input type="text" placeholder="Username" [(ngModel)]="username"
+          <input type="text" placeholder="Username" [(ngModel)]="username" (ngModelChange)="invalidChanger()"
                  [ngModelOptions]="{standalone: true}"/>
         </div>
         <div class="input-field">
           <i class="fas fa-lock"></i>
           <input type="password" placeholder="Password"
-                 [(ngModel)]="password" [ngModelOptions]="{standalone: true}"/>
+                 [(ngModel)]="password" [ngModelOptions]="{standalone: true}" (ngModelChange)="invalidChanger()"/>
         </div>
         <button type="submit" class="btn solid" (click)="loginHelper()">Login</button>
         <h4 *ngIf="invalidCredentials.length>0" style="color: crimson">{{invalidCredentials}}</h4>
@@ -24,7 +24,7 @@
 
   <div class="panels-container">
     <div class="panel left-panel">
-      <img src="https://i.ibb.co/6HXL6q1/Privacy-policy-rafiki.png" class="image" alt="" />
+      <img src="./assets/Privacy-policy-rafiki.png" class="image" alt="Not Loaded" />
     </div>
   </div>
 </div>

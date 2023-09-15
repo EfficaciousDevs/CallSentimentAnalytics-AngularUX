@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {agentDetails} from "./data";
 import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxies.service";
-// import { Color, ScaleType } from '@swimlane/ngx-charts';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {NgxSpinnerService} from "ngx-spinner";
 import {AuthService} from "../HttpServices/auth.service";
@@ -21,26 +20,33 @@ export class RulesBasedActionComponent implements OnInit {
     Object.assign(this, { agentDetails })
   }
   agentList: any = [];
-  // chipList = [
-  //   { label: 'Shashank Naik', value: 100 },
-  //   { label: 'Harshit Soni', value: 102 },
-  //   { label: 'Rohan Bait', value: 103 },
-  // ];
-  //
-  // shashankAgents: any = [];
-  // harshitAgents: any = [];
-  // rohanAgents: any = [];
+  chipList = [
+    { label: 'Negative Sentiment', value: 1 },
+    { label: 'Call Hold Permission Asked', value: 2 },
+    { label: 'Call Transfer Permission Asked', value: 3 },
+  ];
 
 
-  // chipSelected(chip: any){
-  //   if(chip.value === 100){
-  //     this.agentList = this.shashankAgents;
-  //   }else if(chip.value === 102) {
-  //     this.agentList = this.harshitAgents;
-  //   }else{
-  //     this.agentList = this.rohanAgents;
-  //   }
-  // }
+  rulesReviewData: any = [];
+  chipSelected(chip: any){
+    if(chip.value === 1){
+      this.rulesReviewData = this.filteredReviewData;
+      this.rulesReviewData = this.filteredReviewData.filter((entity: any)=>
+        entity.custSuppSentiment == 'Negative'
+      );
+
+    }else if(chip.value === 2) {
+      this.rulesReviewData = this.filteredReviewData;
+      this.rulesReviewData = this.filteredReviewData.filter((entity: any)=>
+        entity.callHoldPermission.contains('was put on hold')
+      );
+    }else{
+      this.rulesReviewData = this.filteredReviewData;
+      this.rulesReviewData = this.filteredReviewData.filter((entity: any)=>
+        entity.transferPermission.contains('was not asked')
+      );
+    }
+  }
   tempList: any = [];
   getAgentList(){
     this.spinner.show();
@@ -52,6 +58,7 @@ export class RulesBasedActionComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getAgentList();
+    this.getReviewDetails();
     this.callProxy.fetchStats().subscribe((response: any) => {
       this.agentData = response;
 
@@ -101,44 +108,40 @@ export class RulesBasedActionComponent implements OnInit {
   };
 
 
-  // agentDetails: any[];
+  agentIds: any = [];
+  reviewData: any = [];
+  filteredReviewData: any = [];
+  getReviewDetails(){
 
-  // // options
-  // showXAxis: boolean = true;
-  // showYAxis: boolean = true;
-  // gradient: boolean = true;
-  // showLegend: boolean = true;
-  // showXAxisLabel: boolean = true;
-  // xAxisLabel: string = 'Call Category';
-  // showYAxisLabel: boolean = true;
-  // yAxisLabel: string = 'Agent Frequency';
-  // legendTitle: string = 'Sentiment';
+    this.spinner.show();
+    this.callProxy.fetchManagers().pipe(
+      switchMap((data: any) => {
+        console.log(data);
+        this.agentIds = data
+          .filter((item: any) => item.managerId === this.auth.managerId && item.agentName !== null)
+          .map((item: any) => item.userId.toString());
 
-
-
-  // colorScheme: Color = {
-  //   domain: ['#0e9aa7', '#ff8b94', '#AAAAAA'],
-  //   group: ScaleType.Ordinal,
-  //   selectable: true,
-  //   name: 'Call Sentiments',
-  // };
-
-  // onSelect(data: any): void {
-  //   console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  // }
-  //
-  // onActivate(data: any): void {
-  //   console.log('Activate', JSON.parse(JSON.stringify(data)));
-  // }
-  //
-  // onDeactivate(data: any): void {
-  //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  // }
-  // getLearnerDetails(){
-  //   this.callProxy.getLearners().subscribe((response)=>{
-  //     this.learnerList = response;
-  //   });
-  // }
+        return of(this.agentIds);
+      })
+    ).subscribe((agentIds: string[]) => {
+      this.callProxy.getReviewData(agentIds).subscribe((data:any) => {
+        this.reviewData = data;
+        this.filteredReviewData = data;
+        this.filteredReviewData.sort((a : any, b: any) => {
+          const dateA = new Date(a.dateTime);
+          const dateB = new Date(b.dateTime);
+          // @ts-ignore
+          return dateB - dateA;
+        });
+        // console.log(this.reviewData);
+        // this.filteredReviewData = this.reviewData.filter((user:any) => {
+        //   const userDate = new Date(user.dateTime);
+        //   return userDate >= this.startDate && userDate <= this.endDate;
+        // });
+        this.spinner.hide();
+      });
+    });
+  }
   swipeHelper(omitUser: any){
     // console.log(omitUser);
     this.spinner.show();

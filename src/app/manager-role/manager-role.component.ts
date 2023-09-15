@@ -4,6 +4,7 @@ import {AuthService} from "../HttpServices/auth.service";
 import {of, switchMap} from "rxjs";
 import {NgxSpinnerService} from "ngx-spinner";
 import {animate, trigger, style,transition} from "@angular/animations";
+import {RoleBasedService} from "../HttpServices/role-based.service";
 
 @Component({
   selector: 'app-manager-role',
@@ -21,26 +22,42 @@ import {animate, trigger, style,transition} from "@angular/animations";
 export class ManagerRoleComponent implements OnInit{
 
   learnerList: any = [];
-  constructor(private callService: CallAnalyticsProxiesService,private auth: AuthService,private spinner: NgxSpinnerService) {
+  constructor(private callService: CallAnalyticsProxiesService,private roleService: RoleBasedService,private auth: AuthService,private spinner: NgxSpinnerService) {
   }
   ngOnInit() {
-   this.callService.getLearners().subscribe((data: any)=>{
-     this.learnerList = data.filter((item : any)=> item.managerId == this.auth.managerId);
-   });
+  //  this.callService.getLearners().subscribe((data: any)=>{
+  //    this.learnerList = data.filter((item : any)=> item.managerId == this.auth.managerId);
+  //  });
+  //
+  //  console.log(this.learnerList);
+  //  this.getReviewDetails();
+  // this.spinner.show();
+  //  this.callService.fetchManagers().subscribe((data: any)=>{
+  //    this.unreviewedData = data.filter((item: any)=> this.agentIds.includes(item.userId.toString()));
+  //    // console.log(this.unreviewedData);
+  //    this.spinner.hide();
+  //  })
+    this.spinner.show();
+    this.callService.getLearners().pipe(
+      switchMap((data : any)=>{
+        this.learnerList = data.filter((item : any)=> item.managerId == this.auth.managerId);
 
-   console.log(this.learnerList);
-   this.getReviewDetails();
-  this.spinner.show();
-   this.callService.fetchManagers().subscribe((data: any)=>{
-     this.unreviewedData = data.filter((item: any)=> this.agentIds.includes(item.userId.toString()));
-     // console.log(this.unreviewedData);
-     this.spinner.hide();
-   })
+        return this.callService.fetchManagers();
+      }),
+      switchMap((data: any)=>{
+        this.unreviewedData = data.filter((item: any)=> this.agentIds.includes(item.userId.toString()));
+        return this.roleService.getRolesList();
+      })
+    ).subscribe((response: any)=>{
+      this.taggedAgents = response.filter((item:any)=> item.agentName !== null && item.managerId == this.auth.managerId);
+      this.getReviewDetails();
+      this.spinner.hide();
+    })
   }
 
 
 
-
+  taggedAgents: any = [];
   agentIds : any = [];
   reviewData: any = [];
   unreviewedData : any = [];

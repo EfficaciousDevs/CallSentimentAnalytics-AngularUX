@@ -12,6 +12,7 @@ import {AuthGuard} from "./AuthGaurd/auth.gaurd";
 import {ReportingDashboardComponent} from "./reporting-dashboard/reporting-dashboard.component";
 import {CreateRolesComponent} from "./create-roles/create-roles.component";
 import {ForbiddenComponent} from "./forbidden/forbidden.component";
+import {AgentSearchComponent} from "./agent-search/agent-search.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -44,6 +45,9 @@ const routes: Routes = [
       },
       {
         path: 'addNewRole', component: CreateRolesComponent,canActivate: [AuthGuard],data:{roles:['Admin']}
+      },
+      {
+        path: 'searchTaggedAgents', component: AgentSearchComponent, canActivate: [AuthGuard], data: {roles : ['Manager']}
       }
     ]
   },

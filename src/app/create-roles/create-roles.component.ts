@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {RoleBasedService} from "../HttpServices/role-based.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -8,6 +8,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatDialog} from "@angular/material/dialog";
 import {EditUserDialogComponent} from "../edit-user-dialog/edit-user-dialog.component";
 import {ThemePalette} from '@angular/material/core';
+import {Observable} from "rxjs";
 @Component({
   selector: 'app-create-roles',
   templateUrl: './create-roles.component.html',
@@ -68,7 +69,18 @@ export class CreateRolesComponent implements OnInit{
       {name: 'Warn', color: 'warn'},
     ];
 
-  constructor(private dialog: MatDialog, private roleBasedService: RoleBasedService, private snackBar: MatSnackBar,private spinner: NgxSpinnerService) {
+  viewDataSource: MatTableDataSource<any> | undefined;
+  @ViewChild(MatPaginator, { static: true }) viewPaginator: MatPaginator | undefined;
+  dataObs$: Observable<any> | undefined;
+
+  setPagination(tableData : any) {
+    this.viewDataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    // @ts-ignore
+    this.viewDataSource.paginator = this.paginator;
+    this.dataObs$ = this.viewDataSource.connect();
+  }
+  constructor(private _changeDetectorRef: ChangeDetectorRef,private dialog: MatDialog, private roleBasedService: RoleBasedService, private snackBar: MatSnackBar,private spinner: NgxSpinnerService) {
 
   }
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -112,9 +124,10 @@ export class CreateRolesComponent implements OnInit{
         console.log(response);
 
         this.spinner.hide();
-        this.snackBar.open('User Role Added Successfully', 'close');
+        this.snackBar.open('User Role Added Successfully', 'close',{
+          duration: 2000
+        });
       });
-        this.snackBar.dismiss();
 
     }
     else if(this.roleType.toLowerCase() === 'manager') {
@@ -128,10 +141,11 @@ export class CreateRolesComponent implements OnInit{
       this.spinner.show();
       this.roleBasedService.createRoles(managerData).subscribe((response: any)=>{
         console.log(response);
-        this.snackBar.open('Manager Role Added Successfully', 'close');
+        this.snackBar.open('Manager Role Added Successfully', 'close',{
+          duration: 2000
+        });
         this.spinner.hide();
       });
-        this.snackBar.dismiss();
 
     }else{
       const adminData = {
@@ -145,10 +159,11 @@ export class CreateRolesComponent implements OnInit{
       this.spinner.show();
       this.roleBasedService.createRoles(adminData).subscribe((response: any)=>{
         console.log(response);
-        this.snackBar.open('Admin Role Added Successfully', 'close');
+        this.snackBar.open('Admin Role Added Successfully', 'close',{
+          duration: 2000
+        });
         this.spinner.hide();
       });
-        this.snackBar.dismiss();
     }
     // this.spinner.show();
     // this.roleBasedService.createRoles(formData).subscribe((response: any)=>{
@@ -194,6 +209,8 @@ export class CreateRolesComponent implements OnInit{
       // @ts-ignore
       this.dataSource.sort = this.sort;
       // console.log(response);
+
+      this.setPagination(this.usersDb);
       this.spinner.hide();
     });
   }
@@ -292,6 +309,4 @@ export interface ChipColor {
 }
 
 
-export interface MainDbUser{
 
-}
