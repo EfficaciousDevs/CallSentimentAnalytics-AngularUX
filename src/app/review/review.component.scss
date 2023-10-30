@@ -14,7 +14,7 @@
   font-size: 0.9em;
   min-width: 400px;
   border-radius: 5px 5px 0 0;
-  overflow: hidden;
+  overflow-x: auto;
   //box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -35,9 +35,9 @@
   border-bottom: 1px solid #dddddd;
 }
 
-//.content-table tbody tr:nth-of-type(even) {
-//  background-color: #f3f3f3;
-//}
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #b2d8d8;
+}
 
 .content-table tbody tr:last-of-type {
   border-bottom: 2px solid lightseagreen;
@@ -46,6 +46,12 @@
 .content-table tbody tr.active-row {
   font-weight: bold;
   color: lightseagreen;
+}
+
+.horizontal-scroller {
+  overflow-x: auto;
+  width: 100%; /* Adjust the width as needed */
+  max-width: 100%;
 }
 
 

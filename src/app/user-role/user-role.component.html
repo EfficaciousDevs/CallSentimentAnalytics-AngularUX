@@ -91,13 +91,13 @@
       <tr>
 
         <th></th>
-<!--        <th style="text-align: center">AGENT_ID</th>-->
-        <th>CALL CATEGORY</th>
+<!--        <th >AGENT_ID</th>-->
+        <th style="text-align: center">CALL CATEGORY</th>
         <th>CUSTOMER QUERY</th>
         <th>SUMMARY</th>
         <th>CUSTOMER_SUPPORT_SENTIMENT</th>
-        <th>CALL_HOLD_PERMISSION</th>
-        <th>TRANSFER_PERMISSION</th>
+<!--        <th>CALL_HOLD_PERMISSION</th>-->
+<!--        <th>TRANSFER_PERMISSION</th>-->
         <th >DATE & TIMESTAMP</th>
         <th>AUDIO_PLAYBACK</th>
 
@@ -107,12 +107,12 @@
       <tr *ngFor="let user of filteredReviewData;let idx = index">
         <td></td>
 <!--        <td >{{ user.agentId }}</td>-->
-        <td [@slide]>{{ user.callCategory }}</td>
+        <td [@slide]><strong>{{ user.callCategory.toString().toUpperCase() }}</strong></td>
         <td [@slide]><button mat-mini-fab color="primary" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
         <td [@slide]><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
         <td [@slide]>{{ user.custSuppSentiment }}</td>
-        <td [@slide]>{{ user.callHoldPermission }}</td>
-        <td [@slide]>{{ user.transferPermission }}</td>
+<!--        <td [@slide]>{{ user.callHoldPermission }}</td>-->
+<!--        <td [@slide]>{{ user.transferPermission }}</td>-->
         <td [@slide]>{{ user.dateTime | date:'medium' }}</td>
         <td [@slide]><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
       </tr>

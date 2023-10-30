@@ -9,9 +9,19 @@ import {DashboardComponent} from "../dashboard/dashboard.component";
   templateUrl: './reporting-dashboard.component.html',
   styleUrls: ['./reporting-dashboard.component.scss']
 })
-export class ReportingDashboardComponent {
+export class ReportingDashboardComponent implements OnInit{
 
   constructor(private authService: AuthService,private safeURL: DomSanitizer) {
+  }
+
+  ngOnInit() {
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
+    document.body.classList.add('dark');
   }
 
   theme: string = 'dark';

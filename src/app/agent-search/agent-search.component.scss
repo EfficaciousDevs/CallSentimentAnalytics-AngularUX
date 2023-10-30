@@ -9,7 +9,7 @@
 }
 
 .content-table thead tr {
-  background-color: #D70040;
+  background-color: lightseagreen;
   color: #ffffff;
   text-align: left;
   font-weight: bold;
@@ -25,10 +25,15 @@
 }
 
 .content-table tbody tr:last-of-type {
-  border-bottom: 2px solid #D70040;
+  border-bottom: 2px solid lightseagreen;
 }
 
 .content-table tbody tr.active-row {
   font-weight: bold;
-  color: #D70040;
+  color: lightseagreen;
+}
+
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #b2d8d8;
 }

@@ -17,8 +17,15 @@ import {Observable} from "rxjs";
 export class CreateRolesComponent implements OnInit{
 
   ngOnInit() {
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
     this.fetchRoleHelperService();
     this.fetchManagers();
+    document.body.classList.remove('dark');
     // this.extractUniqueManagers();
   }
   chipList = [
@@ -80,7 +87,9 @@ export class CreateRolesComponent implements OnInit{
     this.viewDataSource.paginator = this.paginator;
     this.dataObs$ = this.viewDataSource.connect();
   }
-  constructor(private _changeDetectorRef: ChangeDetectorRef,private dialog: MatDialog, private roleBasedService: RoleBasedService, private snackBar: MatSnackBar,private spinner: NgxSpinnerService) {
+  constructor(private _changeDetectorRef: ChangeDetectorRef,private dialog: MatDialog,
+              private roleBasedService: RoleBasedService,
+              private snackBar: MatSnackBar,private spinner: NgxSpinnerService) {
 
   }
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -195,6 +204,8 @@ export class CreateRolesComponent implements OnInit{
     this.activeManagerId = false;
     this.activeAdminId = false;
     this.selectedValue = null;
+    this.adminId = 0;
+    this.managerId = 0;
   }
   usersDb: any;
   fetchRoleHelperService(){
@@ -230,12 +241,19 @@ export class CreateRolesComponent implements OnInit{
 
   deleteRecord(rowIndex: number){
     let deleted_record = this.usersDb[rowIndex];
-    console.log(deleted_record.userName);
 
-    this.roleBasedService.deleteRecord(deleted_record.userId).subscribe(response=>{
-      console.log(response);
-      this.fetchRoleHelperService();
-    });
+    if(deleted_record.managerName && deleted_record.agentName) {
+      console.log(deleted_record.userName);
+
+      this.roleBasedService.deleteRecord(deleted_record.userId).subscribe(response => {
+        console.log(response);
+        this.fetchRoleHelperService();
+      });
+    }else{
+            this.snackBar.open('You cannot remove Managers directly until reassignment of its reporting agents is completed.','close',{
+              duration: 3000
+            });
+          }
   }
   passedForm : any;
   updateRecord(userEntity: any){

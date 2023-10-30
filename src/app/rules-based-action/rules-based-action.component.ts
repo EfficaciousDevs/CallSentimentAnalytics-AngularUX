@@ -57,6 +57,13 @@ export class RulesBasedActionComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
+    document.body.classList.remove('dark');
     this.getAgentList();
     this.getReviewDetails();
     this.callProxy.fetchStats().subscribe((response: any) => {

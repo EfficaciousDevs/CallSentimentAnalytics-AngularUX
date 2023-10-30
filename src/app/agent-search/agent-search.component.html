@@ -5,48 +5,115 @@
   <div class="orders" >
     <div class="header">
       <h2>AGENT SEARCH</h2>
-      <button style="float: right" mat-fab color="accent"
-              matTooltip="Tagged Agent Details"
+      <button style="float: right" mat-fab color="primary" matTooltip="Tagged Agent Details"
               matTooltipPosition="right">
         <mat-icon>accessibility_new</mat-icon>
       </button>
 
     </div>
-    <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
-            matTooltip="Show Agent Details"
-            matTooltipPosition="right">
-      <mat-icon>filter_alt</mat-icon>
-    </button>
-    <mat-form-field appearance="outline">
-      <mat-label>Search Agent</mat-label>
-      <input matInput (keyup)="showAgents($event)" placeholder="Eg. John Smith">
+<!--    <button style="float: left; margin-bottom: 2%" mat-fab color="warn"-->
+<!--            matTooltip="Show Agent Details"-->
+<!--            matTooltipPosition="right">-->
+<!--      <mat-icon>filter_alt</mat-icon>-->
+<!--    </button>&nbsp;&nbsp;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Search Agent</mat-label>-->
+
+
+
+<!--      <input type="text" placeholder="Agent Name" [(ngModel)]="agentNameFilter">-->
+
+<!--      <input type="text" placeholder="Call Category" [(ngModel)]="callCategoryFilter">-->
+
+
+<!--      <input type="text" placeholder="Customer Support Sentiment" [(ngModel)]="custSuppSentimentFilter">-->
+
+<!--      <input type="date" placeholder="Date & Timestamp" [(ngModel)]="dateTimeFilter">-->
+<!--    </mat-form-field>&nbsp;&nbsp;-->
+
+    <mat-form-field appearance="outline" color="accent" style="width: 25%">
+      <mat-label>Agent Name</mat-label>
+      <input matInput type="text" placeholder="Ex. John Doe" [(ngModel)]="agentNameFilter">
+      <mat-hint style="color: red" *ngIf="agentNameFilter?.length == 0">Mandatory Field to enable search option.</mat-hint>
     </mat-form-field>&nbsp;&nbsp;
+
+    <mat-form-field appearance="outline" color="accent" style="width: 25%">
+      <mat-label>Call Category</mat-label>
+      <input matInput type="text" placeholder="Ex. Home Loan" [(ngModel)]="callCategoryFilter">
+    </mat-form-field>&nbsp;&nbsp;
+
+    <mat-form-field appearance="outline" color="accent" style="width: 25%">
+      <mat-label>Sentiment</mat-label>
+      <input matInput type="text" placeholder="Ex. Negative" [(ngModel)]="custSuppSentimentFilter">
+    </mat-form-field>&nbsp;&nbsp;
+
+<!--    <mat-form-field appearance="outline" color="accent">-->
+<!--      <mat-label>Choose a Start Date</mat-label>-->
+<!--      <input matInput type="date"  [(ngModel)]="dateTimeFilter">-->
+<!--    </mat-form-field>&nbsp;&nbsp;-->
+
+<!--    <mat-form-field appearance="outline" color="accent">-->
+<!--      <mat-label>Choose a End Date</mat-label>-->
+<!--      <input matInput type="date"  [(ngModel)]="dateTimeFilterEnd">-->
+<!--      <mat-hint>Note: End Date is Exclusive</mat-hint>-->
+<!--    </mat-form-field>&nbsp;&nbsp;-->
+
+    <button [disabled]="agentNameFilter?.length == 0" style="margin-bottom: 2%" mat-fab
+            matTooltip="Click to Search Agents"
+            matTooltipPosition="right" (click)="applyFilters()">
+      <i class='bx bx-search-alt-2'></i>
+    </button><br><br><br>
+
+    <mat-form-field  appearance="fill" color="accent">
+      <mat-label>Select Date Range</mat-label>
+      <mat-date-range-input  [rangePicker]="picker">
+        <input [disabled]="agentNameFilter?.length > 0 || custSuppSentimentFilter?.length > 0 || callCategoryFilter?.length > 0" matStartDate [(ngModel)]="startDate" placeholder="Start date">
+        <input [disabled]="agentNameFilter?.length > 0 || custSuppSentimentFilter?.length > 0 || callCategoryFilter?.length > 0" matEndDate [(ngModel)]="endDate" placeholder="End date">
+      </mat-date-range-input>
+      <mat-hint>Note: End date is exclusive</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+      <mat-date-range-picker #picker>
+        <mat-date-range-picker-actions>
+          <button mat-button matDateRangePickerCancel>Cancel</button>
+          <button  mat-raised-button color="primary" matDateRangePickerApply (click)="filterDate()">Filter</button>
+        </mat-date-range-picker-actions>
+      </mat-date-range-picker>
+
+    </mat-form-field>&nbsp;&nbsp;
+    <button style="margin-bottom: 2%" mat-fab color="accent" [disabled]="agentNameFilter?.length > 0 || custSuppSentimentFilter?.length > 0 || callCategoryFilter?.length > 0"
+            matTooltip="Ensure the above filters are not selected to enable date filters."
+            matTooltipPosition="above">
+      <mat-icon>calendar_month</mat-icon>
+    </button>
+
+
 
     <table class="content-table">
       <thead>
       <tr>
         <th></th>
         <th style="text-align: center">AGENT_ID</th>
-        <th>AGENT_NAME</th>
-        <th>CALL_CATEGORY</th>
-        <th>CUSTOMER_QUERY</th>
-        <th>SUMMARY</th>
-        <th>AUDIO_PLAYBACK</th>
-        <th>AGENT_SENTIMENT</th>
-        <th >DATE & TIMESTAMP</th>
+        <th style="text-align: center">AGENT_NAME</th>
+        <th style="text-align: center">CALL_CATEGORY</th>
+        <th style="text-align: center">CUSTOMER_QUERY</th>
+        <th style="text-align: center">SUMMARY</th>
+        <th style="text-align: center">AUDIO_PLAYBACK</th>
+        <th style="text-align: center">AGENT_SENTIMENT</th>
+        <th style="text-align: center">DATE</th>
       </tr>
       </thead>
-      <tbody *ngIf="searchValue.length > 0 && filteredReviewData">
-      <tr *ngFor="let user of filteredReviewData">
+      <tbody *ngIf="filteredReviewData">
+      <tr *ngFor="let user of filteredReviewData ">
         <td></td>
-        <td >{{ user.agentId }}</td>
-        <td>{{user.agentName}}</td>
-        <td><strong>{{ user.callCategory }}</strong></td>
-        <td><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
-        <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
-        <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
-        <td>{{ user.custSuppSentiment }}</td>
-        <td>{{ user.dateTime | date : 'medium' }}</td>
+        <td style="text-align: center">{{ user.agentId }}</td>
+        <td style="text-align: center">{{user.agentName}}</td>
+        <td style="text-align: center"><strong>{{ user.callCategory }}</strong></td>
+        <td style="text-align: center"><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
+        <td style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
+        <td style="text-align: center"><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
+        <td style="text-align: center">{{ user.custSuppSentiment }}</td>
+        <td style="text-align: center">{{ user.dateTime | date  }}</td>
       </tr>
 
       </tbody>

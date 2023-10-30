@@ -24,8 +24,15 @@ export class UserRoleComponent implements OnInit{
 
   constructor(private dialog: MatDialog,private callService: CallAnalyticsProxiesService,private auth: AuthService,public spinnerService: NgxSpinnerService){}
 ngOnInit() {
+  const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+  if (sideBar.classList.contains('close')) {
+    console.log("SideNav is closed already.");
+  } else {
+    sideBar.classList.toggle('close');
+  }
   this.agentId = this.auth.userId.toString();
   this.getReviewDetails();
+  document.body.classList.remove('dark');
   // let objRef1 = document.getElementById("legacyCalls");
   // let objRef2 = document.getElementById("reportingProgress");
   // let objRef3 = document.getElementById("totalQueries");

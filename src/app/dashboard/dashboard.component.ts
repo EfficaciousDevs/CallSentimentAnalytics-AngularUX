@@ -49,6 +49,13 @@ export class DashboardComponent implements OnInit,AfterViewInit{
   ngOnInit() {
     this.getReviewDetails();
     this.routeIsActive();
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
+    document.body.classList.remove('dark');
   }
 
   // src= this.sanitizer.bypassSecurityTrustResourceUrl("https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000");
@@ -73,7 +80,6 @@ export class DashboardComponent implements OnInit,AfterViewInit{
     menuBar.addEventListener('click', () => {
       sideBar.classList.toggle('close');
     });
-
     const searchBtn: HTMLElement = document.querySelector('.content nav form .form-input button') as HTMLElement;
     const searchBtnIcon: HTMLElement = document.querySelector('.content nav form .form-input button .bx') as HTMLElement;
     const searchForm: HTMLElement = document.querySelector('.content nav form') as HTMLElement;

@@ -1,9 +1,10 @@
 
 <div class="remarkDialog">
+  <button mat-icon-button matTooltip="Close Panel" matTooltipPosition="below" color="warn" (click)="onClose()" style="float: right"><mat-icon>highlight_off</mat-icon></button><br>
   <h2 style="text-align: center">Required Action</h2><br>
 
   <mat-chip-listbox aria-label="Action Chips" style="padding-left: 20%">
-    <mat-chip-option matTooltip="Click to select {{chip.label}} window" matTooltipPosition="above" *ngFor="let chip of chipList;let idx = index" (click)="chipSelected(chip)" [color]="colors[idx].color">{{chip.label}} </mat-chip-option>
+    <mat-chip-option matTooltip="Click to select {{chip.label}}" matTooltipPosition="above" *ngFor="let chip of chipList;let idx = index" (click)="chipSelected(chip)" [color]="colors[idx].color">{{chip.label}} </mat-chip-option>
   </mat-chip-listbox><br>
 
   <div *ngIf="enableTraining">
@@ -24,21 +25,37 @@
 <!--    <mat-datepicker #picker></mat-datepicker>-->
 <!--  </mat-form-field>&nbsp;&nbsp;-->
 
-  <mat-form-field appearance="outline" style="width: 60%">
+<!--  <mat-form-field appearance="outline" style="width: 60%">-->
 <!--    <mat-label>Choose an end date</mat-label>-->
 <!--    <input matInput [matDatepicker]="endDate" [(ngModel)]="trainingEndDate" [ngModelOptions]="{standalone: true}" >-->
 <!--    <mat-datepicker-toggle matIconSuffix [for]="endDate"></mat-datepicker-toggle>-->
 <!--    <mat-datepicker #endDate></mat-datepicker>-->
 
-    <mat-label>Select Date Range</mat-label>
-    <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate [(ngModel)]="trainingStartDate" placeholder="Start date">
-      <input matEndDate [(ngModel)]="trainingEndDate" placeholder="End date">
-    </mat-date-range-input>
-    <mat-hint>Note: End date is exclusive</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-  </mat-form-field><br><br>
+<!--    <mat-label>Select Date Range</mat-label>-->
+<!--    <mat-date-range-input [rangePicker]="picker">-->
+<!--      <input matStartDate [(ngModel)]="trainingStartDate" placeholder="Start date">-->
+<!--      <input matEndDate [(ngModel)]="trainingEndDate" placeholder="End date">-->
+<!--    </mat-date-range-input>-->
+<!--    <mat-hint>Note: End date is exclusive</mat-hint>-->
+<!--    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>-->
+<!--    <mat-date-range-picker #picker></mat-date-range-picker>-->
+<!--  </mat-form-field><br><br>-->
+
+
+    <mat-form-field color="accent" style="width:45%;" appearance="outline">
+      <mat-label>Choose a Start Date</mat-label>
+      <input matInput [matDatepicker]="startDate" (dateChange)="dateChange($event)" style="width:100%">
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate></mat-datepicker>
+    </mat-form-field>&nbsp;&nbsp;
+
+
+    <mat-form-field color="accent" style="width:45%;" appearance="outline">
+      <mat-label>Choose an End Date</mat-label>
+      <input matInput [matDatepicker]="stopDate" (dateChange)="dateSet($event)" [min]="minDate" style="width:100%">
+      <mat-datepicker-toggle matSuffix [for]="stopDate"></mat-datepicker-toggle>
+      <mat-datepicker #stopDate></mat-datepicker>
+    </mat-form-field>
 
 <!--  <mat-form-field appearance="outline" style="width: 45%" >-->
 <!--    <mat-label>Training Flag</mat-label>-->
@@ -50,9 +67,13 @@
 <!--  <input matInput [(ngModel)]="editedRemark" [ngModelOptions]="{standalone: true}" >-->
 <!--</mat-form-field>&nbsp;<br>-->
 
-<button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>&nbsp;&nbsp;
+  <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>&nbsp;&nbsp;
   <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
   </div>
+  <div *ngIf="noAction" style="text-align: center">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>&nbsp;&nbsp;
+  </div>
+  &nbsp;&nbsp;
 </div>
 
 

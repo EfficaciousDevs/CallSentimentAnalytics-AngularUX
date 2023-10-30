@@ -7,6 +7,8 @@ import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {AudioDialog} from "../review/review.component";
 import {NgxSpinnerService} from "ngx-spinner";
 import {MatDialog} from "@angular/material/dialog";
+import {FilterDataPipe} from "./filterPipe.pipe";
+import {DateAdapter} from "@angular/material/core";
 
 @Component({
   selector: 'app-agent-search',
@@ -15,15 +17,37 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class AgentSearchComponent implements OnInit {
 
-  constructor(private callService: CallAnalyticsProxiesService, private auth: AuthService, private spinner: NgxSpinnerService, private dialog: MatDialog) {
+  constructor(private filterData: FilterDataPipe,private callService: CallAnalyticsProxiesService, private auth: AuthService, private spinner: NgxSpinnerService, private dialog: MatDialog) {
   }
 
   agentIds: any;
   reviewData: any;
   filteredReviewData: any;
   dateFilterData: any;
+  startDate: any;
+  endDate: any;
+
+  agentNameFilter: any = '';
+
+  callCategoryFilter: any = '';
+
+  custSuppSentimentFilter: any = '';
+
+  // @ts-ignore
+  dateTimeFilter: Date;
+
+  // @ts-ignore
+  dateTimeFilterEnd: Date;
 
   ngOnInit() {
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
+
+    document.body.classList.remove('dark');
     this.getReviewDetails();
 
   }
@@ -81,4 +105,53 @@ export class AgentSearchComponent implements OnInit {
       this.spinner.hide();
     });
   };
+
+
+
+  applyFilters(){
+    if(this.agentNameFilter && !this.callCategoryFilter && !this.custSuppSentimentFilter ){
+      this.filteredReviewData = this.dateFilterData.filter((user : any)=>
+        user.agentName.toLowerCase().includes(this.agentNameFilter?.toLowerCase())
+      );
+    }else if(this.agentNameFilter && this.callCategoryFilter && !this.custSuppSentimentFilter ){
+      this.filteredReviewData = this.dateFilterData.filter((user : any)=>
+        user.callCategory.toLowerCase().includes(this.callCategoryFilter?.toLowerCase()) &&
+        user.agentName.toLowerCase().includes(this.agentNameFilter.toLowerCase())
+      );
+    }else if(this.agentNameFilter && !this.callCategoryFilter && this.custSuppSentimentFilter ){
+      this.filteredReviewData = this.dateFilterData.filter((user : any)=>
+        user.agentName.toLowerCase().includes(this.agentNameFilter?.toLowerCase()) &&
+        user.custSuppSentiment.toLowerCase().includes(this.custSuppSentimentFilter.toLowerCase())
+      );
+    }else if(this.agentNameFilter && !this.callCategoryFilter && !this.custSuppSentimentFilter ){
+      this.filteredReviewData = this.dateFilterData.filter((user : any)=>
+        user.agentName.toLowerCase().includes(this.agentNameFilter?.toLowerCase())
+        // user.dateTime >= this.dateTimeFilter.getDate() && user.dateTime <= this.dateTimeFilterEnd.getDate()
+      );
+    }else{
+      this.filteredReviewData = this.dateFilterData.filter((user : any)=>
+        user.agentName.toLowerCase().includes(this.agentNameFilter?.toLowerCase()) &&
+        user.callCategory.toLowerCase().includes(this.callCategoryFilter.toLowerCase()) &&
+        user.custSuppSentiment.toLowerCase().includes(this.custSuppSentimentFilter.toLowerCase())
+        // user.dateTime >= this.dateTimeFilter.getDate() && user.dateTime <= this.dateTimeFilterEnd.getDate()
+      );
+    }
+    // this.filteredMainData = this.inspectionData.filter((user : any)=>{
+    //   return (
+    //     user.loanNumber.includes(this.loanNumber?.toLowerCase()) ||
+    //     user.entity.toLowerCase().includes(this.entity?.toLowerCase()) ||
+    //     user.fileClass.toLowerCase().includes(this.docType?.trim().toLowerCase()) ||
+    //     user.processingDate.includes(this.processingDate)
+    //   );
+    // });
+
+  }
+
+  filterDate() {
+    // Filter the data based on the date range
+    this.filteredReviewData = this.dateFilterData.filter((user:any) => {
+      const userDate = new Date(user.dateTime);
+      return userDate >= this.startDate && userDate <= this.endDate;
+    });
+  }
 }

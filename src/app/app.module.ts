@@ -27,7 +27,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
-import { ManagerRoleComponent } from './manager-role/manager-role.component';
+import {ManagerRoleComponent, TooltipAgentsPipe, TooltipListPipe} from './manager-role/manager-role.component';
 import { AdminRoleComponent } from './admin-role/admin-role.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { AlertDialogWindowComponent } from './alert-dialog-window/alert-dialog-window.component';
@@ -52,6 +52,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgentSearchComponent } from './agent-search/agent-search.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {FilterDataPipe} from "./agent-search/filterPipe.pipe";
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,7 +69,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     CreateRolesComponent,
     ForbiddenComponent,
     EditUserDialogComponent,
-    ReviewDialog,TrainingDialog,AudioDialog, AgentSearchComponent
+    ReviewDialog,TrainingDialog,AudioDialog, AgentSearchComponent,
+    FilterDataPipe,TooltipListPipe,TooltipAgentsPipe
   ],
     imports: [
         BrowserModule,
@@ -107,7 +109,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatPaginatorModule, MatSortModule, MatMenuModule, MatSidenavModule, MatCheckboxModule
     ],
   providers: [
-      AuthGuard,
+      AuthGuard,FilterDataPipe,TooltipListPipe,TooltipAgentsPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

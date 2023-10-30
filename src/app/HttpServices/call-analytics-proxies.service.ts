@@ -7,7 +7,7 @@ import {AuthService} from "./auth.service";
   providedIn: 'root'
 })
 export class CallAnalyticsProxiesService {
-  AUDIO_API_URL = "http://52.172.252.7:5010/analyse_chat";
+  AUDIO_API_URL: string = "http://52.172.252.7:5010/analyse_chat";
   DEFAULT_ANALYSIS_API: string = "http://52.172.252.7:8080/Call-Sentiments-Analytics/default-analysis";
   addRemarksURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/add-remarks';
   // assignTrainingAPI: string = 'http://localhost:8089/assignTraining';

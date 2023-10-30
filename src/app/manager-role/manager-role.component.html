@@ -48,7 +48,7 @@
 <!--        <div style="display: flex; justify-content: center; align-items: center;">-->
 <!--          <p *ngIf="learnerList.length == 0">No Records to Display</p>-->
 <!--        </div>-->
-        <table *ngIf="learnerList.length > 0; else noRecords">
+        <table *ngIf="learnerList.length > 0; else noRecords" class="content-table">
           <thead>
           <tr>
             <th>AGENT NAME</th>
@@ -102,7 +102,7 @@
       <ul class="insights">
           <li [@slide]>
 <!--            <i class='bx bx-calendar-check'></i>-->
-            <i class='bx bxs-alarm-add'></i>
+            <i class='bx bxs-alarm-add' matTooltip="Click to move to Review Section" matTooltipPosition="above" routerLink="/dashboard/review"></i>
             <span class="info">
                                 <h3 id="unReviewed">{{reviewData.length}}</h3>
                                 <p>Pending Reviews</p>
@@ -110,21 +110,32 @@
           </li>
 
         <li [@slide]>
+          <!--          <i class='bx bxs-user-detail'></i>-->
+          <i class='bx bx-body' matTooltip="{{taggedAgents | tooltipList}}"
+             matTooltipPosition="left" matTooltipClass="tooltip-list"></i>
+          <span class="info">
+                                  <h3 id="activeLogins">4</h3>
+                                  <p>Agents LoggedIn Today</p>
+                              </span>
+        </li>
+
+        <li [@slide]>
 <!--          <i class='bx bxs-user-detail'></i>-->
-          <i class='bx bx-world'></i>
+          <i class='bx bx-world' matTooltip="{{taggedAgents | tooltipAgents}}"
+             matTooltipPosition="left" matTooltipClass="tooltip-list"></i>
               <span class="info">
                                   <h3 id="totalQueries">{{taggedAgents.length}}</h3>
-                                  <p>Tagged Agents</p>
+                                  <p>Reporting Agents</p>
                               </span>
             </li>
-            <li [@slide]>
-<!--              <i class='bx bx-line-chart'></i>-->
-              <i class='bx bx-body'></i>
-              <span class="info">
-                                  <h3 id="totalLearners">{{learnerList.length}}</h3>
-                                  <p>Total Learners</p>
-                              </span>
-            </li>
+<!--            <li [@slide]>-->
+<!--&lt;!&ndash;              <i class='bx bx-line-chart'></i>&ndash;&gt;-->
+<!--              <i class='bx bx-body'></i>-->
+<!--              <span class="info">-->
+<!--                                  <h3 id="totalLearners">{{learnerList.length}}</h3>-->
+<!--                                  <p>Total Learners</p>-->
+<!--                              </span>-->
+<!--            </li>-->
       </ul>
       </div>
     </div><br><br>

@@ -4,7 +4,7 @@ import {
   Component,
   Inject,
   OnChanges,
-  OnInit,
+  OnInit, Pipe, PipeTransform,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -13,13 +13,15 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {AuthService} from "../HttpServices/auth.service";
-import {Observable, of, switchMap} from "rxjs";
+import {Observable, of, Subject, switchMap} from "rxjs";
 import {ChipColor, UserRole} from "../create-roles/create-roles.component";
 import * as moment from "moment/moment";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -38,8 +40,8 @@ export class ReviewComponent implements OnInit{
   $filterClicked: boolean = false;
   isFilterClicked(){
     this.$filterClicked = !this.$filterClicked;
+    this.$dateFilterClicked = false;
   }
-
 
   // dataSource = new MatTableDataSource<any>();
   // displayedColumns: string[] =
@@ -53,10 +55,15 @@ export class ReviewComponent implements OnInit{
   // }
 
   ngOnInit() {
-    // let threeDaysAgo = this.startDate.getDate() - 3;
-    // this.startDate.setDate(threeDaysAgo);
-    this.getReviewDetails();
 
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
+    this.getReviewDetails();
+    document.body.classList.remove('dark');
     // this.spinner.show();
     // this.callService.fetchManagers().pipe(
     //   switchMap((data: any) => {
@@ -78,7 +85,7 @@ export class ReviewComponent implements OnInit{
     // });
   }
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef,private auth: AuthService,private sanitizer: DomSanitizer,public dialog: MatDialog,private callService: CallAnalyticsProxiesService,private spinner: NgxSpinnerService) {
+  constructor(private snackBar: MatSnackBar,private auth: AuthService,private sanitizer: DomSanitizer,public dialog: MatDialog,private callService: CallAnalyticsProxiesService,private spinner: NgxSpinnerService) {
   }
   reviewData: any = [];
   // editedRemarkObject: any;
@@ -148,12 +155,6 @@ export class ReviewComponent implements OnInit{
         });
 
         this.dateFilterData = this.filteredReviewData;
-        // console.log(this.reviewData);
-        // this.filteredReviewData = this.filteredReviewData.filter((user:any) => {
-        //   const userDate = new Date(user.dateTime);
-        //   return userDate >= this.startDate && userDate <= this.endDate;
-        // });
-        // this.setPagination(this.filteredReviewData);
         this.spinner.hide();
       });
     });
@@ -161,7 +162,6 @@ export class ReviewComponent implements OnInit{
 
   dateFilterData: any;
   actionHelper(agentDetails: any){
-    // this.editedRemarkObject = this.reviewData[agentIndex];
     console.log(agentDetails);
 
     this.openDialog(agentDetails);
@@ -172,6 +172,8 @@ export class ReviewComponent implements OnInit{
 
   applyFilter(searchValue: any) {
     this.searchValue = searchValue.target.value.trim(); // Remove whitespace
+    this.startDate = null;
+    this.endDate = null;
     // @ts-ignore
     // this.dataSource.filter = this.searchValue.toLowerCase();
     this.filteredReviewData = this.reviewData.filter((user : any) => {
@@ -180,16 +182,18 @@ export class ReviewComponent implements OnInit{
         user.agentName.toLowerCase().includes(searchString) ||
         user.callCategory.toLowerCase().includes(searchString) ||
         user.customerProblem.toLowerCase().includes(searchString)||
-         user.custSuppSentiment.toLowerCase().includes(searchString) ||
-        user.callHoldPermission.toLowerCase().includes(searchString) ||
-          user.transferPermission.toLowerCase().includes(searchString) ||
-          user.keyScore == Number(searchString) ||
-          user.agentId == Number(searchString)
+        user.custSuppSentiment.toLowerCase().includes(searchString) ||
+        // user.callHoldPermission.toLowerCase().includes(searchString) ||
+        // user.transferPermission.toLowerCase().includes(searchString) ||
+        user.keyScore == Number(searchString)
       );
     });
   }
   startDate: any;
   endDate: any;
+  enableSearch: boolean = true;
+  enableDateSearch: boolean = true;
+
   // searchDate : any;
   // filterDataByDate(event: any): void {
   //   this.searchDate = event.target.value;
@@ -210,12 +214,13 @@ export class ReviewComponent implements OnInit{
   //     this.filteredReviewData = [...this.reviewData]; // Replace with your original data source
   //   }
   // }
+  isDateFilterClicked(){
+    this.$dateFilterClicked = !this.$dateFilterClicked;
+    this.$filterClicked = false;
+  }
 
+  $dateFilterClicked = false;
   filterData() {
-    // Convert startDate and endDate to Date objects
-    // const startDateObj = new Date(this.startDate);
-    // const endDateObj = new Date(this.endDate);
-
     // Filter the data based on the date range
     this.filteredReviewData = this.dateFilterData.filter((user:any) => {
       const userDate = new Date(user.dateTime);
@@ -267,7 +272,11 @@ export class ReviewDialog {
     public dialogRef: MatDialogRef<ReviewDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private callService: CallAnalyticsProxiesService
-  ) {}
+  ) {
+    this.minDateToFinish.subscribe(r => {
+      this.minDate = new Date(r);
+    })
+  }
 
   enableTraining: boolean = false;
   // editedRemark: string = this.data?.remark ? this.data.remark : 'Please enter your remarks.';
@@ -277,15 +286,13 @@ export class ReviewDialog {
     { label: 'No Action', value: 2 },
   ];
   colors: ChipColor[] = [
-    {name: 'Primary', color: 'primary'},
     {name: 'Accent', color: 'accent'},
+    {name: 'Warn', color: 'warn'},
   ];
-
+  noAction: boolean = false;
   trainingProgram: string = '';
   trainingStartDate: any ;
   trainingEndDate: any;
-  // trainingFlag : string = '';
-
   trainingPrograms: string[] = [
     "Service Excellence Training",
     "Customer Care Mastery",
@@ -298,68 +305,80 @@ export class ReviewDialog {
     "Advanced Troubleshooting Techniques",
     "Navigating Difficult Customer Interactions"
   ];
+
   chipSelected(chip: any){
     if(chip.value == 1){
       this.enableTraining = true;
+      this.noAction = false;
     }else{
       this.enableTraining = false;
-      this.onSubmit();
+      this.noAction = true;
     }
   }
-  noAction: boolean = false ;
+
+  minFromDate: any;
+  maxFromDate: any ;
+  minToDate: any;
+  maxToDate: any;
+  startDate: any;
+  stopDate: any;
+
   resetForm(){
-    // this.editedRemark = 'Please enter your remarks.';
+    this.trainingProgram = '';
+    this.trainingStartDate = null;
+    this.trainingEndDate = null;
+  }
+  minDateToFinish = new Subject<string>();
+  minDate: any;
+
+  dateChange(event: any) {
+    this.minDateToFinish.next(event.value.toString());
+    this.startDate = new Date(event.value.toString());
+    console.log(this.startDate);
+  }
+
+  dateSet(event: any){
+    this.stopDate = new Date(event.value.toString());
+    console.log(this.stopDate);
   }
   callerId: string = this.data.callId;
   onSubmit(): void {
-    // const agentData = {
-    //   "callId": this.data.callId,
-    //   "callHoldPermission": this.data.callHoldPermission,
-    //   "transferPermission": this.data.transferPermission,
-    //   "customerProblem": this.data.customerProblem,
-    //   "custSuppSentiment": this.data.custSuppSentiment,
-    //   "summary": this.data.summary,
-    //   "agentId": this.data.agentId,
-    //   "callCategory": this.data.callCategory,
-    //   "dateTime": this.data.dateTime,
-    //   "remark": this.editedRemark
-    // }
-    // this.callService.addRemarks(agentData).subscribe((response)=>{
-    //   console.log(response);
-    // });
+    if (this.enableTraining) {
+      const agentData = {
+        "agentId": this.data.agentId,
+        "agentName": this.data.agentName,
+        "managerId": this.data.managerId,
+        "managerName": this.data.managerName,
+        "trainingStartDate": this.startDate,
+        "trainingEndDate": this.stopDate,
+        "trainingCourse": this.trainingProgram,
+        "lastLoggedIn": new Date()
+      };
 
-    // this.dialogRef.close("Remarks Added");
-
-
-    const agentData = {
-      "agentId": this.data.agentId,
-      "agentName": this.data.agentName,
-      "managerId": this.data.managerId,
-      "managerName": this.data.managerName,
-      "trainingStartDate": this.trainingStartDate,
-      "trainingEndDate": this.trainingEndDate,
-      "trainingCourse": this.trainingProgram,
-      "lastLoggedIn": new Date()
-    };
-    // this.callService.tagTrainingCourse(agentData).subscribe((response)=>{
-    //   console.log(response);
-    // });
-    if(this.enableTraining){
-    this.callService.tagTrainingCourse(agentData).pipe(
-      switchMap(()=>{
-        return this.callService.deleteCallers(this.callerId);
-      })
-    ).subscribe((response)=>{
-      console.log(response);
-    })}else{
+        this.callService.tagTrainingCourse(agentData).pipe(
+          switchMap(() => {
+            return this.callService.deleteCallers(this.callerId);
+          })
+        ).subscribe((response) => {
+          console.log(response);
+        });
+      // else {
+      //   this.callService.deleteCallers(this.callerId).subscribe((response: any) => {
+      //     console.log(response);
+      //   })
+      // }
+      this.dialogRef.close("Training Details added");
+    }else{
       this.callService.deleteCallers(this.callerId).subscribe((response: any)=>{
         console.log(response);
-      })
+      });
+      this.dialogRef.close(true);
     }
-
-    this.dialogRef.close("Training Details added");
   }
 
+  onClose(){
+    this.dialogRef.close();
+  }
 }
 
 @Component({

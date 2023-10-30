@@ -11,7 +11,7 @@
     <li *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': adminActive}" matTooltip="Admin Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/adminAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
     <li *ngIf="roleBasedService.roleMatch(['Manager'])" [class.active]="managerActive" matTooltip="Manager Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/managerAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
     <li *ngIf="roleBasedService.roleMatch(['User'])" [ngClass]="{'active': userActive}" matTooltip="User Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/userAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-    <li  *ngIf="authService.isLoggedIn()" [ngClass]="{'active': sentimentsActive}" matTooltip="Call Sentiments Analyzer" matTooltipPosition="right"><a routerLink="/dashboard/callSentimentsAnalytics"><i class='bx bxs-user-voice'></i>
+    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': sentimentsActive}" matTooltip="Call Sentiments Analyzer" matTooltipPosition="right"><a routerLink="/dashboard/callSentimentsAnalytics"><i class='bx bxs-user-voice'></i>
       <span class="text">Call Based Analyzer</span></a></li>
     <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': reviewActive}" matTooltip="Review" matTooltipPosition="right"><a routerLink="/dashboard/review"><i class='bx bx-map-alt'></i>Review</a></li>
     <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': actionActive}" matTooltip="Rule Based Action" matTooltipPosition="right"><a routerLink="/dashboard/rulesBasedAction"><i class='bx bx-check-shield'></i>Action</a></li>
@@ -51,12 +51,12 @@
     </form>
 
 
-    <mat-icon class="activate-dark">brightness_4</mat-icon>
-    <input type="checkbox" id="theme-toggle" hidden>
-    <label matTooltip="Toggle for Dark Mode" matTooltipPosition="below" for="theme-toggle" class="theme-toggle"></label>
+<!--    <mat-icon class="activate-dark">brightness_4</mat-icon>-->
+<!--    <input type="checkbox" id="theme-toggle" hidden>-->
+<!--    <label matTooltip="Toggle for Dark Mode" matTooltipPosition="below" for="theme-toggle" class="theme-toggle"></label>-->
     <a  class="notif" matTooltip="Go to review tab to check these alerts." matTooltipPosition="above" routerLink="/dashboard/review">
       <i class='bx bx-bell'></i>
-      <span class="count">{{reviewData.length}}</span>
+      <span class="count" *ngIf="managerActive">{{reviewData.length > 0 ? 1 : 0}}</span>
 <!--      <span class="count" >0</span>-->
     </a>
 <!--    <a href="#" class="profile">-->
@@ -65,7 +65,7 @@
 <!--    <button mat-button >Menu</button>-->
     <button mat-mini-fab color="warn" [matMenuTriggerFor]="menu">
       <a class="profile">
-              <img src="./assets/avatar.jfif" alt="avatar Pic">
+              <img src="./assets/images.jfif" alt="avatar Pic">
             </a>
     </button>
 <!--    <mat-menu #menu="matMenu">-->

@@ -9,6 +9,7 @@ import {UserRole} from "../create-roles/create-roles.component";
 export class RoleBasedService {
 
   authenticationAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/authenticate';
+  // authenticationAPI: string = 'http://localhost:8089/authenticate';
   // userAPI: string = 'http://localhost:8089/forUser';
   // adminAPI: string = 'http://localhost:8089/forAdmin';
   createRolesAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/register-user';

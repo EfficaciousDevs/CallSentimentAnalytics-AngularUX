@@ -51,14 +51,15 @@
 
         <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
                 matTooltip="Filter Results"
-                matTooltipPosition="right" (click)="isFilterClicked()">
+                matTooltipPosition="right" >
           <mat-icon>filter_alt</mat-icon>
-        </button>
-        <mat-form-field *ngIf="$filterClicked" appearance="outline">
+        </button>&nbsp;&nbsp;
+
+        <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Credit Card">
         </mat-form-field>
-        <table>
+        <table class="content-table">
           <thead>
           <tr>
             <th>AGENT NAME</th>

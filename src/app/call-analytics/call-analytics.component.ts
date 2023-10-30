@@ -27,6 +27,13 @@ export class CallAnalyticsComponent {
   audioSrc: any = null;
 
   ngOnInit(): void {
+    document.body.classList.remove('dark');
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
   }
 
   onUpload() {

@@ -1,5 +1,5 @@
 .roleCard{
-  background: lavender;
+  background: #b2d8d8;
   border: 2px solid black;
   text-align: center;
 }
@@ -13,12 +13,12 @@ h2{
 }
 
 mat-header-cell,mat-cell{
-  background: lavender;
+  background: #b2d8d8;
   //color: var(--dark);
 }
 
 mat-paginator,mat-table{
-  background: lavender;
+  background: #b2d8d8;
   box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
 }
 
@@ -55,9 +55,9 @@ mat-paginator,mat-table{
   border-bottom: 1px solid #dddddd;
 }
 
-//.content-table tbody tr:nth-of-type(even) {
-//  background-color: #f3f3f3;
-//}
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #b2d8d8;
+}
 
 .content-table tbody tr:last-of-type {
   border-bottom: 2px solid lightseagreen;
@@ -68,6 +68,13 @@ mat-paginator,mat-table{
   color: lightseagreen;
 }
 
+
+mat-paginator,mat-table{
+  background: rgba(255,255,255,0.45);
+  border-radius: 5px;
+  border-bottom: 2px solid lightseagreen;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+}
 
 
 .content-table-Delete {
@@ -96,9 +103,9 @@ mat-paginator,mat-table{
   border-bottom: 1px solid #dddddd;
 }
 
-//.content-table tbody tr:nth-of-type(even) {
-//  background-color: #f3f3f3;
-//}
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #b2d8d8;
+}
 
 .content-table-Delete tbody tr:last-of-type {
   border-bottom: 2px solid lightcoral;

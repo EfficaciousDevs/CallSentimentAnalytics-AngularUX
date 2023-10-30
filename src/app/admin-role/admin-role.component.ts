@@ -29,6 +29,12 @@ export class AdminRoleComponent implements OnInit{
   learnerList: any = [];
 
   ngOnInit(): void {
+    const sideBar: HTMLElement = document.querySelector('.sidebar') as HTMLElement;
+    if (sideBar.classList.contains('close')) {
+      console.log("SideNav is closed already.");
+    } else {
+      sideBar.classList.toggle('close');
+    }
     this.ngxSpinner.show();
     // this.animateValues();
     this.callService.getLearners().subscribe((data: any)=>{
