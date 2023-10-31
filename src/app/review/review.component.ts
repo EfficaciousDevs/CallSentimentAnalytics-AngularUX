@@ -214,10 +214,29 @@ export class ReviewComponent implements OnInit{
   //     this.filteredReviewData = [...this.reviewData]; // Replace with your original data source
   //   }
   // }
+
+
+  pageSize = 5;
+  currentPage = 0;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
+
+  get pagedData() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredReviewData?.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
+
   isDateFilterClicked(){
     this.$dateFilterClicked = !this.$dateFilterClicked;
     this.$filterClicked = false;
   }
+
+
 
   $dateFilterClicked = false;
   filterData() {

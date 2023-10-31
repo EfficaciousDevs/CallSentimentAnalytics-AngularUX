@@ -50,8 +50,9 @@
 <!--        </div>-->
         <table *ngIf="learnerList.length > 0; else noRecords" class="content-table">
           <thead>
-          <tr>
-            <th>AGENT NAME</th>
+          <tr >
+
+            <th style="text-align: center">AGENT NAME</th>
             <th>COMPLETION DATE</th>
             <th>LEARNING PROGRAM</th>
             <th>LAST LOGGED_IN</th>
@@ -61,9 +62,9 @@
 
           <tbody >
           <tr *ngFor="let user of learnerList">
-            <td >
-              <img src="./assets/avatar.jfif">
-              {{ user.agentName }}
+            <td style="text-align: center">
+              <img src="./assets/avatar.jfif" alt="iconPic">
+            {{ user.agentName }}
             </td>
             <td >{{ user.trainingEndDate? (user.trainingEndDate | date): 'Not Started' }}</td>
             <td  style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.trainingCourse? user.trainingCourse : 'No Training Program' }}" matTooltipPosition="left" matTooltipClass="my-custom-tooltip" ><mat-icon>extension</mat-icon></button></td>

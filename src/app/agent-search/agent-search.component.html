@@ -104,19 +104,25 @@
       </tr>
       </thead>
       <tbody *ngIf="filteredReviewData">
-      <tr *ngFor="let user of filteredReviewData ">
+      <tr *ngFor="let user of pagedData">
         <td></td>
         <td style="text-align: center">{{ user.agentId }}</td>
-        <td style="text-align: center">{{user.agentName}}</td>
-        <td style="text-align: center"><strong>{{ user.callCategory }}</strong></td>
+        <td style="text-align: center">{{user.agentName.toString().toUpperCase()}}</td>
+        <td style="text-align: center"><strong>{{ user.callCategory.toString().toUpperCase() }}</strong></td>
         <td style="text-align: center"><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
         <td style="text-align: center"><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
         <td style="text-align: center"><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
-        <td style="text-align: center">{{ user.custSuppSentiment }}</td>
+        <td style="text-align: center">{{ user.custSuppSentiment.toString().toUpperCase() }}</td>
         <td style="text-align: center">{{ user.dateTime | date  }}</td>
       </tr>
-
       </tbody>
     </table>
+    <mat-paginator
+      [length]="filteredReviewData?.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </div></div>
 <br>

@@ -37,3 +37,10 @@
 .content-table tbody tr:nth-of-type(even) {
   background-color: #b2d8d8;
 }
+
+mat-paginator,mat-table{
+  background: rgba(255,255,255,0.45);
+  border-radius: 5px;
+  border-bottom: 2px solid lightseagreen;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+}

@@ -13,13 +13,15 @@
 
     </div>
     <button style="float: left; margin-bottom: 2%" mat-icon-button color="primary"
-            matTooltip="Filter Name Results"
-            matTooltipPosition="above" (click)="isFilterClicked()">
+            matTooltip="Filter Results based on Agent Name, Call Category, Key Scores & Sentiment."
+            matTooltipClass="my-custom-tooltip"
+            matTooltipPosition="right" (click)="isFilterClicked()">
       <mat-icon>perm_contact_calendar</mat-icon>
     </button>&nbsp;&nbsp;
     <button style="float: left; margin-bottom: 2%" mat-icon-button color="warn"
-            matTooltip="Filter Date Results"
-            matTooltipPosition="above" (click)="isDateFilterClicked()">
+            matTooltip="Filter Results based on Date Range."
+            matTooltipClass="my-custom-tooltip"
+            matTooltipPosition="right" (click)="isDateFilterClicked()">
       <mat-icon>event</mat-icon>
     </button>
     <mat-form-field *ngIf="$filterClicked" appearance="outline">
@@ -65,16 +67,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of filteredReviewData"  [ngStyle]="{'background': user.keyScore < 60 ? '#FECDD3' : ''}">
+      <tr *ngFor="let user of pagedData"  [ngStyle]="{'background': user.keyScore < 60 ? '#FECDD3' : ''}">
         <td></td>
 <!--        <td >{{ user.agentId }}</td>-->
-        <td>{{user.agentName}}</td>
+        <td>{{user.agentName.toString().toUpperCase()}}</td>
         <td><strong>{{ user.callCategory.toString().toUpperCase() }}</strong></td>
         <td><button mat-mini-fab color="warn" matTooltip="{{ user.customerProblem }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>language</mat-icon></button></td>
         <td><button mat-mini-fab color="accent" matTooltip="{{ user.summary }}" matTooltipPosition="right" matTooltipClass="my-custom-tooltip"><mat-icon>assignment_ind</mat-icon></button></td>
         <td><button mat-mini-fab color="primary" matTooltip="Audio Playback" matTooltipPosition="above" (click)="openAudioDialog(user.callId)"><mat-icon>settings_phone</mat-icon></button></td>
         <td [ngStyle]="{'color': user.keyScore < 60 ? 'crimson' : '','font-weight': user.keyScore < 60 ? 'bold': ''}">{{user.keyScore}}</td>
-        <td>{{ user.custSuppSentiment }}</td>
+        <td>{{ user.custSuppSentiment.toString().toUpperCase() }}</td>
 <!--        <td>{{ user.callHoldPermission }}</td>-->
 <!--        <td>{{ user.transferPermission }}</td>-->
         <td>{{ user.dateTime | date : 'medium' }}</td>
@@ -83,6 +85,13 @@
 
       </tbody>
     </table>
+      <mat-paginator
+        [length]="filteredReviewData?.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons
+        (page)="onPageChange($event)"
+      ></mat-paginator>
       </div>
   </div></div>
 <br>
