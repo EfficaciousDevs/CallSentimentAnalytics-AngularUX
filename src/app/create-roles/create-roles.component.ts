@@ -34,7 +34,20 @@ export class CreateRolesComponent implements OnInit{
     { label: 'Search/Filter Users', value: 3 },
     { label: 'Modify Users', value: 4 },
   ];
+  pageSize = 5;
+  currentPage = 0;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
 
+  get pagedData() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.usersDb?.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
 
   createRoleActive: boolean = false;
   viewRole: boolean = true;

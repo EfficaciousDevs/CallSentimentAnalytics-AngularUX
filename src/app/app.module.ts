@@ -53,6 +53,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgentSearchComponent } from './agent-search/agent-search.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {FilterDataPipe} from "./agent-search/filterPipe.pipe";
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +76,7 @@ import {FilterDataPipe} from "./agent-search/filterPipe.pipe";
   ],
     imports: [
         BrowserModule,
+        CanvasJSAngularChartsModule,
         BrowserAnimationsModule,
         NgxSpinnerModule,
         MatFormFieldModule,

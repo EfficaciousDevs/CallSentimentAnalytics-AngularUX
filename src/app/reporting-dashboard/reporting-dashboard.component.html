@@ -5,19 +5,52 @@
 <!--      <h3 style="color: crimson">Reporting Dashboard</h3>-->
 <!--      <i class='bx bx-search'></i>-->
 <!--      <i class='bx bx-filter'></i>-->
-    </div>
-    <div *ngIf="roleName == 'Admin'" style=" height: 100vh; overflow: hidden">
-<!--      <iframe width="100%" src="https://app.powerbi.com/reportEmbed?reportId=715d04b1-123b-43ef-9ad8-67b630f7ea21&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" style="height:1920px; transform: scale(0.74); transform-origin: 0 0; border: none"></iframe>-->
-      <iframe title="dashboard" [src]="adminStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>
+      <figure id="bar"></figure><br>
+      <canvas id="callVolumes"></canvas>
+    </div><br>
+<!--    <div>-->
+<!--         <p>MAX CALL DURATION</p>-->
+<!--         <p>{{maxCallDuration | number : '1.2-2'}}</p>-->
+
+<!--      <p>AVG CALL DURATION</p>-->
+<!--      <P>{{avgCallDuration | number : '1.2-2'}}</P>-->
+
+<!--      <p>MIN CALL DURATION</p>-->
+<!--      <p>{{smallCallDuration | number : '1.2-2'}}</p>-->
+
+
+<!--    </div>-->
+    <div>
+
     </div>
 
-    <div *ngIf="roleName == 'Manager'" style="height: 100vh; overflow: hidden">
-      <iframe title="dashboard" [src]="managerStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>
+    <div #keyScore class="chart-area shadow"></div><br>
+    <div style="display: inline-flex;justify-content: left;align-items: start">
+      <div #chart class="pie-chart-area shadow"></div>
+      <div #chart2 class="pie-chart-area shadow"></div>
+      <div #chart3 class="pie-chart-area shadow"></div>
+      <br>
     </div>
+<!--    <svg></svg><br>-->
 
-    <div *ngIf="roleName == 'User'" style="height: 100vh; overflow: hidden">
-      <iframe title="dashboard" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none" [src]="agentStreamLitURL"></iframe>
-    </div>
+
+<!--    <div *ngIf="roleName == 'Admin'" style=" height: 100vh; overflow: hidden">-->
+<!--&lt;!&ndash;      <iframe width="100%" src="https://app.powerbi.com/reportEmbed?reportId=715d04b1-123b-43ef-9ad8-67b630f7ea21&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" style="height:1920px; transform: scale(0.74); transform-origin: 0 0; border: none"></iframe>&ndash;&gt;-->
+<!--      <iframe title="dashboard" [src]="adminStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>-->
+<!--    </div>-->
+
+<!--    <div *ngIf="roleName == 'Manager'" style="height: 100vh; overflow: hidden">-->
+<!--      <iframe title="dashboard" [src]="managerStreamLitURL" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none"></iframe>-->
+<!--    </div>-->
+
+<!--    <div *ngIf="roleName == 'User'" style="height: 100vh; overflow: hidden">-->
+<!--      <iframe title="dashboard" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none" [src]="agentStreamLitURL"></iframe>-->
+<!--    </div>-->
     </div></div>
 <br>
+
+
+
+
+
 

@@ -17,7 +17,7 @@
     <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': actionActive}" matTooltip="Rule Based Action" matTooltipPosition="right"><a routerLink="/dashboard/rulesBasedAction"><i class='bx bx-check-shield'></i>Action</a></li>
     <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': searchActive}" matTooltip="Search Tagged Agents" matTooltipPosition="right"><a routerLink="/dashboard/searchTaggedAgents"><i class='bx bxs-face'></i>Search Agents</a></li>
     <li  *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': createRoleActive}" matTooltip="User Management" matTooltipPosition="right"><a routerLink="/dashboard/addNewRole"><i class='bx bxs-user-plus' ></i>User Management</a></li>
-    <li  *ngIf="authService.isLoggedIn()" matTooltip="Stats Report" matTooltipPosition="right"><a routerLink="/dashboard/reportingDashboard"><i class='bx bx-cog'></i>Reports</a></li>
+    <li  *ngIf="authService.isLoggedIn()" ><a routerLink="/dashboard/reportingDashboard"><i class='bx bx-cog'></i>Reports</a></li>
   </ul>
       <ul class="side-menu" (click)="openList()">
         <li style="font-size: 0.75rem" *ngIf="isOpenList">Create Roles</li>

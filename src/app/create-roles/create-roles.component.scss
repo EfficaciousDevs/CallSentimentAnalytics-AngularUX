@@ -59,6 +59,10 @@ mat-paginator,mat-table{
   background-color: #b2d8d8;
 }
 
+.content-table-Delete tbody tr:nth-of-type(even) {
+  background-color: lightpink;
+}
+
 .content-table tbody tr:last-of-type {
   border-bottom: 2px solid lightseagreen;
 }

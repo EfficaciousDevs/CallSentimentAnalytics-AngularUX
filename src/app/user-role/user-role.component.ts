@@ -96,7 +96,9 @@ ngOnInit() {
       this.trainingDetails = response.filter((item: any)=> item.agentId == this.auth.userId && item.trainingCourse)
       console.log(this.trainingDetails);
       this.spinnerService.hide();
-    })
+    });
+
+
 
   }
 

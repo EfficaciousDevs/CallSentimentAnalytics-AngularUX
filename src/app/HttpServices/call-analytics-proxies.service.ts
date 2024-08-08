@@ -8,14 +8,14 @@ import {AuthService} from "./auth.service";
 })
 export class CallAnalyticsProxiesService {
   AUDIO_API_URL: string = "http://52.172.252.7:5010/analyse_chat";
-  DEFAULT_ANALYSIS_API: string = "http://52.172.252.7:8080/Call-Sentiments-Analytics/default-analysis";
+  DEFAULT_ANALYSIS_API: string = "http://localhost:8089/default-analysis";
   addRemarksURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/add-remarks';
   // assignTrainingAPI: string = 'http://localhost:8089/assignTraining';
   agentManagersAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/agentManagers';
   audioFileURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getAudioFile';
 
   getMainDbUsers: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/get-users';
-  getReviewDataURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getManagerReviewData';
+  getReviewDataURL: string = 'http://localhost:8089/getManagerReviewData';
   // updateUserDetailsAPI : string = 'http://localhost:8089/update-user';
 
   constructor(private httpClient: HttpClient) {
@@ -40,12 +40,13 @@ export class CallAnalyticsProxiesService {
     agentIds.append("agentIds",passedIds)
     return this.httpClient.post(this.getReviewDataURL,agentIds,{
       headers: this.requestHeader
-    })
+    });
   }
+
   fetchAgentStats(agentId: string){
     const agentData = new FormData();
     agentData.append("agentId",agentId);
-    return this.httpClient.post("http://52.172.252.7:8080/Call-Sentiments-Analytics/getAgentAnalytics",agentData,{
+    return this.httpClient.post("http://localhost:8089/getAgentAnalytics",agentData,{
       headers: this.requestHeader
     })
   }

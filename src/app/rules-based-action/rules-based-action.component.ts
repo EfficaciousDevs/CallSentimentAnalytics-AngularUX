@@ -28,6 +28,7 @@ export class RulesBasedActionComponent implements OnInit {
 
 
   rulesReviewData: any = [];
+
   chipSelected(chip: any){
     if(chip.value === 1){
       this.rulesReviewData = this.filteredReviewData;

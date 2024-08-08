@@ -273,7 +273,7 @@
       <button mat-fab color="accent" matTooltip="Refresh Table" matTooltipPosition="right" (click)="fetchRoleHelperService()"><mat-icon>event_repeat</mat-icon></button>
     </div>
 <!--    <button mat-fab color="accent" matTooltip="Refresh Table" matTooltipPosition="right" (click)="fetchRoleHelperService()"><mat-icon>event_repeat</mat-icon></button><br>-->
-    <table *ngIf="usersDb" class="content-table-Delete">
+    <table *ngIf="usersDb" class="content-table">
       <thead>
       <tr>
         <th>USERNAME</th>
@@ -284,7 +284,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of usersDb;let idx = index">
+      <tr *ngFor="let user of pagedData;let idx = index">
         <td>
           <!--          <img src="https://img.freepik.com/premium-vector/young-smiling-man-adam-avatar-3d-vector-people-character-illustration-cartoon-minimal-style_365941-687.jpg?size=626&ext=jpg&ga=GA1.1.1501489291.1686632962&semt=ais">-->
           <img src="./assets/avatar.jfif" alt="avatar Pic">
@@ -301,5 +301,12 @@
       </tr>
       </tbody>
     </table>
+    <mat-paginator
+      [length]="usersDb?.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </div></div>
 <br>
