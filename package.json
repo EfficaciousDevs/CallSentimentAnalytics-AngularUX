@@ -27,6 +27,7 @@
     "bootstrap": "^5.2.3",
     "chart.js": "^4.4.3",
     "d3": "^7.9.0",
+    "date-fns": "^3.6.0",
     "highcharts-angular": "^3.1.2",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^11.0.2",

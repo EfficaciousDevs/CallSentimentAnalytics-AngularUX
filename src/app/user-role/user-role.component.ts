@@ -3,9 +3,13 @@ import {CallAnalyticsProxiesService} from "../HttpServices/call-analytics-proxie
 import {NgxSpinnerService} from "ngx-spinner";
 import {AuthService} from "../HttpServices/auth.service";
 import {AudioDialog} from "../review/review.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AgentDetails} from "./agentDetails.model";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {switchMap} from "rxjs";
+import {
+  AgentCommentsDialogComponentComponent
+} from "../agent-comments-dialog-component/agent-comments-dialog-component.component";
 
 @Component({
   selector: 'app-user-role',
@@ -17,8 +21,18 @@ import {animate, style, transition, trigger} from "@angular/animations";
         style({ transform: 'translateY(-100%)' }),
         animate('500ms ease-in', style({ transform: 'translateY(0)' }))
       ])
+    ]),
+    trigger('slideIn', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)', opacity: 0 }),
+        animate('500ms ease-in', style({ transform: 'translateX(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-out', style({ transform: 'translateX(100%)', opacity: 0 }))
+      ])
     ])
-  ],
+  ]
+
 })
 export class UserRoleComponent implements OnInit{
 
@@ -32,31 +46,9 @@ ngOnInit() {
   }
   this.agentId = this.auth.userId.toString();
   this.getReviewDetails();
+  this.callAgentComments();
   document.body.classList.remove('dark');
-  // let objRef1 = document.getElementById("legacyCalls");
-  // let objRef2 = document.getElementById("reportingProgress");
-  // let objRef3 = document.getElementById("totalQueries");
-  // let objRef4 = document.getElementById("queriesSolved");
-  // this.animateValue(objRef1, 1, 74, 1000);
-  // this.animateValue(objRef2, 1, 71, 1000);
-  // this.animateValue(objRef3, 1, 65, 1000);
-  // this.animateValue(objRef4, 1, 44, 1000);
 }
-
-  // animateValue(obj : any, start: any, end: any, duration: any) {
-  //   let startTimestamp: any = null;
-  //   const step = (timestamp: any) => {
-  //     if (!startTimestamp)
-  //       startTimestamp = timestamp;
-  //     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-  //     obj.innerHTML = Math.floor(progress * (end - start) + start);
-  //     if (progress < 1) {
-  //       window.requestAnimationFrame(step);
-  //     }
-  //   };
-  //   window.requestAnimationFrame(step);
-  // }
-
 
   reviewData: any = [];
   agentId: string = '';
@@ -92,14 +84,46 @@ ngOnInit() {
     //   })
     // }
 
-    this.callService.getLearners().subscribe((response: any)=>{
-      this.trainingDetails = response.filter((item: any)=> item.agentId == this.auth.userId && item.trainingCourse)
-      console.log(this.trainingDetails);
-      this.spinnerService.hide();
+    // this.callService.getLearners().subscribe((response: any)=>{
+    //   this.trainingDetails = response.filter((item: any)=> item.agentId == this.auth.userId && item.trainingCourse)
+    //   console.log(this.trainingDetails);
+    //   this.spinnerService.hide();
+    // });
+
+
+    this.callService.getLearners().pipe(
+      switchMap( (response: any) => {
+        this.trainingDetails = response.filter((item: any)=> item.agentId == this.auth.userId && item.trainingCourse)
+          this.spinnerService.hide();
+          return this.callService.fetchAgentComments(this.agentId);
+      })
+    ).subscribe((comments: any) => {
+          this.agentComments = comments;
     });
+  }
+
+  openShowDataTableDialog(){
+    this.dialog.open(AgentCommentsDialogComponentComponent,{
+      width: 'auto',
+      height: 'auto',
+    });
+  }
 
 
 
+  pageSize = 5;
+  currentPage = 0;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
+
+  get pagedData() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.filteredReviewData?.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
   searchValue: string = ''; // To store the search text
@@ -119,6 +143,12 @@ ngOnInit() {
         user.keyScore == Number(searchString)
       );
     });
+  }
+
+  agentComments: any = [];
+
+  callAgentComments(){
+
   }
 
 

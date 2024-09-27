@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit,AfterViewInit{
     } else {
       sideBar.classList.toggle('close');
     }
-    document.body.classList.remove('dark');
+    // document.body.classList.remove('dark');
   }
 
   // src= this.sanitizer.bypassSecurityTrustResourceUrl("https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg?w=2000");
@@ -107,17 +107,17 @@ export class DashboardComponent implements OnInit,AfterViewInit{
       }
     });
 
-    const toggler: HTMLInputElement = document.getElementById('theme-toggle') as HTMLInputElement;
-
-    toggler.addEventListener('change', function () {
-      if (this.checked) {
-
-        document.body.classList.add('dark');
-
-      } else {
-        document.body.classList.remove('dark');
-      }
-    });
+    // const toggler: HTMLInputElement = document.getElementById('theme-toggle') as HTMLInputElement;
+    //
+    // toggler.addEventListener('change', function () {
+    //   if (this.checked) {
+    //
+    //     document.body.classList.add('dark');
+    //
+    //   } else {
+    //     document.body.classList.remove('dark');
+    //   }
+    // });
 
   }
   sentimentsActive: boolean = false;

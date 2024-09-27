@@ -18,7 +18,6 @@ export class RoleBasedService {
   deleteUserAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/delete-user';
   // updateUserAPI: string = 'http://localhost:8089/updateUser';
   updateUserDetailsAPI : string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/update-user';
-
   requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
   constructor(
       private httpclient: HttpClient,
@@ -50,7 +49,7 @@ export class RoleBasedService {
     return this.httpclient.get(this.getMainUsers);
   }
 
-  public roleMatch(allowedRoles : any): boolean {
+  public roleMatch(allowedRoles: any): boolean {
     let isMatch = false;
     const userRoles: any = this.userAuthService.getRoles();
 

@@ -70,21 +70,30 @@
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
-      <h3 >Agent Details Page</h3>
+
+      <h3>Agent Details Page</h3>
 <!--      <i class='bx bx-search'></i>-->
 <!--      <i class='bx bx-filter '></i>-->
-      <button mat-fab color="accent"><mat-icon>style</mat-icon></button>
+      <button style="margin-bottom: 2%" mat-fab color="accent"
+              matTooltip="Remarks Window"
+              matTooltipPosition="right" (click)="openShowDataTableDialog()">
+        <mat-icon>chat</mat-icon>
+      </button>
 
     </div>
     <button style="float: left; margin-bottom: 2%" mat-fab color="primary"
             matTooltip="Filter Results"
-            matTooltipPosition="right" (click)="isFilterClicked()">
+            matTooltipPosition="above" (click)="isFilterClicked()">
       <mat-icon>filter_alt</mat-icon>
-    </button>
-    <mat-form-field *ngIf="$filterClicked" appearance="outline">
-      <mat-label>Search</mat-label>
+    </button>&nbsp;
+
+    <mat-form-field *ngIf="$filterClicked" appearance="outline" @slideIn>
+      <mat-label>Filter Results</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Eg. Credit Card">
     </mat-form-field>
+
+
+
 
     <table *ngIf="reviewData" class="content-table">
       <thead>
@@ -93,18 +102,18 @@
         <th></th>
 <!--        <th >AGENT_ID</th>-->
         <th style="text-align: center">CALL CATEGORY</th>
-        <th>CUSTOMER QUERY</th>
-        <th>SUMMARY</th>
-        <th>CUSTOMER_SUPPORT_SENTIMENT</th>
+        <th style="text-align: center">CUSTOMER QUERY</th>
+        <th style="text-align: center">SUMMARY</th>
+        <th style="text-align: center">CUSTOMER_SUPPORT_SENTIMENT</th>
 <!--        <th>CALL_HOLD_PERMISSION</th>-->
 <!--        <th>TRANSFER_PERMISSION</th>-->
-        <th >DATE & TIMESTAMP</th>
-        <th>AUDIO_PLAYBACK</th>
+        <th style="text-align: center">DATE & TIMESTAMP</th>
+        <th style="text-align: center">AUDIO_PLAYBACK</th>
 
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of filteredReviewData;let idx = index">
+      <tr *ngFor="let user of pagedData;let idx = index">
         <td></td>
 <!--        <td >{{ user.agentId }}</td>-->
         <td [@slide]><strong>{{ user.callCategory.toString().toUpperCase() }}</strong></td>
@@ -118,8 +127,14 @@
       </tr>
       </tbody>
     </table>
-
-</div></div>
+    <mat-paginator
+      [length]="filteredReviewData?.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+    ></mat-paginator><br>
+  </div></div>
 <br>
 
 

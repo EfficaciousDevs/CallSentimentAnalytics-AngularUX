@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {NgxSpinnerService} from "ngx-spinner";
 import {AuthService} from "../HttpServices/auth.service";
 import {of, switchMap} from "rxjs";
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-rules-based-action',

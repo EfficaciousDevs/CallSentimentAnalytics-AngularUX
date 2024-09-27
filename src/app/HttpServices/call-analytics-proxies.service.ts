@@ -8,15 +8,19 @@ import {AuthService} from "./auth.service";
 })
 export class CallAnalyticsProxiesService {
   AUDIO_API_URL: string = "http://52.172.252.7:5010/analyse_chat";
-  DEFAULT_ANALYSIS_API: string = "http://localhost:8089/default-analysis";
+  DEFAULT_ANALYSIS_API: string = "http://52.172.252.7:8080/Call-Sentiments-Analytics/default-analysis";
   addRemarksURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/add-remarks';
   // assignTrainingAPI: string = 'http://localhost:8089/assignTraining';
   agentManagersAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/agentManagers';
   audioFileURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getAudioFile';
 
   getMainDbUsers: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/get-users';
-  getReviewDataURL: string = 'http://localhost:8089/getManagerReviewData';
+  getReviewDataURL: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getManagerReviewData';
   // updateUserDetailsAPI : string = 'http://localhost:8089/update-user';
+
+  categoryCommonProblemsAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getCategoryProblems';
+  agentPerformanceCommentsAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/getAgentPerformanceComments';
+  crossSellAPI: string = 'http://52.172.252.7:8080/Call-Sentiments-Analytics/cross-selling-details';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -43,14 +47,37 @@ export class CallAnalyticsProxiesService {
     });
   }
 
+  getAgentPerformanceComments(){
+    return this.httpClient.get(this.agentPerformanceCommentsAPI);
+  }
+
+  getCrossSellingData(){
+    return this.httpClient.get(this.crossSellAPI);
+  }
+
+  getCategoryCommonProblems(){
+    return this.httpClient.get(this.categoryCommonProblemsAPI);
+  }
+
   fetchAgentStats(agentId: string){
     const agentData = new FormData();
     agentData.append("agentId",agentId);
-    return this.httpClient.post("http://localhost:8089/getAgentAnalytics",agentData,{
+    return this.httpClient.post("http://52.172.252.7:8080/Call-Sentiments-Analytics/getAgentAnalytics",agentData,{
       headers: this.requestHeader
     })
   }
+
+  fetchAgentComments(agentId: string){
+    const agentData = new FormData();
+    // @ts-ignore
+    agentData.append("agentId",agentId);
+    return this.httpClient.post("http://52.172.252.7:8080/Call-Sentiments-Analytics/agent-performance-comments",agentData,{
+      headers: this.requestHeader
+    })
+  }
+
   requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
+
   addRemarks(remarks: any){
     return this.httpClient.post(this.addRemarksURL,remarks,{
       headers: this.requestHeader,responseType: 'text'
@@ -81,6 +108,7 @@ export class CallAnalyticsProxiesService {
       headers: this.requestHeader,responseType: 'text'
     });
   }
+
 
   public addLearner(learner: any){
     const learnerObject = {

@@ -2,7 +2,7 @@
 <!-- Sidebar -->
 <div class="sidebar">
   <a class="logo">
-    <i class='bx bxs-network-chart'></i>
+    <i class='bx bx-world'></i>
     <div class="logo-name" ><span>QC</span> Portal</div>
   </a>
 
@@ -11,19 +11,18 @@
     <li *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': adminActive}" matTooltip="Admin Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/adminAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
     <li *ngIf="roleBasedService.roleMatch(['Manager'])" [class.active]="managerActive" matTooltip="Manager Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/managerAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
     <li *ngIf="roleBasedService.roleMatch(['User'])" [ngClass]="{'active': userActive}" matTooltip="User Dashboard" matTooltipPosition="right"><a routerLink="/dashboard/userAccess"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': sentimentsActive}" matTooltip="Call Sentiments Analyzer" matTooltipPosition="right"><a routerLink="/dashboard/callSentimentsAnalytics"><i class='bx bxs-user-voice'></i>
+    <li *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': sentimentsActive}" matTooltip="Call Sentiments Analyzer" matTooltipPosition="right"><a routerLink="/dashboard/callSentimentsAnalytics"><i class='bx bxs-user-voice'></i>
       <span class="text">Call Based Analyzer</span></a></li>
-    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': reviewActive}" matTooltip="Review" matTooltipPosition="right"><a routerLink="/dashboard/review"><i class='bx bx-map-alt'></i>Review</a></li>
-    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': actionActive}" matTooltip="Rule Based Action" matTooltipPosition="right"><a routerLink="/dashboard/rulesBasedAction"><i class='bx bx-check-shield'></i>Action</a></li>
-    <li  *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': searchActive}" matTooltip="Search Tagged Agents" matTooltipPosition="right"><a routerLink="/dashboard/searchTaggedAgents"><i class='bx bxs-face'></i>Search Agents</a></li>
-    <li  *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': createRoleActive}" matTooltip="User Management" matTooltipPosition="right"><a routerLink="/dashboard/addNewRole"><i class='bx bxs-user-plus' ></i>User Management</a></li>
-    <li  *ngIf="authService.isLoggedIn()" ><a routerLink="/dashboard/reportingDashboard"><i class='bx bx-cog'></i>Reports</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': reviewActive}" matTooltip="Review" matTooltipPosition="right"><a routerLink="/dashboard/review"><i class='bx bx-map-alt'></i>Review</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': actionActive}" matTooltip="Rule Based Action" matTooltipPosition="right"><a routerLink="/dashboard/rulesBasedAction"><i class='bx bx-check-shield'></i>Action</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['Manager'])" [ngClass]="{'active': searchActive}" matTooltip="Search Tagged Agents" matTooltipPosition="right"><a routerLink="/dashboard/searchTaggedAgents"><i class='bx bxs-face'></i>Search Agents</a></li>
+    <li *ngIf="roleBasedService.roleMatch(['Admin'])" [ngClass]="{'active': createRoleActive}" matTooltip="User Management" matTooltipPosition="right"><a routerLink="/dashboard/addNewRole"><i class='bx bxs-user-plus' ></i>User Management</a></li>
+    <li  *ngIf="authService.isLoggedIn()" matTooltip="Statistics" matTooltipPosition="right"><a routerLink="/dashboard/reportingDashboard"><i class='bx bx-cog'></i>Reports</a></li>
   </ul>
       <ul class="side-menu" (click)="openList()">
         <li style="font-size: 0.75rem" *ngIf="isOpenList">Create Roles</li>
         <li *ngIf="isOpenList">Check Existing Users</li>
         <li *ngIf="isOpenList">Modify Existing Users</li>
-
       </ul>
 <!--  <ul class="side-menu" >-->
 <!--    <li matTooltip="Logout" matTooltipPosition="right">-->

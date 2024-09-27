@@ -1,38 +1,352 @@
-
+<ngx-spinner size="medium" type="ball-circus"></ngx-spinner>
 <div class="bottom-data">
   <div class="orders" >
     <div class="header">
-<!--      <h3 style="color: crimson">Reporting Dashboard</h3>-->
-<!--      <i class='bx bx-search'></i>-->
-<!--      <i class='bx bx-filter'></i>-->
-      <figure id="bar"></figure><br>
-      <canvas id="callVolumes"></canvas>
-    </div><br>
-<!--    <div>-->
-<!--         <p>MAX CALL DURATION</p>-->
-<!--         <p>{{maxCallDuration | number : '1.2-2'}}</p>-->
 
-<!--      <p>AVG CALL DURATION</p>-->
-<!--      <P>{{avgCallDuration | number : '1.2-2'}}</P>-->
+<!--      <div class="select-menu">-->
+<!--        <div class="select-btn">-->
+<!--          <span class="sBtn-text">Select your category</span>-->
+<!--          <i class="bx bx-chevron-down"></i>-->
+<!--        </div>-->
 
-<!--      <p>MIN CALL DURATION</p>-->
-<!--      <p>{{smallCallDuration | number : '1.2-2'}}</p>-->
+<!--        <ul class="options">-->
+<!--          <li class="option">-->
+<!--            <i class='bx bx-home-heart' style="color: #E1306C;"></i>-->
+<!--            <span class="option-text">Home Loans</span>-->
+<!--          </li>-->
+
+<!--          <li class="option">-->
+<!--            <i class='bx bx-credit-card'  style="color:#50C878;"></i>-->
+<!--            <span class="option-text">Credit Card Sales</span>-->
+<!--          </li>-->
+<!--          <li class="option">-->
+<!--            <i class='bx bxs-bank' style="color:#1DA1F2;"></i>-->
+<!--            <span class="option-text">Banking Faqs</span>-->
+<!--          </li>-->
+<!--          <li class="option">-->
+<!--            <i class='bx bxs-car-mechanic' style="color:#F28C28;"></i>-->
+<!--            <span class="option-text">Vehicle Loans</span>-->
+<!--          </li>-->
+
+<!--          <li class="option">-->
+<!--            <i class='bx bx-body'  style="color: #E1306C;"></i>-->
+<!--            <span class="option-text">Personal Loans</span>-->
+<!--          </li>-->
 
 
-<!--    </div>-->
+<!--          <li class="option">-->
+<!--            <i class='bx bxs-car-garage' style="color:#FFAA33;"></i>-->
+<!--            <span class="option-text">Car Insurance</span>-->
+<!--          </li>-->
+
+<!--          <li class="option">-->
+<!--            <i class='bx bx-credit-card-alt' style="color:#2AAA8A;"></i>-->
+<!--            <span class="option-text">Credit Card Faqs</span>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div><br><br>-->
+
+
+<!--      <div class="chart-wrapper" *ngIf="adminId>0 || managerId>0">-->
+<!--        <div id="personalLoanTrend" class="chart"></div>-->
+<!--        <div id="bankingFaqTrend" class="chart"></div>-->
+<!--      </div>-->
+
+<!--      <div class="chart-wrapper" *ngIf="adminId>0 || managerId>0">-->
+<!--        <div id="creditCardSalesTrend" class="chart"></div>-->
+<!--        <div id="homeLoansTrend" class="chart"></div>-->
+<!--      </div>-->
+
+<!--      <div class="chart-wrapper" *ngIf="adminId>0 || managerId>0">-->
+<!--        <div id="creditCardFaqTrend" class="chart"></div>-->
+<!--        <div id="carInsuranceTrend" class="chart"></div>-->
+<!--      </div>-->
+
+<!--      <div id="groupedColumnChart" class="shadow" *ngIf="managerId>0"></div>-->
+
+<!--      <svg></svg>-->
+<!--      <div class="chart-wrapper" *ngIf="adminId>0 || managerId>0">-->
+<!--        <div id="vehicleLoansTrend" class="chart"></div>-->
+<!--      </div>-->
+
+
+<!--      <button mat-raised-button color="warn" (click)="filterByDate()">Filter</button>-->
+<!--      <figure id="bar" class="shadow"></figure><br>-->
+<!--      <figure id="bar-chart" class="bar shadow"></figure>-->
+
+      <mat-accordion class="shadow-filters" style="width: 100%" *ngIf="adminId == 0">
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title style="justify-content: center"><button mat-icon-button color="warn"><mat-icon>filter_alt</mat-icon></button></mat-panel-title>
+            <mat-panel-description> <strong>FILTERS PANEL</strong> </mat-panel-description>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+
+            <!-- Date Filter -->
+            <div style="display: flex; align-items: center;">
+              <button mat-icon-button color="accent"><mat-icon>today</mat-icon></button>
+              <p><strong>DATE FILTER</strong></p>&nbsp;&nbsp;
+              <mat-form-field class="example-form-field" color="accent" appearance="outline">
+                <mat-label>Select a date range</mat-label>
+                <mat-date-range-input [formGroup]="form" [rangePicker]="rangePicker">
+                  <input matStartDate formControlName="start" placeholder="Start date" />
+                  <input matEndDate formControlName="end" placeholder="End date" />
+                </mat-date-range-input>
+
+                <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-mini-fab matDateRangePickerCancel color="warn" matTooltip="Cancel" matTooltipPosition="above">
+                      <mat-icon>cancel</mat-icon></button>
+                    <button mat-mini-fab matDateRangePickerApply (click)="filterByDate()" color="primary" matTooltip="Apply"
+                            matTooltipPosition="above">
+                      <mat-icon>task_alt</mat-icon></button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+            </div>
+
+<!--            <mat-form-field appearance="outline">-->
+<!--              <mat-label>Filter by Call Category</mat-label>-->
+<!--              <mat-select [(value)]="selectedCategories" multiple>-->
+<!--                <mat-option (click)="toggleSelectAllDropdown()" [value]="allSelectedDropdown">{{selectAllLabelDropdown}}</mat-option>-->
+<!--                <mat-option *ngFor="let category of uniqueCallCategories" [value]="category">{{category}}</mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+
+
+            <!-- Agent Filter -->
+            <div style="display: flex; align-items: center;" *ngIf="managerId">
+              <button mat-icon-button color="accent">	<mat-icon>accessibility</mat-icon></button>
+              <p><strong>AGENTS BASED FILTER</strong></p>
+              <section class="sentiment-selection">
+      <span class="sentiment-list-section">
+        <mat-checkbox color="accent" class="sentiment-margin" [checked]="allSelectedAgents"
+                      [indeterminate]="partiallySelectedAgents()" (change)="toggleAllAgents($event.checked)">
+          Select All</mat-checkbox>
+      </span>
+                <span class="sentiment-list-section">
+        <ul>
+          <li *ngFor="let agent of agentNames; let i = index">
+            <mat-checkbox color="accent" [checked]="agent.selected" (change)="toggleAgents($event.checked, i)">
+              {{ agent.agentName | titlecase }}
+            </mat-checkbox>
+          </li>
+        </ul>
+      </span>
+              </section>
+            </div>
+
+            <!-- KeyScore Slider -->
+            <div style="display: flex; align-items: center;">
+              <button mat-icon-button color="warn"><mat-icon>speed</mat-icon></button>
+              <strong>KEYSCORE SLIDER</strong>
+              <mat-slider style="width: 80%;" min="0" max="100" step="1" showTickMarks discrete [displayWith]="formatLabel"
+                          color="accent">
+                <input matSliderThumb #sliderScore (change)="filterByKeyScore(sliderScore.value)" [value]="meanKeyScore[0]">
+              </mat-slider>
+            </div>
+
+            <!-- Category Filter -->
+            <div style="display: flex; align-items: center;">
+              <button mat-icon-button color="warn"><mat-icon>tour</mat-icon></button>
+              <p><strong>CATEGORY BASED FILTER</strong></p>
+              <section class="sentiment-selection">
+      <span class="sentiment-list-section">
+        <mat-checkbox color="warn" class="sentiment-margin" [checked]="allSelectedCategory"
+                      [indeterminate]="partiallySelectedCategory()" (change)="toggleAllCategory($event.checked)">
+          Select All</mat-checkbox>
+      </span>
+                <span class="sentiment-list-section">
+        <ul>
+          <li *ngFor="let category of categories; let i = index">
+            <mat-checkbox color="warn" [checked]="category.selected" (change)="toggleCategory($event.checked, i)">
+              {{ category.categoryDomain | titlecase }}
+            </mat-checkbox>
+          </li>
+        </ul>
+      </span>
+              </section>
+            </div>
+            <!-- Sentiment Filter -->
+            <div style="display: flex; align-items: center;">
+              <button mat-icon-button color="primary"><mat-icon>transcribe</mat-icon></button>
+              <p><strong>SENTIMENTS BASED FILTER</strong></p>
+              <section class="sentiment-selection">
+      <span class="sentiment-list-section">
+        <mat-checkbox color="primary" class="sentiment-margin" [checked]="allSelected"
+                      [indeterminate]="partiallySelected()" (change)="toggleAll($event.checked)">
+          Select All</mat-checkbox>
+      </span>
+                <span class="sentiment-list-section">
+        <ul>
+          <li *ngFor="let sentiment of sentiments; let i = index">
+            <mat-checkbox color="primary" [checked]="sentiment.selected" (change)="toggleSentiment($event.checked, i)">
+              {{ sentiment.sentimentType | titlecase }}
+            </mat-checkbox>
+          </li>
+        </ul>
+      </span>
+              </section>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
     <div>
-
     </div>
 
-    <div #keyScore class="chart-area shadow"></div><br>
+<!--    <mat-form-field *ngIf="adminId>0" class="example-form-field" color="accent" appearance="outline">-->
+<!--      <mat-label>Select a date range</mat-label>-->
+<!--      <mat-date-range-input [formGroup]="form" [rangePicker]="rangePicker">-->
+<!--        <input matStartDate formControlName="start" placeholder="Start date" />-->
+<!--        <input matEndDate formControlName="end" placeholder="End date" />-->
+<!--      </mat-date-range-input>-->
+
+<!--      <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>-->
+<!--      <mat-date-range-picker #rangePicker>-->
+<!--        <mat-date-range-picker-actions>-->
+<!--          <button mat-mini-fab matDateRangePickerCancel color="warn" matTooltip="Cancel" matTooltipPosition="above">-->
+<!--            <mat-icon>cancel</mat-icon></button>-->
+<!--          <button mat-mini-fab matDateRangePickerApply  color="primary" matTooltip="Apply"-->
+<!--                  matTooltipPosition="above">-->
+<!--            <mat-icon>task_alt</mat-icon></button>-->
+<!--        </mat-date-range-picker-actions>-->
+<!--      </mat-date-range-picker>-->
+<!--    </mat-form-field>-->
+
+
+<!--    Cross Selling Table-->
+    <h2 *ngIf="adminId>0">CROSS SELLING DETAILS</h2>
+    <table *ngIf="crossSellingData && adminId>0" class="content-table">
+      <thead>
+      <tr>
+        <th></th>
+        <!--        <th style="text-align: center">AGENT_ID</th>-->
+        <th style="text-align: center">CALL CATEGORY</th>
+        <th style="text-align: center">REMARKS</th>
+        <th style="text-align: center">DATETIME</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor="let user of pagedDataCrossSelling;let idx = index">
+        <td></td>
+        <td ><strong>{{ user.callCategory.toString().toUpperCase() }}</strong></td>
+        <td><button mat-mini-fab color="warn" matTooltip="" matTooltipPosition="right" matTooltipClass="my-custom-tooltip" (click)="openCrossSellingTableDialog(user.remark)"><mat-icon>assignment</mat-icon></button></td>
+        <td ><strong>{{ user.datetime | date}}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator
+      *ngIf="adminId>0"
+      [length]="crossSellingData.length"
+      [pageSize]="pageSizeCrossSelling"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChangeCrossSelling($event)"
+    ></mat-paginator>
+    <br><br>
+
+<!--    Agent Performance Remarks Table-->
+    <h2 *ngIf="adminId>0">AGENT PERFORMANCE COMMENTS</h2>
+    <table *ngIf="agentPerformanceComments && adminId>0" class="content-table">
+      <thead>
+      <tr>
+        <th></th>
+        <!--        <th style="text-align: center">AGENT_ID</th>-->
+        <th style="text-align: center">PERFORMANCE REMARKS</th>
+        <th style="text-align: center">DATETIME</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  *ngFor="let user of pagedData;let idx = index">
+        <td></td>
+        <!--        <td><strong>{{ user.agentId }}</strong></td>-->
+        <td ><strong>{{ user.remark }}</strong></td>
+        <td ><strong>{{ user.datetime | date}}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator
+      *ngIf="adminId>0"
+      [length]="agentPerformanceComments[0]?.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+    <br><br>
+
+<!--    Category Problem Table -->
+    <h2 *ngIf="adminId>0">CATEGORY COMMON PROBLEMS</h2>
+    <table *ngIf="categoryCommonProblems && adminId>0" class="content-table">
+      <thead>
+      <tr>
+        <th></th>
+        <th style="text-align: center">CALL_CATEGORY</th>
+        <th style="text-align: center">PROBLEM DETAILS</th>
+        <th style="text-align: center">DATETIME</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr  *ngFor="let user of pagedData2;let idx = index">
+        <td></td>
+        <td><strong>{{ user.callCategory.toUpperCase() }}</strong></td>
+        <td>{{ user.remark }}</td>
+        <td ><strong>{{ user.datetime | date}}</strong></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator
+      *ngIf="adminId>0"
+      [length]="categoryCommonProblems[0]?.length"
+      [pageSize]="pageSize2"
+      [pageSizeOptions]="pageSizeOptions2"
+      showFirstLastButtons
+      (page)="onPageChange2($event)"
+    ></mat-paginator>
+
+<!--    Line-Bar Chart-->
+    <figure id="bar" class="shadow"></figure><br>
+
+
+<!--    PieCharts -->
     <div style="display: inline-flex;justify-content: left;align-items: start">
-      <div #chart class="pie-chart-area shadow"></div>
-      <div #chart2 class="pie-chart-area shadow"></div>
-      <div #chart3 class="pie-chart-area shadow"></div>
-      <br>
+      <div #keyScore class="chart-area shadow"><strong style="margin-left: 20%">AGENT KEYSCORE %</strong></div>
+      <div #totalCalls class="chart-area shadow"><strong style="margin-left: 20%">TOTAL CALLS ASSISTED</strong></div>
+      <div #maxDuration class="chart-area shadow"><strong style="margin-left: 20%">MAX CALL DURATION</strong></div>
+      <div #avgDuration class="chart-area shadow"><strong style="margin-left: 20%">AVG CALL DURATION</strong></div>
+      <div #minDuration class="chart-area shadow"><strong style="margin-left: 20%">MIN CALL DURATION</strong></div>
+      <div #avgCallsPerDay class="chart-area shadow"><strong style="margin-left: 20%">AVG CALLS PER_DAY</strong></div>
+      <br><br>
     </div>
-<!--    <svg></svg><br>-->
 
+    <div style="display:inline-flex;justify-content: left;align-items: start">
+    <div #chart class="pie-chart-area shadow"><strong style="margin-left: 25%">CALL CATEGORIES</strong></div>
+    <div #chart2 class="pie-chart-area shadow"><strong style="margin-left: 25%">CUSTOMER SENTIMENT</strong></div>
+    <div #chart3 class="pie-chart-area shadow"><strong style="margin-left: 25%">CUSTOMER SATISFACTION</strong></div>
+    <div #chart4 class="pie-chart-area shadow"><strong style="margin-left: 25%">RESOLUTION STATUS</strong></div>
+    <br>
+    </div>
+    <br><br><br>
+
+
+
+
+<!--    <h2 style="text-align: center" *ngIf="adminId > 0">Zoomable Cloud Sunburst Chart</h2><br>-->
+<!--    <div #sunburst></div>-->
+<!--    <div #customSunburst></div>-->
+<!--    <div #barchartrace></div>-->
 
 <!--    <div *ngIf="roleName == 'Admin'" style=" height: 100vh; overflow: hidden">-->
 <!--&lt;!&ndash;      <iframe width="100%" src="https://app.powerbi.com/reportEmbed?reportId=715d04b1-123b-43ef-9ad8-67b630f7ea21&autoAuth=true&ctid=f1f2a6c0-74c7-4f6f-a7ea-08d1e0aa7706" style="height:1920px; transform: scale(0.74); transform-origin: 0 0; border: none"></iframe>&ndash;&gt;-->
@@ -46,11 +360,5 @@
 <!--    <div *ngIf="roleName == 'User'" style="height: 100vh; overflow: hidden">-->
 <!--      <iframe title="dashboard" style="width: 153%; height: 153%; transform: scale(0.65); transform-origin: 0 0; border: none" [src]="agentStreamLitURL"></iframe>-->
 <!--    </div>-->
-    </div></div>
+  </div></div>
 <br>
-
-
-
-
-
-

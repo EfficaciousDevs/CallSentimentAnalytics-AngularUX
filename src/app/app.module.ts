@@ -54,6 +54,9 @@ import { AgentSearchComponent } from './agent-search/agent-search.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {FilterDataPipe} from "./agent-search/filterPipe.pipe";
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import {MatSliderModule} from "@angular/material/slider";
+import { AgentCommentsDialogComponentComponent } from './agent-comments-dialog-component/agent-comments-dialog-component.component';
+import { CrossSellDialogComponent } from './cross-sell-dialog/cross-sell-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +75,7 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
     ForbiddenComponent,
     EditUserDialogComponent,
     ReviewDialog,TrainingDialog,AudioDialog, AgentSearchComponent,
-    FilterDataPipe,TooltipListPipe,TooltipAgentsPipe
+    FilterDataPipe,TooltipListPipe,TooltipAgentsPipe, AgentCommentsDialogComponentComponent, CrossSellDialogComponent
   ],
     imports: [
         BrowserModule,
@@ -106,10 +109,10 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
         MatChipsModule,
         MatRippleModule,
         MatDialogModule,
-        MatStepperModule,MatAutocompleteModule,
-        MatDatepickerModule, MatCardModule, MatTableModule,NgxChartsModule,
+        MatStepperModule, MatAutocompleteModule,
+        MatDatepickerModule, MatCardModule, MatTableModule, NgxChartsModule,
         MatNativeDateModule, MatSlideToggleModule, MatExpansionModule,
-        MatPaginatorModule, MatSortModule, MatMenuModule, MatSidenavModule, MatCheckboxModule
+        MatPaginatorModule, MatSortModule, MatMenuModule, MatSidenavModule, MatCheckboxModule, MatSliderModule
     ],
   providers: [
       AuthGuard,FilterDataPipe,TooltipListPipe,TooltipAgentsPipe,

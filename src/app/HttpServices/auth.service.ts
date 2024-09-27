@@ -5,15 +5,12 @@ import { Injectable} from '@angular/core';
 })
 export class AuthService {
 
-    // authFirstName: string = '';
-    // authLastName: string = '';
-
-
-  // ng build --base-href /admin-portal/
     fullName: string = '';
     userId: number = 0;
     managerId: number = 0;
+    adminId: number = 0;
     roleType: string = '';
+
     public setRoles(roles: any[]) {
         localStorage.setItem('roles', JSON.stringify(roles));
     }

@@ -6,7 +6,9 @@
   min-width: 400px;
   border-radius: 5px 5px 0 0;
   overflow-x: auto;
-  //box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  //filter: drop-shadow( 0px 5px 4px rgba(0, 0, 0, .6));
+
 }
 
 .content-table thead tr {
@@ -37,6 +39,13 @@
 .content-table tbody tr.active-row {
   font-weight: bold;
   color: lightseagreen;
+}
+
+mat-paginator,mat-table{
+  background: rgba(255,255,255,0.45);
+  border-radius: 5px;
+  border-bottom: 2px solid lightseagreen;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
 }
 
 .horizontal-scroller {
